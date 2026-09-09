@@ -35,7 +35,7 @@ if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
 HUB_TOOLS="$(cd "$(dirname "$0")" && pwd)"
 cd "$BRIDGE"
 case "$SFX" in
-  1165|1122) ;;
+  1165|1122|1201) ;;
   *) echo "FAIL run-direct : bridge <$SFX> has no measured client pins (provision once, pin, extend the table below)"; exit 1;;
 esac
 PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
@@ -53,6 +53,9 @@ case "$SFX" in
   1122)
     VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/832d95b9f40699d4961394dcf6cf549e65f15dc5/1.12.2.json"
     VANILLA_JSON_SHA1="832d95b9f40699d4961394dcf6cf549e65f15dc5";;
+  1201)
+    VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/f54b1a9b7e7fe6044f7f6525f1eddfe40ee771e1/1.20.1.json"
+    VANILLA_JSON_SHA1="f54b1a9b7e7fe6044f7f6525f1eddfe40ee771e1";;
 esac
 FORGE_ID="$MC-forge-$FORGE_COMP"
 GDIR="$PRISM_DIR/instances/$INST/minecraft"
@@ -137,9 +140,26 @@ EOF
 #    player/game arg set comes from the vanilla json (measured, no dupes).
 WORLD="${AUTOPLAY_WORLD:-matou}"
 export AUTOPLAY_WORLD="$WORLD"
+# 1201 joins through the official quick-play launch argument (no
+# programmatic join surface on modern versions — see the bridge
+# tools/autoplay/want.txt): the game itself loads the pre-seeded world
+# at boot. Other versions join from the companion mod instead — never
+# widen this case silently.
+QUICKPLAY_ARGS=""
+[ "$SFX" = "1201" ] && QUICKPLAY_ARGS="--quickPlaySingleplayer $WORLD"
+export QUICKPLAY_ARGS
+# 1201 runs Mojmap-classes/SRG-members like the D3 server: the game jar is
+# the installer-provided client-extra (same role as the server-extra the
+# D3 unix_args.txt puts on the legacy classpath), NEVER the vanilla
+# primary next to it — both carry net.minecraft.obfuscate and JPMS dies
+# with a split-package ResolutionException (measured). Other versions keep
+# the primary (proven).
+USE_CLIENT_EXTRA=""
+[ "$SFX" = "1201" ] && USE_CLIENT_EXTRA=1
+export USE_CLIENT_EXTRA
 OFFLINE_NAME="${OFFLINE_NAME:-MatouDev}"
 LAUNCH_LINE="$(python3 - "$VJSON" "$GDIR/versions/$FORGE_ID/$FORGE_ID.json" "$GDIR" "$UP" "$JB" "$OFFLINE_NAME" <<'EOF'
-import hashlib, json, os, re, sys, urllib.request, uuid as U, zipfile
+import hashlib, json, os, re, shlex, sys, urllib.request, uuid as U, zipfile
 vjson, fjson, gdir, up, jb, player = sys.argv[1:7]
 v = json.load(open(vjson))
 f = json.load(open(fjson))
@@ -179,10 +199,26 @@ def need(meta, kind):
 # Forge first: on group:artifact conflicts (e.g. log4j, where Forge pins
 # newer than vanilla) the Forge version wins — same as every launcher.
 # Naive concatenation puts both on the classpath and dies linking.
+seen_native = set()
 for lib in f["libraries"] + v["libraries"]:
     if not allowed(lib.get("rules")):
         continue
-    key = tuple(lib["name"].split(":")[:2])
+    segs = lib["name"].split(":")
+    key = tuple(segs[:2])
+    if len(segs) == 4 and segs[3].startswith("natives"):
+        # Separate natives lib (modern era, e.g. 1.20.1 Forge json): the jar
+        # carries the .so files LWJGL3 loads from the classpath itself —
+        # the accident that carried 1165 green (its Forge natives won the
+        # main-lib slot), made deliberate here. Never dedups against the
+        # main lib, never feeds the extractor below (basename flattening
+        # would shred the linux/x64 hierarchy LWJGL3 requires).
+        if key in seen_native:
+            continue
+        seen_native.add(key)
+        dl = lib.get("downloads", {})
+        if "artifact" in dl:
+            cp.append(need(dl["artifact"], "natives-lib"))
+        continue
     if key in seen:
         continue
     seen.add(key)
@@ -193,9 +229,17 @@ for lib in f["libraries"] + v["libraries"]:
         natives.append(need(dl["classifiers"]["natives-linux"], "natives"))
 ndir = os.path.join(up, "natives")
 os.makedirs(ndir, exist_ok=True)
+import glob as _glob
 pj = os.path.join(gdir, "versions", v["id"], v["id"] + ".jar")
-assert os.path.isfile(pj), "E_DIRECT_LIB:absent primary <%s>" % pj
-cp.append(pj)
+if os.environ.get("USE_CLIENT_EXTRA"):
+    # Mojmap era: installer-provided client-extra replaces the primary
+    # (same trust chain as the server-extra: pinned installer bytes).
+    cands = _glob.glob(os.path.join(gdir, "libraries", "net", "minecraft", "client", "*", "client-*-extra.jar"))
+    assert len(cands) == 1, "E_DIRECT_LIB:want exactly one client-extra, got %s" % cands
+    cp.append(cands[0])
+else:
+    assert os.path.isfile(pj), "E_DIRECT_LIB:absent primary <%s>" % pj
+    cp.append(pj)
 for p in natives:
     with zipfile.ZipFile(p) as z:
         for m in z.namelist():
@@ -220,6 +264,10 @@ subs = {
     "assets_index_name": v["assetIndex"]["id"],
     "auth_uuid": ouuid(player),
     "auth_access_token": "0",
+    # Offline placeholders (no Xbox auth here): empty like every offline
+    # launcher — online-only features (Realms, skins) are dead anyway.
+    "auth_xuid": "",
+    "clientid": "",
     "user_type": "mojang",
     "version_type": "release",
     "natives_directory": ndir,
@@ -243,7 +291,6 @@ jvm, game = [], []
 # way (sub asserts).
 legacy = "arguments" not in v
 if legacy:
-    import shlex
     # LaunchWrapper takes no classpath from the json (the era launcher built
     # -cp itself): pass ours explicitly, Forge-first deduped above, primary
     # jar appended last — same order every launcher used.
@@ -256,7 +303,11 @@ if legacy:
     assert main, "E_DIRECT_ARG:no mainClass in forge nor vanilla json"
 else:
     main = f["mainClass"]
-for a in v.get("arguments", {}).get("jvm", []):
+for a in f.get("arguments", {}).get("jvm", []) + v.get("arguments", {}).get("jvm", []):
+    # Forge-first, like game args below: the Forge json extends the vanilla
+    # launch (1.20 needs its --add-opens for securejarhandler; 1.16 ran
+    # green without its 4 Forge jvm args only because ModLauncher never
+    # required them — latent since the 1165-only days).
     if isinstance(a, dict):
         if not allowed(a.get("rules")):
             continue
@@ -270,6 +321,9 @@ for a in f.get("arguments", {}).get("game", []) + v.get("arguments", {}).get("ga
         game.extend(a["value"] if isinstance(a["value"], list) else [a["value"]])
     else:
         game.append(a)
+qp = os.environ.get("QUICKPLAY_ARGS", "")
+if qp:
+    game.extend(shlex.split(qp))
 print("ok run-direct : launch assembled (%d jars, %s era)" % (len(cp), "legacy" if legacy else "modern"), file=sys.stderr)
 print("-Xmx" + os.environ.get("JAVA_XMX", "2G"))
 for x in jvm:

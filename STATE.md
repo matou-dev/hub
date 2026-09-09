@@ -118,6 +118,19 @@
   LaunchWrapper carries no classpath) ; numeric-ID verifier table
   (pre-flattening frozen IDs, same fact as the C3 verdict) ; javap
   wildcard-bounds parse fix (1.12-era `Queue<FutureTask<?>>`).
+- 2026-09-09 : direct client proof 1201 IN PROGRESS (red, not green) :
+  game boots but never joins — both DEV jars lack pack.mcmeta, modern
+  Forge raises a "loading mods" warning screen (`Missing metadata in
+  pack mod:matoubridge/matouautoplay` in the log) and waits for a click,
+  quick-play never fires, run dies by timeout. Found via screenshot +
+  jstack (Render thread idle in glfwWaitEventsTimeout). Verdicts so far :
+  1165 green (old script), 1122 green (1274 cells), 1201 red, 1710 todo,
+  1165 re-run todo (jvm Forge-first changed its launch line). Queued
+  fixes for next time : (1) internal game timeout + exit check in
+  `run-client-direct.sh` (fail fast with log tail, never hang to the
+  outer timeout) ; (2) mute game sound headless (e.g.
+  `ALSOFT_DRIVERS=null`) ; (3) stage pack.mcmeta (pack_format 15) into
+  the DEV jars at `run-client.sh` staging.
 - 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
   trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
   positional job indexing) ; structural fix, behaviour-preserving :

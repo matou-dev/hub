@@ -254,7 +254,164 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
   echo "ok run-client : companion Forge surface pinned to universal"
   SRG_AUTO="$CLIENT_DIR/autoplay-narrow.srg"
   "$JB/javap" -version >/dev/null 2>&1 || { echo "FAIL run-client : no javap next to <$JB>"; exit 1; }
-  python3 - "$UP/joined.tsrg" "$UP/mcp/fields.csv" "$UP/mcp/methods.csv" "tools/autoplay/want.txt" "$SRG_AUTO" "$JB/javap" "$UP/client.jar" <<'EOF'
+  # Mojmap era (client-mappings-pin.txt present, e.g. 1201): the narrow map
+  # derives from the official CLIENT mappings + joined.tsrg v2 — same join
+  # as the D3 live derive in the bridge run-live.sh (which uses server.txt
+  # for server members; client members need the client map). MCP era keeps
+  # the historical joined.tsrg-v1 (+ optional snapshot) path below.
+  if [ -f tools/autoplay/client-mappings-pin.txt ]; then
+    MAP_URL="$(sed -n 's/^URL=//p' tools/autoplay/client-mappings-pin.txt)"
+    MAP_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/client-mappings-pin.txt)"
+    [ -n "$MAP_URL" ] && [ -n "$MAP_SHA1" ] \
+      || { echo "FAIL run-client : malformed tools/autoplay/client-mappings-pin.txt (want URL= + SHA1=)"; exit 1; }
+    if [ ! -f "$UP/client.txt" ] || ! echo "$MAP_SHA1  $UP/client.txt" | sha1sum -c - >/dev/null 2>&1; then
+      echo "note run-client : fetching pinned client mappings (network once, $MAP_SHA1)"
+      rm -f "$UP/client.txt"
+      curl -sL -o "$UP/client.txt" "$MAP_URL" \
+        || { echo "FAIL run-client : client mappings download failed"; exit 1; }
+      echo "$MAP_SHA1  $UP/client.txt" | sha1sum -c - >/dev/null 2>&1 \
+        || { echo "FAIL run-client : client mappings sha1 drift (want $MAP_SHA1, never silent upgrade)"; exit 1; }
+    fi
+    echo "ok run-client : pinned client mappings ($MAP_SHA1)"
+    python3 - "$UP/joined.tsrg" "$UP/client.txt" "tools/autoplay/want.txt" "$SRG_AUTO" "$JB/javap" "$UP/client.jar" <<'EOF'
+import sys, subprocess, re
+tsrg, mojmaps, wantf, outpath, javap, client = sys.argv[1:7]
+# client.txt: moj class (dots) -> obf class; members (kind, rettype, name, args, obf).
+moj2obf, members = {}, {}
+cur = None
+for raw in open(mojmaps):
+    if not raw.strip() or raw.startswith("#"):
+        continue
+    if raw[0] in (" ", "\t"):
+        m = re.match(r"^\s+(?:\d+:\d+:)?(\S+) ([\w$<>]+)(\(.*\))? -> ([\w$<>]+)$", raw.rstrip())
+        assert m, "E_AUTO_DERIVE:unparsed mappings line <%s>" % raw.rstrip()
+        rettype, name, args, obf = m.groups()
+        kind = "method" if args is not None else "field"
+        members.setdefault(cur, []).append((kind, rettype, name, args or "", obf))
+    else:
+        if "package-info -> " in raw:
+            continue
+        m = re.match(r"^([\w.$]+) -> ([\w$.]+):$", raw.rstrip())
+        assert m, "E_AUTO_DERIVE:unparsed mappings class <%s>" % raw.rstrip()
+        cur = m.group(1)
+        moj2obf[cur] = m.group(2)
+        members.setdefault(cur, [])
+def to_internal(moj_dots):
+    return moj_dots.replace(".", "/")
+def obf_desc(moj_desc):
+    return re.sub(r"L([^;]+);",
+                  lambda m: "L" + to_internal(moj2obf.get(m.group(1).replace("/", "."), m.group(1))) + ";",
+                  moj_desc)
+# TSRG v2 (same shape as the D3 live derive): class lines `obf srg [id]`;
+# member lines (one tab) `obf [desc] srg [id]`, `static` (two tabs) after.
+obf2srg, classes = {}, {}
+cur = None
+for raw in open(tsrg).read().splitlines():
+    if not raw.strip() or raw.startswith("tsrg2"):
+        continue
+    if raw[0] in (" ", "\t"):
+        s = raw.strip()
+        if s == "static":
+            classes[cur][-1]["static"] = True
+            continue
+        if re.match(r"^\d+ ", s):
+            continue
+        parts = s.split()
+        if "(" in s:
+            classes[cur].append({"obf": parts[0], "desc": parts[1], "srg": parts[2], "static": False})
+        else:
+            classes[cur].append({"obf": parts[0], "desc": None, "srg": parts[1], "static": False})
+    else:
+        obf, srg = raw.split()[:2]
+        obf2srg[obf] = srg
+        cur = obf
+        classes.setdefault(cur, [])
+def srg_desc(obf_d):
+    return re.sub(r"L([^;]+);",
+                  lambda m: "L" + obf2srg.get(m.group(1), m.group(1)) + ";",
+                  obf_d)
+def javap_flags(cls):
+    out = subprocess.check_output([javap, "-p", "-s", "-cp", client, cls]).decode()
+    res, name, static = {}, None, False
+    for l in out.splitlines():
+        s = l.strip()
+        if s.startswith("descriptor:"):
+            res[(name, s.split(None, 1)[1])] = static
+        elif s and not s.startswith("Compiled"):
+            m = re.match(r".*\s([\w$<>]+)\(", s)
+            if m:
+                static = bool(re.search(r"\bstatic\b", s.split("(")[0]))
+                name = m.group(1)
+            elif "(" not in s and s.endswith(";") and "{" not in s:
+                m2 = re.match(r"(?:(.*)\s)?([\w.$\[\]<>, ?&]+?)\s+([\w$]+);", s)
+                assert m2, "E_AUTO_DERIVE:unparsed javap line <%s> in <%s>" % (s, cls)
+                static = bool(re.search(r"\bstatic\b", m2.group(1) or ""))
+                name = m2.group(3)
+                res[(name, "F:" + re.sub(r"<.*>", "", m2.group(2)))] = static
+    return res
+PRIM = {"B": "byte", "C": "char", "D": "double", "F": "float",
+        "I": "int", "J": "long", "S": "short", "Z": "boolean", "V": "void"}
+def desc_args(desc):
+    body = desc[desc.index("(") + 1:desc.index(")")]
+    out, i = [], 0
+    while i < len(body):
+        c = body[i]
+        if c == "L":
+            j = body.index(";", i)
+            out.append(body[i + 1:j].replace("/", "."))
+            i = j + 1
+        elif c == "[":
+            j = i
+            while body[j] == "[":
+                j += 1
+            if body[j] == "L":
+                k = body.index(";", j)
+                out.append(body[j + 1:k].replace("/", ".") + "[]" * (j - i))
+                i = k + 1
+            else:
+                out.append(PRIM[body[j]] + "[]" * (j - i))
+                i = j + 1
+        else:
+            out.append(PRIM[c])
+            i += 1
+    return out
+def norm_args(a):
+    a = a.strip()
+    assert a.startswith("(") and a.endswith(")"), "E_AUTO_DERIVE:bad args <%s>" % a
+    return [x for x in a[1:-1].split(",") if x]
+lines = []
+for raw in open(wantf):
+    raw = raw.strip()
+    if not raw or raw.startswith("#"):
+        continue
+    kind, owner, moj, srg_want, desc, want_static = raw.split()
+    assert kind == "M", "E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw
+    want_static = want_static == "1"
+    moj_cls = owner.replace("/", ".")
+    obf_owner = moj2obf[moj_cls]
+    want_args = desc_args(desc)
+    cands = [(k, r, n, a, o) for (k, r, n, a, o) in members[moj_cls]
+             if k == "method" and n == moj and norm_args(a) == want_args]
+    assert len(cands) == 1, "E_AUTO_DERIVE:mojmap member <%s %s%s> %s" % (owner, moj, desc, cands)
+    obf_name = cands[0][4]
+    od = obf_desc(desc)
+    tm = [m for m in classes[obf_owner] if m["desc"] == od and m["obf"] == obf_name]
+    assert len(tm) == 1, "E_AUTO_DERIVE:no tsrg member <%s %s %s>" % (obf_owner, obf_name, od)
+    # The SRG column is load-bearing, not documentary: re-derived, then
+    # compared — a stale want.txt fails here, never at runtime.
+    assert tm[0]["srg"] == srg_want, "E_AUTO_DERIVE:srg drift <%s> is <%s>, want <%s>" % (moj, tm[0]["srg"], srg_want)
+    flags = javap_flags(obf_owner)
+    assert flags.get((obf_name, od)) == want_static, \
+        "E_AUTO_DERIVE:javap mismatch <%s %s> %s" % (obf_owner, obf_name, flags.get((obf_name, od)))
+    sd = srg_desc(od)
+    # LEFT slot is SRG, not obf: Reobf maps Mojmap->LEFT, same shape as
+    # the live srg-narrow.srg (Mojmap sources run against an SRG runtime).
+    lines.append("MD: %s/%s %s %s/%s %s" % (obf2srg[obf_owner], tm[0]["srg"], sd, owner, moj, desc))
+open(outpath, "w").write("\n".join(lines) + "\n")
+print("ok autoplay-derive : narrow SRG derived (%d lines, mojmap)" % len(lines))
+EOF
+  else
+    python3 - "$UP/joined.tsrg" "$UP/mcp/fields.csv" "$UP/mcp/methods.csv" "tools/autoplay/want.txt" "$SRG_AUTO" "$JB/javap" "$UP/client.jar" <<'EOF'
 import sys, subprocess, csv, re
 tsrg, fcsv, mcsv, wantf, outpath, javap, client = sys.argv[1:8]
 srg2obf, classes = {}, {}
@@ -328,6 +485,7 @@ for raw in open(wantf):
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok autoplay-derive : narrow SRG derived (%d lines)" % len(lines))
 EOF
+  fi
   [ "$(grep -c . "$SRG_AUTO")" = "$(grep -cv -e '^#' -e '^$' tools/autoplay/want.txt)" ] \
     || { echo "FAIL run-client : autoplay narrow map drift (want $(grep -cv -e '^#' -e '^$' tools/autoplay/want.txt) lines)"; exit 1; }
   echo "ok run-client : companion narrow map pinned ($SRG_AUTO)"
