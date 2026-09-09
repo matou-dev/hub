@@ -14,7 +14,7 @@
 | B3 preuve-live | Forge 1614 live run: PackWire.bind reel + tick serveur END dim 0, owned verbatim | done 2026-09-09 |
 | R1 live-repro | Live rejouable: SRG auto-discover + pins sha1, cache offline, Docker Java 8, LIVE opt-in | done 2026-09-09 |
 | R2 release-eng | Tags v1 + dist versionné reproductible (BUILD_ONLY), stores restent DRAFT | done 2026-09-09 |
-| R3 hygiene | Docs EN, README public, changelog | todo |
+| R3 hygiene | Docs EN, README public, changelog, docker non-root | done 2026-09-09 |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =

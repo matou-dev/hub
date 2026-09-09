@@ -34,6 +34,6 @@
 - B3 preuve-live : done 2026-09-09
 - R1 live-repro : done 2026-09-09
 - R2 release-eng : done 2026-09-09
-- R3 hygiene : todo
-- 12/13 phases done
+- R3 hygiene : done 2026-09-09
+- 13/13 phases done
 <!-- END GENERATED:phases -->
