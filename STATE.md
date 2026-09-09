@@ -21,6 +21,10 @@
   depuis des snapshots SPI, jamais de draw ni de remplacement vanilla, void
   explicite, refus bruyants) + gate vert et mordant (golden 3x3 exact,
   vue qui suit le joueur).
+- 2026-09-09 : live re-proof post hardening (hub `b730266` / spi `66cdb52`
+  / bridge `0bcd2f9` / example1 `ca7e5e2` / minimap `df1383e`, host OpenJDK
+  1.8.0_502) : 150s 1614 run, bind clean, world == pure union (256 cells,
+  stone only).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
