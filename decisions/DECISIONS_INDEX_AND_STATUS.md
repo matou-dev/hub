@@ -56,9 +56,13 @@ recreates the exact drift it is supposed to fix.
 - FOUNDATION_QF1_QH1.md : active (roadmap -)
 - HEADLESS_XVFB_QT_XCB.md : active (roadmap -)
 - LAYER_Q1_Q11.md : active (roadmap -)
+- LIVE_PROOF_MODEL.md : active (roadmap -)
 - NAMING_QN1_QN3.md : active (roadmap -)
+- RELEASE_ENG.md : active (roadmap -)
 ### spec
 - SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
+- STRUCTURES_CROSS_FILE.md : active (roadmap -)
+- SYNTAX_V1_V2_V3.md : active (roadmap -)
 ### note
 - SCALING_AUDIT_STRUCTURAL_FIX.md : active (roadmap -)
 <!-- END GENERATED:decisions -->
@@ -82,14 +86,14 @@ recreates the exact drift it is supposed to fix.
 - [x] `SCALING_AUDIT_STRUCTURAL_FIX.md` (note, landed 2026-09-09) — `Cell` + `Counts` +
       typed `Snapshot`, `ExampleIds` + pack `job(id)` registry,
       table-driven gates.
-- [ ] `SYNTAX_V1_V2_V3.md` (spec) — SYNTAX freeze + goldens py+java,
+- [x] `SYNTAX_V1_V2_V3.md` (spec, landed 2026-09-09) — SYNTAX freeze + goldens py+java,
       refusal parity.
-- [ ] `STRUCTURES_CROSS_FILE.md` (spec) — `StructurePlaceJob`, recursive
+- [x] `STRUCTURES_CROSS_FILE.md` (spec, landed 2026-09-09) — `StructurePlaceJob`, recursive
       parts, palette aliases, `fromFiles` multi-file, parser-enforced
       imports.
-- [ ] `LIVE_PROOF_MODEL.md` (ruling) — bind clean + world == pure union
+- [x] `LIVE_PROOF_MODEL.md` (ruling, landed 2026-09-09) — bind clean + world == pure union
       verdict, per-version notes (MCP/SRG, FAT, annotations, anvil).
-- [ ] `RELEASE_ENG.md` (ruling) — tags, BUILD_ONLY dist, DRAFT stores.
+- [x] `RELEASE_ENG.md` (ruling, landed 2026-09-09) — tags, BUILD_ONLY dist, DRAFT stores.
 - [x] `HEADLESS_XVFB_QT_XCB.md` (ruling, landed 2026-09-09 as catch-up
       on `a3097de`) — XVFB implies LAUNCH,
       Qt pinned to xcb, `WAYLAND_DISPLAY` dropped. Pairs with the
