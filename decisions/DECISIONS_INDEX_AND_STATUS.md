@@ -49,17 +49,20 @@ recreates the exact drift it is supposed to fix.
 ### ruling
 - DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
 - DOCS_DEFINITION_OF_DONE.md : active (roadmap -)
+- FOUNDATION_QF1_QH1.md : active (roadmap -)
+- HEADLESS_XVFB_QT_XCB.md : active (roadmap -)
 - LAYER_Q1_Q11.md : active (roadmap -)
+- NAMING_QN1_QN3.md : active (roadmap -)
 <!-- END GENERATED:decisions -->
 
 ## To-write queue
 
-- [ ] `LAYER_Q1_Q11.md` (ruling) — layering zero-MC, cohabitation passive,
+- [x] `LAYER_Q1_Q11.md` (ruling, landed 2026-09-09) — layering zero-MC, cohabitation passive,
       owned/additive bypass, pure kernels, SPI+bridge/version, repo
       disjoint. Reconstruct from gates + code with `file:line` proofs.
-- [ ] `NAMING_QN1_QN3.md` (ruling) — `matou-dev`, `NAMES.md` SSOT,
+- [x] `NAMING_QN1_QN3.md` (ruling, landed 2026-09-09) — `matou-dev`, `NAMES.md` SSOT,
       strict reservation protocol.
-- [ ] `FOUNDATION_QF1_QH1.md` (ruling) — foundation-first, hub doctrine.
+- [x] `FOUNDATION_QF1_QH1.md` (ruling, landed 2026-09-09) — foundation-first, hub doctrine.
 - [ ] `SHARED_APPLY_SEAM_V1_1_0.md` (spec) — `fr.iamacat.bridge` seam in
       `matou-spi`, re-pointed bridges, `ForgeContentCheck` stays.
 - [ ] `BRIDGE_PARITY.md` (ruling) — `SPI_PIN`, forge file-set, `E_FORGE_*`
@@ -79,6 +82,7 @@ recreates the exact drift it is supposed to fix.
 - [ ] `LIVE_PROOF_MODEL.md` (ruling) — bind clean + world == pure union
       verdict, per-version notes (MCP/SRG, FAT, annotations, anvil).
 - [ ] `RELEASE_ENG.md` (ruling) — tags, BUILD_ONLY dist, DRAFT stores.
-- [ ] `HEADLESS_XVFB_QT_XCB.md` (ruling, pilot) — XVFB implies LAUNCH,
+- [x] `HEADLESS_XVFB_QT_XCB.md` (ruling, landed 2026-09-09 as catch-up
+      on `a3097de`) — XVFB implies LAUNCH,
       Qt pinned to xcb, `WAYLAND_DISPLAY` dropped. Pairs with the
       uncommitted `tools/run-client.sh` fix.
