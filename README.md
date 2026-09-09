@@ -1,10 +1,10 @@
-# matou-dev — hub doctrine (pointeur SSOT org)
+# matou-dev — hub doctrine (org SSOT pointer)
 
-Voir `AGENTS.md`.
+See `AGENTS.md`.
 
 ## Checkout convention
 
-Cloner les 5 repos en siblings (`hub spi bridge-1710 example1 minimap`
-dans un même dossier) : les pointeurs `AGENTS.md` résolvent `../hub`
-sans réseau. Repos privés pendant le dev : clone authentifié requis
-(`gh auth login`, sinon 404 au clone).
+Clone the 5 repos as siblings (`hub spi bridge-1710 example1 minimap`
+in one folder): the `AGENTS.md` pointers resolve `../hub` with no network.
+Repos are private during dev: authenticated clone required
+(`gh auth login`, else 404 on clone).
