@@ -30,22 +30,48 @@ construction. Flow is two commands, zero duplicated staging:
 preseeds a fresh world (`run-client-direct.sh:11-16`), then
 `run-client-direct.sh` provisions, plays, and replays the verdict.
 
-1165-only guard (`run-client-direct.sh:37-40`): any other `SFX` fails
-loud with "no measured client pins (only 1165; provision once, pin,
-extend the table below)". Measured pins, never silent upgrades:
-vanilla json URL + SHA1 (`run-client-direct.sh:49-50`), installer
-`INSTALLER_SHA1` reused from the bridge `run-live.sh`
-(`run-client-direct.sh:61-69`), assets sha1-addressed missing-only
-(`run-client-direct.sh:98-126`), libraries fetched from pinned json
-entries with sha1 check (`run-client-direct.sh:155-172`), Forge-first
-classpath dedup on group:artifact conflicts
-(`run-client-direct.sh:173-187`), unknown `${placeholder}` = loud
-(`run-client-direct.sh:227-231`). CWD is the game dir: the bridge
-reads `config/matoubridge/packs.cfg` RELATIVE, Q1-passive
-(`run-client-direct.sh:263-269`). `WAYLAND_DISPLAY` is unset before
-play; `VERIFY=0` skips the verdict, default replays
-`verify-client-save.sh` and the verdict owns the exit status
-(`run-client-direct.sh:271-279`).
+1165+1122 guard (`run-client-direct.sh` case table): any other `SFX` fails
+loud with "no measured client pins (provision once, pin, extend the
+table below)". Measured pins, never silent upgrades: vanilla json URL +
+SHA1 per version (`run-client-direct.sh` case table: 1.16.5 fba9f783…,
+1.12.2 832d95b9…), installer `INSTALLER_SHA1` reused from the bridge
+`run-live.sh` (per-version value), assets sha1-addressed missing-only
+(same code across eras), libraries fetched from pinned json
+entries with sha1 check, Forge-first classpath dedup on group:artifact
+conflicts, unknown `${placeholder}` = loud. CWD is the game dir: the
+bridge reads `config/matoubridge/packs.cfg` RELATIVE, Q1-passive.
+`WAYLAND_DISPLAY` is unset before play; `VERIFY=0` skips the verdict,
+default replays `verify-client-save.sh` and the verdict owns the exit
+status.
+
+Per-era launch assembly (measured per version, never assumed): modern
+era (arguments dict, e.g. 1165) assembles jvm+game from the json dicts;
+legacy era (<=1.12, no arguments dict, LaunchWrapper main, e.g. 1122)
+synthesizes `-Djava.library.path` + explicit `-cp` (the era launcher
+built -cp itself — the json carries none) and splits the Forge
+`minecraftArguments` string. First 1122 run died with "cannot find
+LaunchWrapper" until -cp went explicit.
+
+Stop clock is SERVER ticks from 1122 on (1165 stays as proven): the
+bridge applies on the server thread, and on one JVM the client can
+out-tick a loaded server — stopping on client ticks under-counted the
+addressed union (measured 967/1274 on the first 1122 run). The server
+handler only counts (`volatile`, the client handler owns the shutdown
+call — same thread as the proven 1165 quit path). WAIT overshoots 4000
+on purpose in both clocks (slow start re-lands the same deterministic
+cells — the union is a fixed point).
+
+Headless pin: `run-client.sh` forces `pauseOnLostFocus:false` into the
+staged game dir (create or amend, never clobbers a dev's file):
+singleplayer auto-pauses on lost focus and under Xvfb the window never
+owns the focus — measured on 1122 as 1 world tick played then silence
+until timeout.
+
+Numeric verdict (pre-flattening eras): 1.7.10/1.12.2 region files store
+numeric block IDs (`verify-client-save.sh` `NUMERIC_FROZEN` table,
+stone = 1, same fact the C3 server verdict compares against), 1.13+
+palettes print namespaced names. Same contract, other representation;
+a name without a frozen row fails loudly.
 
 Found through this path (measured, not assumed): autoplay derive
 SRG-slot fix (Reobf maps MCP->LEFT, `run-client.sh:314-316`),
@@ -54,14 +80,16 @@ tags ignored on 1.16.5), Qt-xcb pin under XVFB, game-dir CWD.
 
 ## Gates
 
-- Green run (1165): world == pure union (1274 cells, stone only —
-  same count as every live proof).
+- Green runs (1165, 1122): world == pure union (1274 cells, stone only —
+  same count as every live proof; numeric ID 1 on pre-flattening eras).
 - `tools/check.sh` green; other versions stay refused until provisioned
   and pinned per version.
 
 ## What would re-open it
 
-- A second version: provision once, pin its vanilla json + installer +
-  ASM row, extend the `case SFX` table — never widen the guard silently.
+- A third version: provision once, pin its vanilla json + installer +
+  ASM row (+ client mappings for Mojmap eras), port the companion WANT +
+  preseed shape, extend the `case SFX` table and the era assembly if the
+  json shape is new — never widen the guard silently.
 - Prism stays the manual-dev convenience; automation never grows a
   launcher dependency back.

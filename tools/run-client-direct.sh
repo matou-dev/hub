@@ -35,8 +35,8 @@ if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
 HUB_TOOLS="$(cd "$(dirname "$0")" && pwd)"
 cd "$BRIDGE"
 case "$SFX" in
-  1165) ;;
-  *) echo "FAIL run-direct : bridge <$SFX> has no measured client pins (only 1165; provision once, pin, extend the table below)"; exit 1;;
+  1165|1122) ;;
+  *) echo "FAIL run-direct : bridge <$SFX> has no measured client pins (provision once, pin, extend the table below)"; exit 1;;
 esac
 PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
 case "${PRISM_DIR%/}" in
@@ -44,10 +44,16 @@ case "${PRISM_DIR%/}" in
     echo "FAIL run-direct : PRISM_DIR is the live user dir ($HOME/.local/share/PrismLauncher)"
     echo "fix: point PRISM_DIR at the same isolated root used for staging"; exit 1;;
 esac
-# Measured 2026-09-09 from piston-meta manifest v2 (vanilla 1.16.5 client
-# json; never silent upgrade).
-VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/fba9f7833e858a1257d810d21a3a9e3c967f9077/1.16.5.json"
-VANILLA_JSON_SHA1="fba9f7833e858a1257d810d21a3a9e3c967f9077"
+# Measured vanilla version jsons (piston-meta manifest v2, never silent
+# upgrade — one row per proven SFX, extended version by version):
+case "$SFX" in
+  1165)
+    VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/fba9f7833e858a1257d810d21a3a9e3c967f9077/1.16.5.json"
+    VANILLA_JSON_SHA1="fba9f7833e858a1257d810d21a3a9e3c967f9077";;
+  1122)
+    VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/832d95b9f40699d4961394dcf6cf549e65f15dc5/1.12.2.json"
+    VANILLA_JSON_SHA1="832d95b9f40699d4961394dcf6cf549e65f15dc5";;
+esac
 FORGE_ID="$MC-forge-$FORGE_COMP"
 GDIR="$PRISM_DIR/instances/$INST/minecraft"
 [ -f "$GDIR/mods/matoubridge.jar" ] \
@@ -73,7 +79,7 @@ echo "ok run-direct : Forge installer pinned ($INSTALLER_PIN)"
 #    profile file, so a minimal one is seeded (vanilla shape, no accounts).
 UP="$CLIENT_DIR/direct-upstream"
 mkdir -p "$UP"
-VJSON="$UP/1.16.5.json"
+VJSON="$UP/$MC.json"
 if [ ! -f "$VJSON" ] || ! echo "$VANILLA_JSON_SHA1  $VJSON" | sha1sum -c - >/dev/null 2>&1; then
   echo "note run-direct : fetching pinned vanilla json (network once)"
   rm -f "$VJSON"
@@ -230,6 +236,26 @@ def sub(s):
         return subs[k]
     return re.sub(r"\$\{([^}]+)\}", rep, s)
 jvm, game = [], []
+# Legacy era (<=1.12: no "arguments" dict, LaunchWrapper main, one
+# minecraftArguments string): synthesize the JVM side (heap + natives for
+# the old library path) and split the Forge game args. Modern era keeps
+# the arguments-dict assembly below. Unknown placeholder = loud either
+# way (sub asserts).
+legacy = "arguments" not in v
+if legacy:
+    import shlex
+    # LaunchWrapper takes no classpath from the json (the era launcher built
+    # -cp itself): pass ours explicitly, Forge-first deduped above, primary
+    # jar appended last — same order every launcher used.
+    jvm = ["-Djava.library.path=" + subs["natives_directory"],
+           "-cp", subs["classpath"]]
+    mcargs = f.get("minecraftArguments") or v.get("minecraftArguments")
+    assert mcargs, "E_DIRECT_ARG:no minecraftArguments in forge nor vanilla json"
+    game = shlex.split(mcargs)
+    main = f.get("mainClass") or v.get("mainClass")
+    assert main, "E_DIRECT_ARG:no mainClass in forge nor vanilla json"
+else:
+    main = f["mainClass"]
 for a in v.get("arguments", {}).get("jvm", []):
     if isinstance(a, dict):
         if not allowed(a.get("rules")):
@@ -244,11 +270,11 @@ for a in f.get("arguments", {}).get("game", []) + v.get("arguments", {}).get("ga
         game.extend(a["value"] if isinstance(a["value"], list) else [a["value"]])
     else:
         game.append(a)
-print("ok run-direct : launch assembled (%d jars)" % len(cp), file=sys.stderr)
+print("ok run-direct : launch assembled (%d jars, %s era)" % (len(cp), "legacy" if legacy else "modern"), file=sys.stderr)
 print("-Xmx" + os.environ.get("JAVA_XMX", "2G"))
 for x in jvm:
     print(sub(x))
-print(sub(f["mainClass"]))
+print(sub(main))
 for x in game:
     print(sub(x))
 EOF

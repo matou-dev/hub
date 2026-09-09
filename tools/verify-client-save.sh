@@ -60,6 +60,17 @@ import sys
 # minecraft:stone, which is why the verdict reads "stone only". Bind an
 # alias to another block for a varied hut in dev — but on a FRESH world:
 # the bridge never replaces, so already-landed stone stays stone.
+#
+# Pre-flattening eras (1.7.10/1.12.2) store NUMERIC block IDs in the
+# region files (anvil.py prints e.g. 1, like the C3 server verdict which
+# compares against {"1"}), while 1.13+ palettes print namespaced names.
+# The numeric IDs of those frozen versions are immutable facts (stone has
+# been 1 since beta, these games never change again), so the verifier
+# translates the packs.cfg names through the tiny frozen table below when
+# the world values are numeric — same contract, other representation. A
+# name without a frozen row fails loudly (extend the table explicitly,
+# never guess an ID).
+NUMERIC_FROZEN = {"minecraft:stone": "1"}
 wire_y, wire_block, expected = None, None, set()
 for line in open(sys.argv[3]):
     line = line.strip()
@@ -88,6 +99,14 @@ w = {(int(x), int(y), int(z)): i for x, y, z, i in rows}
 if not w:
     print("FAIL verify-client : world empty at y=63..65 (no tick applied? chunks ungenerated?)")
     sys.exit(1)
+if all(v.isdigit() for v in w.values()):
+    through = set()
+    for name in sorted(expected):
+        if name not in NUMERIC_FROZEN:
+            print("FAIL verify-client : no frozen numeric ID for <%s> (extend NUMERIC_FROZEN explicitly)" % name)
+            sys.exit(1)
+        through.add(NUMERIC_FROZEN[name])
+    expected = through
 if set(w.values()) != expected:
     print("FAIL verify-client : foreign blocks %s (want %s)"
           % (sorted(set(w.values())), sorted(expected)))

@@ -237,8 +237,14 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
     fi
   fi
   UNI=$(find "$LIVE_DIR/server/libraries" -name "forge-*-universal.jar" 2>/dev/null | head -n 1 || true)
+  # mcmod.info era (LaunchWrapper): the old installer lays the universal at
+  # the server root (forge-1.12.2-*.jar, no -universal suffix) instead of
+  # server/libraries — same bytes run-live.sh pins as $UNI there.
+  if [ -z "$UNI" ]; then
+    UNI=$(find "$LIVE_DIR/server" -maxdepth 1 -name "forge-1*.jar" ! -name "*installer*" 2>/dev/null | head -n 1 || true)
+  fi
   [ -n "$UNI" ] \
-    || { echo "FAIL run-client : no forge universal under <$LIVE_DIR/server/libraries> (run tools/run-live.sh once first)"; exit 1; }
+    || { echo "FAIL run-client : no forge universal under <$LIVE_DIR/server> (run tools/run-live.sh once first)"; exit 1; }
   while read -r cls pat; do
     [ -n "$cls" ] || continue
     case "$cls" in \#*) continue;; esac
@@ -286,7 +292,10 @@ def javap_flags(cls):
                 static = bool(re.search(r"\bstatic\b", s.split("(")[0]))
                 name = m.group(1)
             elif "(" not in s and s.endswith(";") and "{" not in s:
-                m2 = re.match(r"(?:(.*)\s)?([\w.$\[\]<>, ]+?)\s+([\w$]+);", s)
+                # Field type class carries ? and & too: 1.12.2-era javap
+                # prints wildcard bounds (e.g. Queue<FutureTask<?>>), which
+                # the 1165-era class rejected loudly (C3 autoplay derive).
+                m2 = re.match(r"(?:(.*)\s)?([\w.$\[\]<>, ?&]+?)\s+([\w$]+);", s)
                 assert m2, "E_AUTO_DERIVE:unparsed javap line <%s> in <%s>" % (s, cls)
                 static = bool(re.search(r"\bstatic\b", m2.group(1) or ""))
                 name = m2.group(3)
@@ -324,13 +333,31 @@ EOF
   echo "ok run-client : companion narrow map pinned ($SRG_AUTO)"
   mkdir -p "$BLD/auto" "$BLD/autoplaymod/META-INF"
   "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/auto" $(find tools/autoplay/src tools/autoplay/stub tools/live/stub -name '*.java')
-  sed "s/@VERSION@/$VERSION/g" tools/autoplay/autoplay-mods.toml > "$BLD/autoplaymod/META-INF/mods.toml"
+  # Companion metadata follows the bridge era, like the bridge jar itself:
+  # mods.toml era stamps autoplay-mods.toml, mcmod.info era stamps
+  # autoplay-mcmod.info (absent file = bridge without companion metadata,
+  # loud — never a silent wrong-era default).
+  if [ "$MODS_STYLE" = "mods.toml" ]; then
+    [ -f tools/autoplay/autoplay-mods.toml ] \
+      || { echo "FAIL run-client : tools/autoplay/autoplay-mods.toml absent in $BRIDGE"; exit 1; }
+    sed "s/@VERSION@/$VERSION/g" tools/autoplay/autoplay-mods.toml > "$BLD/autoplaymod/META-INF/mods.toml"
+    AUTO_META="mods.toml"
+  else
+    [ -f tools/autoplay/autoplay-mcmod.info ] \
+      || { echo "FAIL run-client : tools/autoplay/autoplay-mcmod.info absent in $BRIDGE"; exit 1; }
+    sed "s/@VERSION@/$VERSION/g" tools/autoplay/autoplay-mcmod.info > "$BLD/autoplaymod/mcmod.info"
+    AUTO_META="mcmod.info"
+  fi
   rm -rf "$BLD/autoplaystage" && mkdir -p "$BLD/autoplaystage"
   mkdir -p "$BLD/autoplaystage/fr"
   cp -r "$BLD/auto/fr/"* "$BLD/autoplaystage/fr/"
   [ -e "$BLD/autoplaystage/net" ] && { echo "FAIL run-client : stub leak into autoplay jar"; exit 1; }
-  mkdir -p "$BLD/autoplaystage/META-INF"
-  cp "$BLD/autoplaymod/META-INF/mods.toml" "$BLD/autoplaystage/META-INF/mods.toml"
+  if [ "$AUTO_META" = "mods.toml" ]; then
+    mkdir -p "$BLD/autoplaystage/META-INF"
+    cp "$BLD/autoplaymod/META-INF/mods.toml" "$BLD/autoplaystage/META-INF/mods.toml"
+  else
+    cp "$BLD/autoplaymod/mcmod.info" "$BLD/autoplaystage/mcmod.info"
+  fi
   mkjar "$BLD/jars/matouautoplay.jar" "$BLD/autoplaystage"
   "$JB/javac" -nowarn -cp "$REOBF_CP" -d "$BLD" tools/live/Reobf.java
   "$JB/java" -cp "$BLD:$REOBF_CP" Reobf "$SRG_AUTO" "$BLD/jars/matouautoplay.jar" "$BLD/jars/matouautoplay-reobf.jar"
@@ -343,6 +370,25 @@ fi
 #    instance.cfg + mmc-pack.json + minecraft/ game dir).
 IDIR="$PRISM_DIR/instances/$INST"
 mkdir -p "$IDIR/minecraft/mods" "$IDIR/minecraft/config/matoubridge"
+# Headless-proof game dir: singleplayer auto-pauses on lost focus, and
+# under Xvfb the window never owns the focus — the integrated server then
+# stops ticking seconds after join and the automated proof dies by timeout
+# (measured on 1122: 1 world tick played, regions untouched after the pause
+# flush). Pin pauseOnLostFocus:false (create or amend, never clobber the
+# rest of a dev's file).
+OPT="$IDIR/minecraft/options.txt"
+if [ -f "$OPT" ]; then
+  if grep -q "^pauseOnLostFocus:true" "$OPT"; then
+    sed -i 's/^pauseOnLostFocus:true/pauseOnLostFocus:false/' "$OPT"
+    echo "note run-client : pinned pauseOnLostFocus:false in existing options.txt (headless proof)"
+  elif ! grep -q "^pauseOnLostFocus:" "$OPT"; then
+    printf 'pauseOnLostFocus:false\n' >> "$OPT"
+    echo "note run-client : appended pauseOnLostFocus:false to options.txt (headless proof)"
+  fi
+else
+  printf 'pauseOnLostFocus:false\n' > "$OPT"
+  echo "note run-client : seeded options.txt with pauseOnLostFocus:false (headless proof)"
+fi
 cat > "$IDIR/mmc-pack.json" <<EOF
 {
     "components": [

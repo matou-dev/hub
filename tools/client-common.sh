@@ -58,7 +58,7 @@ case "$SFX" in
   1122) MC="1.12.2"; FORGE_COMP="14.23.5.2860"; LIVE_TAG="C3"; JAVA_MAJOR="8"
     SRG_DEFAULT=""
     ASM_PIN="asm-debug-all-5.2.jar"
-    NOTE="UNTESTED: same Prism method as the proven 1165 row, not yet played; server proof stays the C3 verdict.";;
+    NOTE="PROVEN 2026-09-09: launcher-free direct proof green (world == pure union, 1274 cells, stone as numeric ID 1); server proof stays the C3 verdict.";;
   1201) MC="1.20.1"; FORGE_COMP="47.2.0"; LIVE_TAG="D3"; JAVA_MAJOR="17"
     SRG_DEFAULT=""
     ASM_PIN="asm-9.5.jar"
