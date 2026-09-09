@@ -55,9 +55,10 @@ pinned vanilla json (sha1-addressed). The written Forge json carries
 injected `downloads.artifact` entries so the generic assembly picks every
 Forge lib up — a seeded-but-unlisted lib would be a silent omission. The
 1.7.10-only `${user_properties}` placeholder substitutes `{}` offline. The
-game itself never launches for 1710 yet: the join path is unmeasured (no
-quick-play pre-1.11) and the script refuses loudly after assembly until
-the companion port lands.
+1710 join rides the companion mod (no quick-play pre-1.11):
+`launchIntegratedServer` on the first client tick against the preseeded
+flat world, 4600-tick server clock, `shutdown()` — the 1122 shape, green
+since 2026-09-09.
 
 Per-era launch assembly (measured per version, never assumed): modern
 era (arguments dict, e.g. 1165) assembles jvm+game from the json dicts;
@@ -119,23 +120,25 @@ Render thread idle in glfwWaitEventsTimeout).
 
 ## Gates
 
-- Green runs (1165, 1122, 1201): world == pure union (1274 cells,
+- Green runs (1165, 1122, 1201, 1710): world == pure union (1274 cells,
   stone only — same count as every live proof; numeric ID 1 on
   pre-flattening eras, namespaced names on 1.13+).
 - 1201 went green on re-proof once pack.mcmeta was staged (quick-play
   join ~16s after boot, clean exit 0 after ~4 min, 600s watchdog never
   fired) — the red cause above is closed.
+- 1710 went green on first live run once the companion registered on the
+  FML bus (bridge-1710 `e4eff69` — `MinecraftForge.EVENT_BUS`, the 1122
+  companion shape, receives nothing on 1.7.10: the run booted 5 mods then
+  sat silent to the 600s watchdog; the bridge itself registers via
+  `FMLCommonHandler.instance().bus()`, B3 green). Join ~7s after boot via
+  `launchIntegratedServer`, clean exit 0 after ~4 min (4600 server ticks,
+  600s watchdog never fired), 45-jar legacy launch assembly.
 - `tools/check.sh` green; other versions stay refused until provisioned
   and pinned per version.
 
 ## What would re-open it
 
-- The remaining 1710 work: provision is landed (assembled runtime, pins
-  in the `case SFX` tables) and the companion is landed (bridge-1710
-  `tools/autoplay/`: searge derive, reobf-verified `func_` calls, 1.7.10
-  preseed — staging green); left unmeasured is the live run itself: the
-  `launchIntegratedServer` join and the 4600-tick stop clock are
-  1122-proven shapes on a 1.7.10 runtime nobody has played yet — never
-  widen the guard silently.
+- A new Minecraft/Forge version: provision once from pinned bytes, pin,
+  extend the `case SFX` tables — never widen the guard silently.
 - Prism stays the manual-dev convenience; automation never grows a
   launcher dependency back.

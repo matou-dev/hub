@@ -423,10 +423,6 @@ case "$LAUNCH_LINE" in
   *) echo "FAIL run-direct : launch args polluted (first line is not -Xmx; a stray stdout print leaked into the assembly)"; exit 1;;
 esac
 printf '%s\n%s\n' "$JB/java" "$LAUNCH_LINE" > "$UP/last-launch.txt"
-if [ "$SFX" = "1710" ]; then
-  echo "FAIL run-direct : 1710 join path unmeasured (no --quickPlaySingleplayer pre-1.11; companion port TODO — provision + assembly above are the measured part)"
-  exit 1
-fi
 
 # 5. Play headless (no launcher, no Qt, no accounts — java + Xvfb only), then
 #    judge the save. The exit code is reported but the verdict owns status.

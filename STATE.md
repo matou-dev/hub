@@ -183,6 +183,16 @@
   reobf-verified to `func_` calls, `matouautoplay.jar` staged with no
   stub leak, flat world preseeded). Live run TODO (join + 4600-tick
   clock unplayed on 1.7.10).
+- 2026-09-09 : direct client proof 1710 GREEN on Forge 1614 (hub
+  guard-lift + bridge-1710 `e4eff69` FML-bus companion, host OpenJDK
+  1.8.0_502) : join ~7s after boot via `launchIntegratedServer` (no
+  quick-play pre-1.11), clean shutdown exit 0 after ~4 min (4600 server
+  ticks, 600s watchdog never fired), world == pure union (1274 cells,
+  stone as numeric ID 1 — same count as every live proof, fourth client
+  runtime). First attempt measured the fix, not assumed : companion on
+  `MinecraftForge.EVENT_BUS` (1122 shape) booted 5 mods then sat silent
+  to the watchdog — 1.7.10 ticks flow on the FML bus only (the bridge
+  itself registers there, B3 green).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
