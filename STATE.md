@@ -29,5 +29,6 @@
 - M1 skeleton : done 2026-09-09
 - M2 example1 : done 2026-09-09
 - M3 minimap : done 2026-09-09
-- 7/7 phases done
+- B1 forge-reel : done 2026-09-09
+- 8/8 phases done
 <!-- END GENERATED:phases -->

@@ -9,6 +9,7 @@
 | M1 skeleton | `spi` squelette (IDs, Job, RNG) + `bridge-1710` walking skeleton + parity gate continue | done 2026-09-09 |
 | M2 example1 | Preuve SPI contenu (owned + additif) | done 2026-09-09 |
 | M3 minimap | Preuve SPI client | done 2026-09-09 |
+| B1 forge-reel | Bridge 1.7.10 Forge 1614 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =
