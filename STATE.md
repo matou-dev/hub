@@ -40,6 +40,13 @@
   `bridge-1710` re-points (drops its 6 copies, `ForgeContentCheck`
   stays) ; `bridge-1122` repo opened (PROPOSED) against the seam,
   phases C1-C3 todo.
+- 2026-09-09 : bridge-1122 arc done, live-proven on Forge 2860 (hub
+  `7ae5746` covers C2, C3 harness + proof in bridge-1122 `36782d5` ;
+  spi `0073226` / example1 `80e6c59` / minimap `df1383e`, host OpenJDK
+  1.8.0_502) : 150s 2860 run, bind clean, world == pure union (1274
+  cells, stone only — same count as the 1614 proof : same content,
+  same seam, second runtime ; narrow MCP→SRG map derived in-run from
+  pinned bytes, `getDimension` Forge-added passthrough).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -61,6 +68,6 @@
 - B6 cross-file-parts : done 2026-09-09
 - C1 forge-reel-1122 : done 2026-09-09
 - C2 contenu-wire-1122 : done 2026-09-09
-- C3 preuve-live-1122 : todo
-- 20/21 phases done
+- C3 preuve-live-1122 : done 2026-09-09
+- 21/21 phases done
 <!-- END GENERATED:phases -->
