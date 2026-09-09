@@ -106,6 +106,18 @@
   `scaffold-bridge.sh` copies them to future bridges. Equivalence proven
   for 1165 : generalized staging builds byte-identical jars to the moved
   script (same EPOCH, normjar-clamped).
+- 2026-09-09 : launcher-free direct client proof on Forge 2860
+  (bridge-1122 `8850e29` / hub `b417d64`, host OpenJDK 1.8.0_502) :
+  world == pure union (1274 cells, stone as numeric ID 1 — same count
+  as every live proof, second client runtime). Port lessons (measured,
+  not assumed) : stop clock moved to server ticks (the client out-ticks
+  a loaded same-JVM server — 967/1274 on the client clock) ;
+  `pauseOnLostFocus:false` pinned at staging (Xvfb never owns the
+  focus — 1 world tick played, then silence until timeout) ; legacy
+  launch assembly (explicit `-cp` + split `minecraftArguments` —
+  LaunchWrapper carries no classpath) ; numeric-ID verifier table
+  (pre-flattening frozen IDs, same fact as the C3 verdict) ; javap
+  wildcard-bounds parse fix (1.12-era `Queue<FutureTask<?>>`).
 - 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
   trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
   positional job indexing) ; structural fix, behaviour-preserving :
