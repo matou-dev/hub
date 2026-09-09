@@ -59,8 +59,8 @@
 - B4 structures-wire : done 2026-09-09
 - B5 live-structures : done 2026-09-09
 - B6 cross-file-parts : done 2026-09-09
-- C1 forge-reel-1122 : todo
+- C1 forge-reel-1122 : done 2026-09-09
 - C2 contenu-wire-1122 : todo
 - C3 preuve-live-1122 : todo
-- 18/21 phases done
+- 19/21 phases done
 <!-- END GENERATED:phases -->
