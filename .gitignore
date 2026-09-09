@@ -1,5 +1,6 @@
 build/
 out/
 .idea/
-.vscode/
+.vscode/*
+!.vscode/tasks.json
 *.iml

@@ -1,0 +1,70 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "matou: client stage (Prism instance)",
+            "detail": "DEV build + stage the dev-client instance for the picked bridge (no launch). NOT a gate.",
+            "type": "shell",
+            "command": "sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "matou: client stage + launch",
+            "detail": "Stage then exec Prism (needs a display, blocks the terminal). NOT a gate.",
+            "type": "shell",
+            "command": "LAUNCH=1 sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "matou: client verify save",
+            "detail": "Replay the live verdict on the singleplayer save (quit the game first). NOT a gate.",
+            "type": "shell",
+            "command": "sh tools/verify-client-save.sh --bridge ../bridge-${input:bridge} \"${input:worldName}\"",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "bridge",
+            "type": "pickString",
+            "description": "Bridge to stage (1165 proven; 1201/1122 untested; 1710 experimental)",
+            "default": "1165",
+            "options": [
+                "1165",
+                "1201",
+                "1122",
+                "1710"
+            ]
+        },
+        {
+            "id": "worldName",
+            "type": "promptString",
+            "description": "Singleplayer world name (as created in-game)",
+            "default": "matou"
+        }
+    ]
+}

@@ -24,3 +24,5 @@ Repos are private during dev: authenticated clone required
   `tools/client-common.sh` (1165 proven, other rows experimental/untested).
   `tools/verify-client-save.sh` replays the live verdict on the client
   save. NOT a gate (needs display + Prism + a provisioned live dir).
+- `.vscode/tasks.json`: the same dev-client tasks for editors (bridge
+  picker input; bridge repos keep their own gate-oriented tasks).
