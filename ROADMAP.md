@@ -11,6 +11,7 @@
 | M3 minimap | Preuve SPI client | done 2026-09-09 |
 | B1 forge-reel | Bridge 1.7.10 Forge 1614 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
 | B2 contenu-wire | Contrat ContentPack en SPI + ExamplePack + ForgeContent + packs.cfg, E2E pur gate | done 2026-09-09 |
+| B3 preuve-live | Forge 1614 live run: PackWire.bind reel + tick serveur END dim 0, owned verbatim | todo |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =

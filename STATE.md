@@ -31,5 +31,6 @@
 - M3 minimap : done 2026-09-09
 - B1 forge-reel : done 2026-09-09
 - B2 contenu-wire : done 2026-09-09
-- 9/9 phases done
+- B3 preuve-live : todo
+- 9/10 phases done
 <!-- END GENERATED:phases -->
