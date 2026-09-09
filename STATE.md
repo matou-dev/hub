@@ -115,6 +115,13 @@
   golden (minimap `77bdb0b`), 4 bridges re-pinned to `00934e1` with
   merge comparateur still green (no live re-proof: decided bytes
   identical, gates lock them).
+- 2026-09-09 : automated client proof without launcher (1165) : hub
+  `run-client-direct.sh` (official installer provisions once, plain java
+  under xvfb, verdict owns status) green : world == pure union (1274
+  cells, stone only — same count as every live proof). Same round :
+  autoplay derive SRG-slot fix (Reobf maps MCP->LEFT), WorldGenSettings
+  preseed (legacy generator tags ignored on 1.16.5), Qt-xcb pin under
+  XVFB, game-dir CWD (the bridge reads packs.cfg relative).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

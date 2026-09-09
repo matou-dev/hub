@@ -28,5 +28,11 @@ Repos are private during dev: authenticated clone required
   loudly). `AUTOPLAY=1` (1165 only) stages a dev-only companion that
   plays the proof without a keyboard (`XVFB=1` headless, `AUTOVERIFY=1`
   replays the verdict on exit).
+- `tools/run-client-direct.sh`: same automated proof with no launcher at
+  all (official Forge installer provisions the client runtime once,
+  then plain java replays the ModLauncher invocation under xvfb-run).
+  Proven 2026-09-09 on 1165: world == pure union (1274 cells, stone
+  only — same count as every live proof). Needs the staged instance
+  from `run-client.sh` first. NOT a gate.
 - `.vscode/tasks.json`: the same dev-client tasks for editors (bridge
   picker input; bridge repos keep their own gate-oriented tasks).

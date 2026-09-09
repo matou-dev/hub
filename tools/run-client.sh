@@ -311,7 +311,9 @@ for raw in open(wantf):
         srg_name = hits[0][1]
         if snap_m:
             assert snap_m.get(srg_name) == mcp, "E_AUTO_DERIVE:snapshot lock <%s> is <%s>, want <%s>" % (srg_name, snap_m.get(srg_name), mcp)
-        lines.append("MD: %s/%s %s %s/%s %s" % (owner, hits[0][0], desc, owner, mcp, desc))
+        # LEFT slot is SRG, not obf: Reobf maps MCP->LEFT, same shape as
+        # the live srg-narrow.srg (MCP sources run against an SRG runtime).
+        lines.append("MD: %s/%s %s %s/%s %s" % (owner, srg_name, desc, owner, mcp, desc))
     else:
         raise SystemExit("E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw)
 open(outpath, "w").write("\n".join(lines) + "\n")
