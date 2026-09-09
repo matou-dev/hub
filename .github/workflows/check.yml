@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       # Sibling layout (cf. hub README): bridge-parity gate proves against
-      # ../bridge-1710 + ../bridge-1122. Refuses loudly when drifted, skips
+      # ../bridge-1710 + ../bridge-1122 + ../bridge-1201. Refuses loudly
+      # when drifted, skips
       # loudly when absent (never green by omission in CI).
       # Action pinned by SHA 2026-09-09 (tag v4); Dependabot keeps it fresh.
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -23,4 +24,8 @@ jobs:
         with:
           repository: matou-dev/bridge-1122
           path: bridge-1122
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: matou-dev/bridge-1201
+          path: bridge-1201
       - run: sh hub/tools/check.sh
