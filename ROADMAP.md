@@ -12,7 +12,7 @@
 | B1 forge-reel | Bridge 1.7.10 Forge 1614 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
 | B2 contenu-wire | Contrat ContentPack en SPI + ExamplePack + ForgeContent + packs.cfg, E2E pur gate | done 2026-09-09 |
 | B3 preuve-live | Forge 1614 live run: PackWire.bind reel + tick serveur END dim 0, owned verbatim | done 2026-09-09 |
-| R1 live-repro | Live rejouable: SRG auto-discover + pins sha1, cache offline, Docker Java 8, LIVE opt-in | todo |
+| R1 live-repro | Live rejouable: SRG auto-discover + pins sha1, cache offline, Docker Java 8, LIVE opt-in | done 2026-09-09 |
 | R2 release | Tags v1 + Modrinth/CurseForge DRAFT vers release, NAMES statuts | todo |
 | R3 hygiene | Docs EN, README public, changelog | todo |
 
