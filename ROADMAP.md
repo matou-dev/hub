@@ -3,7 +3,8 @@
 | Phase | What | Status |
 |---|---|---|
 | F0 fondation | Org + 4 repos + gates zero-MC mordants | done 2026-09-09 |
-| F1 hub | Hub doctrine + NAMES rapatrié + pointeurs | doing |
+| F1 hub | Hub doctrine + NAMES rapatrié + pointeurs | done 2026-09-09 |
+| S1 syntaxe | SYNTAX-V1 gelée (4 genres, schema-driven, file:line) | doing |
 | M1 skeleton | `spi` squelette (IDs, Job, RNG) + `bridge-1710` walking skeleton + parity gate continue | todo |
 | M2 example1 | Preuve SPI contenu (owned + additif) | todo |
 | M3 minimap | Preuve SPI client | todo |
