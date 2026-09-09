@@ -56,15 +56,24 @@ for r in $REPOS; do
   fi
   if command -v gh >/dev/null 2>&1; then
     slug="matou-dev/$r"
-    prs=$(gh pr list --repo "$slug" --limit 10 2>/dev/null || true)
-    if [ -n "$prs" ]; then echo "prs:"; echo "$prs"; else echo "prs: none"; fi
-    iss=$(gh issue list --repo "$slug" --limit 10 2>/dev/null || true)
-    if [ -n "$iss" ]; then echo "issues:"; echo "$iss"; else echo "issues: none"; fi
-    desc=$(gh repo view "$slug" --json description --jq .description 2>/dev/null || true)
-    if [ -z "$desc" ]; then
-      echo "description: MISSING (stale — set gh repo edit $slug --description)"
+    if prs=$(gh pr list --repo "$slug" --limit 10 2>/dev/null); then
+      if [ -n "$prs" ]; then echo "prs:"; echo "$prs"; else echo "prs: none"; fi
     else
-      echo "description: $desc"
+      echo "prs: unknown (gh offline?)"
+    fi
+    if iss=$(gh issue list --repo "$slug" --limit 10 2>/dev/null); then
+      if [ -n "$iss" ]; then echo "issues:"; echo "$iss"; else echo "issues: none"; fi
+    else
+      echo "issues: unknown (gh offline?)"
+    fi
+    if desc=$(gh repo view "$slug" --json description --jq .description 2>/dev/null); then
+      if [ -z "$desc" ]; then
+        echo "description: MISSING (stale — set gh repo edit $slug --description)"
+      else
+        echo "description: $desc"
+      fi
+    else
+      echo "description: unknown (gh offline?)"
     fi
   fi
   if [ "$EXEC" -eq 0 ]; then
