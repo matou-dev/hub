@@ -98,6 +98,15 @@
   stubs (erased getValue descriptor, NoSuchMethodError found live) ;
   1.16.5 anvil reads `Level.Sections`/`Palette`/`BlockStates` ; JDK8
   javap prints annotations as pool refs (pool-resolving check).
+- 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
+  trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
+  positional job indexing) ; structural fix, behaviour-preserving :
+  SPI `Cell` + `Counts` + typed `Snapshot` + `Packs.loadConfigured` +
+  `AUTHORING.md` (spi `00934e1`), `ExampleIds` + pack `job(id)` registry
+  + table-driven gate (example1 `c0778ba`), slim `MinimapJob` + r=8
+  golden (minimap `77bdb0b`), 4 bridges re-pinned to `00934e1` with
+  merge comparateur still green (no live re-proof: decided bytes
+  identical, gates lock them).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
