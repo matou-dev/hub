@@ -25,8 +25,12 @@ des 7 repos est un pointeur d'une ligne vers ici.
 1. `git status --short && git log --oneline -5` (premier geste, sinon session
    invalide — état halluciné).
 2. Lire `STATE.md` puis `ROADMAP.md` puis `NAMES.md`.
-3. Règles de layering (décisions Q1-Q11, voir `ROADMAP.md` §contexte) :
+3. Règles de layering (voir `decisions/LAYER_Q1_Q11.md`, reconstruit
+   depuis les gates) :
    submods = zéro import MC, seule la lib + un bridge par version touche MC.
+4. Lire `decisions/DECISIONS_INDEX_AND_STATUS.md` (index : un fichier une
+   ligne avec type + statut). Les décisions se pointent au lieu d'usage,
+   jamais en liste exhaustive ici.
 
 ## 3. Avant d'écrire — anti-doublon obligatoire
 
@@ -41,7 +45,10 @@ silencieuse.
 ## 4. Après — docs dans le même commit, commit immédiat
 
 Un commit qui rend un doc faux sans le mettre à jour est incomplet. `NAMES.md`
-suit dans le même commit que tout rename. Avant commit : grep l'identifiant,
+suit dans le même commit que tout rename. Tout concept figé par la tranche
+devient `decisions/<NOM>.md` créé ou mis à jour dans le même commit (voir
+`decisions/DOCS_DEFINITION_OF_DONE.md` — un agent frais lit le fichier,
+pas la conversation). Avant commit : grep l'identifiant,
 la constante ou le chemin déplacé dans les `.md` et les commentaires — un doc
 qui nomme ce qu'on vient de bouger ment maintenant. Norme et logique jamais
 mélangées : un commit fmt/norme ne porte aucune logique. Statuts de phases : SSOT =

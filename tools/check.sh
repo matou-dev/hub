@@ -17,4 +17,5 @@ for f in AGENTS.md STATE.md ROADMAP.md NAMES.md; do
 done
 echo "ok (hub-check)"
 python3 "$(dirname "$0")/check_state.py" $MODE
+sh "$(dirname "$0")/check-decisions.sh" $MODE
 sh "$(dirname "$0")/check-bridges.sh"
