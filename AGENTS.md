@@ -31,13 +31,20 @@ Avant struct, fonction de conversion ou fixture : grep workspace si le concept
 existe déjà sous un autre nom (un audit sans grep est invalide). Type partagé
 = base commune, jamais d'import latéral. Fichier vers 450 lignes = alerte de
 conception (table-driven, fusion, suppression — jamais split satellite).
+Si du code existant — ou ce qu'on s'apprête à écrire — contredit le layering
+Q1-Q11 : STOP + signaler avec preuve `file:line`, jamais d'extension
+silencieuse.
 
 ## 4. Après — docs dans le même commit, commit immédiat
 
 Un commit qui rend un doc faux sans le mettre à jour est incomplet. `NAMES.md`
-suit dans le même commit que tout rename. Statuts de phases : SSOT =
+suit dans le même commit que tout rename. Avant commit : grep l'identifiant,
+la constante ou le chemin déplacé dans les `.md` et les commentaires — un doc
+qui nomme ce qu'on vient de bouger ment maintenant. Norme et logique jamais
+mélangées : un commit fmt/norme ne porte aucune logique. Statuts de phases : SSOT =
 table `ROADMAP.md`, miroir dérivé = bloc GENERATED de `STATE.md`
-(`tools/check.sh --fix` régénère, `check` refuse toute dérive).
+(`tools/check.sh --fix` régénère, `check` refuse toute dérive — bloc jamais
+édité à la main).
 Unité terminée (gates verts) = commit local immédiat, un par repo touché,
 avant de passer à la suivante : un travail non committé est écrasable par la
 session suivante. Le push passe par `tools/autopush.sh` (`--execute`).
@@ -48,3 +55,8 @@ Docs/comments en anglais, chat en français. Commits `type(scope): what`.
 Un gate non lancé ne passe pas. Questions user avec trade-off architectural :
 option long-terme en premier + `(Recommended)`, workaround nommé avec sa
 dette — jamais de workaround recommandé.
+
+## 6. Audits — pas pour rien
+
+Pas d'audit sans gate rouge ou métrique qui franchit un seuil. Un audit se
+ferme vert, pas d'audits ouverts qui s'accumulent.
