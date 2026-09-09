@@ -9,4 +9,8 @@
   structurelle, divergence Java dénoncée nommément par le gate.
 - Outil : `hub/tools/autopush.sh` (dry-run par défaut, gate vert exigé,
   jamais de force).
-- Prochain : walking skeleton SPI (`spi` squelette + `bridge-1710` parity).
+- M1 done : `spi` squelette Java 8 (`MatouId`, `MatouRng` adressé,
+  `Snapshot` + `MatouJob` purs) + self-test gate vert ; `bridge-1710`
+  walking skeleton (`SpiBridge` decide→apply pur, `TODO(FORGE)` nommé) +
+  gate vert contre le sibling `../spi` ; goldens py+java toujours verts.
+- Prochain : preuve SPI contenu (`example1`, M2).
