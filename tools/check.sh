@@ -3,7 +3,8 @@
 # STATE.md/ROADMAP.md (bloc GENERATED, SSOT = ROADMAP).
 # Usage : check.sh [--fix] (régénère le bloc dérivé avant de vérifier).
 set -eu
-cd "$(dirname "$0")/.."
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+cd "$SCRIPT_DIR/.."
 MODE=""
 if [ "${1:-}" = "--fix" ]; then
   MODE="--fix"
@@ -16,6 +17,6 @@ for f in AGENTS.md STATE.md ROADMAP.md NAMES.md; do
   [ -f "$f" ] || { echo "FAIL hub-missing : $f"; exit 1; }
 done
 echo "ok (hub-check)"
-python3 "$(dirname "$0")/check_state.py" $MODE
-sh "$(dirname "$0")/check-decisions.sh" $MODE
-sh "$(dirname "$0")/check-bridges.sh"
+python3 "$SCRIPT_DIR/check_state.py" $MODE
+sh "$SCRIPT_DIR/check-decisions.sh" $MODE
+sh "$SCRIPT_DIR/check-bridges.sh"
