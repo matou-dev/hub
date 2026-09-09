@@ -21,4 +21,13 @@
   depuis des snapshots SPI, jamais de draw ni de remplacement vanilla, void
   explicite, refus bruyants) + gate vert et mordant (golden 3x3 exact,
   vue qui suit le joueur).
-- Toutes les phases sont done (F0, F1, S1, S2, M1, M2, M3).
+<!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
+- F0 fondation : done 2026-09-09
+- F1 hub : done 2026-09-09
+- S1 syntaxe : done 2026-09-09
+- S2 java port : done 2026-09-09
+- M1 skeleton : done 2026-09-09
+- M2 example1 : done 2026-09-09
+- M3 minimap : done 2026-09-09
+- 7/7 phases done
+<!-- END GENERATED:phases -->

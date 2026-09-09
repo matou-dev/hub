@@ -35,8 +35,9 @@ conception (table-driven, fusion, suppression — jamais split satellite).
 ## 4. Après — docs dans le même commit, commit immédiat
 
 Un commit qui rend un doc faux sans le mettre à jour est incomplet. `NAMES.md`
-suit dans le même commit que tout rename. Dérivés `STATE.md` : tenus à la
-main tant que `check --fix` n'existe pas (dette explicite, voir ROADMAP).
+suit dans le même commit que tout rename. Statuts de phases : SSOT =
+table `ROADMAP.md`, miroir dérivé = bloc GENERATED de `STATE.md`
+(`tools/check.sh --fix` régénère, `check` refuse toute dérive).
 Unité terminée (gates verts) = commit local immédiat, un par repo touché,
 avant de passer à la suivante : un travail non committé est écrasable par la
 session suivante. Le push passe par `tools/autopush.sh` (`--execute`).
