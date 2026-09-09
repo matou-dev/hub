@@ -77,6 +77,12 @@
   the 1.16.5 port (event bus, LogicalSide, dimension key, BlockState,
   stubs) is the body of E1 ; phases E1-E3 opened, E3 live TODO
   (placeholder fails loud until ported).
+- 2026-09-09 : E1 done (bridge-1165 `aa1fe2e`) : 1.16.5 event-bus port
+  (`EVENT_BUS` constructor register, `LogicalSide`, `OVERWORLD`
+  dimension key, `BlockState`, `ForgeRegistries` block resolve), 1.12
+  stubs replaced by a 1.16.5 (MCP) shape-only set ; etages 1+2 green,
+  parity holds over 4 bridges (same `SPI_PIN`, same forge file-set,
+  same `E_FORGE_*` catalog).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -102,8 +108,8 @@
 - D1 forge-reel-1201 : done 2026-09-09
 - D2 contenu-wire-1201 : done 2026-09-09
 - D3 preuve-live-1201 : done 2026-09-09
-- E1 forge-reel-1165 : todo
+- E1 forge-reel-1165 : done 2026-09-09
 - E2 contenu-wire-1165 : todo
 - E3 preuve-live-1165 : todo
-- 24/27 phases done
+- 25/27 phases done
 <!-- END GENERATED:phases -->
