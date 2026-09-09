@@ -343,11 +343,13 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
   # Searge era (srg-mcp.txt present, e.g. 1710): the runtime is itself
   # searge-named, so the narrow map filters the pinned srg-mcp.srg — no
   # mcp_config, no snapshot CSVs, no vanilla javap (true-obf names). Each
-  # WANT line must match exactly one MD line (searge + MCP + both descs);
+  # M line must match exactly one MD line (searge + MCP + both descs);
   # static-ness rides the 1122-pinned triple (same searge + desc proven
-  # there by javap + snapshot). Matched lines pass through verbatim: Reobf
+  # there by javap + snapshot). Each F line (vanilla field the companion
+  # reads, e.g. a dimension filter) must match exactly one FD line
+  # (searge + MCP). Matched lines pass through verbatim: Reobf
   # already consumes this shape live (bridge run-live.sh reobfuscates
-  # against $SRG_MCP directly).
+  # against $SRG_MCP directly, methods and fields alike).
   if [ -f tools/autoplay/srg-mcp.txt ]; then
     WANT_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/srg-mcp.txt)"
     BRIDGE_SRG_PIN="$(sed -n 's/^SRG_MCP_SHA1="//p' tools/run-live.sh | cut -d'"' -f1)"
@@ -363,17 +365,29 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
 import sys
 srg, wantf, outpath = sys.argv[1:4]
 md = [l.rstrip("\n") for l in open(srg) if l.startswith("MD: ")]
+fd = [l.rstrip("\n") for l in open(srg) if l.startswith("FD: ")]
 lines = []
 for raw in open(wantf):
     raw = raw.strip()
     if not raw or raw.startswith("#"):
         continue
-    kind, owner, mcp, srg_want, desc, want_static = raw.split()
-    assert kind == "M", "E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw
-    want = "MD: %s/%s %s %s/%s %s" % (owner, srg_want, desc, owner, mcp, desc)
-    hits = [l for l in md if l == want]
-    assert len(hits) == 1, "E_AUTO_DERIVE:searge member <%s %s %s> matches %d" % (owner, mcp, srg_want, len(hits))
-    lines.append(hits[0])
+    toks = raw.split()
+    if toks[0] == "M":
+        assert len(toks) == 6, "E_AUTO_DERIVE:bad M line <%s> (want <M owner mcp srg desc static>)" % raw
+        kind, owner, mcp, srg_want, desc, want_static = toks
+        want = "MD: %s/%s %s %s/%s %s" % (owner, srg_want, desc, owner, mcp, desc)
+        hits = [l for l in md if l == want]
+        assert len(hits) == 1, "E_AUTO_DERIVE:searge member <%s %s %s> matches %d" % (owner, mcp, srg_want, len(hits))
+        lines.append(hits[0])
+    elif toks[0] == "F":
+        assert len(toks) == 4, "E_AUTO_DERIVE:bad F line <%s> (want <F owner mcp srg>)" % raw
+        kind, owner, mcp, srg_want = toks
+        want = "FD: %s/%s %s/%s" % (owner, srg_want, owner, mcp)
+        hits = [l for l in fd if l == want]
+        assert len(hits) == 1, "E_AUTO_DERIVE:searge field <%s %s %s> matches %d" % (owner, mcp, srg_want, len(hits))
+        lines.append(hits[0])
+    else:
+        raise SystemExit("E_AUTO_DERIVE:only M|F lines supported (got <%s>)" % raw)
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok autoplay-derive : narrow SRG derived (%d lines, srg-mcp)" % len(lines))
 EOF

@@ -218,6 +218,17 @@
   only) ; live-build replica green sans boot (17/17 pins, stub compile
   avec spike linké, reobf vérifié) ; parité 4 bridges inchangée
   (`decisions/REPOP_SPIKE.md`, preuve live nommée en suivant).
+- 2026-09-09 : repop spike live-proven on Forge 1614 (bridge-1710
+  `74d2fad`, host OpenJDK 1.8.0_502) : `SPIKE=1` direct client run,
+  simulated harvest at (8,10,8) recorded at tick 999, repopped at tick
+  1199 (delay exactly 200), companion poll + y=10 anvil spot confirm
+  stone back, world == pure union (1274 cells, stone as numeric ID 1).
+  Three measured findings on the way: dim 0/1/-1 tick from boot (dim-0
+  filter), BreakEvent ctor reads the player (null NPEs), stub final-int
+  folds into prod bytes (hook read 0,0,0, caught live —
+  `no-stub-const` gate). Hub searge derive gains F (field) lines.
+  (`decisions/REPOP_SPIKE.md` done, registration/veins/loot/spawn open
+  as spec tranches.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

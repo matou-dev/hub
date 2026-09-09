@@ -1,6 +1,6 @@
 ---
 type: direction
-status: active
+status: done
 roadmap: -
 ---
 
@@ -64,6 +64,17 @@ Event-sourcing, spike-scoped to vanilla stone (zero registration):
   parity catalog); the forge file-set is unchanged (hook lives in
   the existing `MatouBridgeMod.java`), so `check-bridges.sh` parity
   holds over all 4 bridges unchanged.
+- Proof companion (`bridge-1710/tools/autoplay/`, DEV ONLY, never ships,
+  `SPIKE=1` arms it — unset = byte-for-byte the proven union run):
+  server `WorldTickEvent` dim-0 mine at (8,10,8) (isolated coords outside
+  the y=63..65 verdict slices, so the spike cell can never pollute
+  world == pure union), `BreakEvent` post authored by the joined player,
+  then poll back to stone (fail-fast `E_SPIKE_PROOF`, clean shutdown for
+  post-mortem — the save keeps the air hole). Pins: want.txt +4 M
+  (stone resolve, place, clear, poll) +3 F (dim filter, harvest author),
+  universal-pin.txt +3 (WorldTick world, `post(`, Side SERVER); hub
+  `run-client.sh` searge derive supports F lines (1710-scoped: only the
+  srg-mcp branch, other eras untouched).
 
 ## Gates
 
@@ -74,10 +85,27 @@ Event-sourcing, spike-scoped to vanilla stone (zero registration):
   (11 legacy + isRemote + 5 BlockEvent/EVENT_BUS), stub compile with
   the spike linked, no stub leak, reobf jar carries
   `onBreak`/`repopTick`/`RepopSeal`.
+- Live proof GREEN on Forge 1614 (bridge-1710 `74d2fad`, host OpenJDK
+  1.8.0_502) : `SPIKE=1` direct client run, simulated harvest at
+  (8,10,8) — bridge recorded `<8,10,8:minecraft:stone>` at tick 999,
+  repopped 1 cell at tick 1199 (delay exactly 200); companion poll saw
+  stone back at worldTick 1201; y=10 anvil spot reads stone (numeric
+  ID 1); final `verify-client-save.sh` green (world == pure union,
+  1274 cells, stone only). Reconstruction: `AUTOPLAY=1 SPIKE=1`
+  `run-client.sh` (stage + preseed) then `SPIKE=1`
+  `run-client-direct.sh`, verdict = log greps + anvil spot + verifier.
+- Measured on the way there (shipped path or its pins, never assumed):
+  the integrated server ticks dim 0/1/-1 from boot (hence the dim-0
+  filter, first run mined the Nether and failed loud); the BreakEvent
+  constructor reads the player (ForgeHooks.canHarvestBlock — null NPEs,
+  second run crashed, hence the joined-player author); stub `final int`
+  folds into prod bytes (the hook recorded 0,0,0 for every break —
+  `BlockEvent` ints de-finaled, `no-stub-const` gate in bridge
+  `tools/check.sh` etage 1, other bridges swept clean).
 
 ## What remains (re-opens as spec, not silently)
 
-1. Live proof: mine → wait delay → world shows the block back
-   (verdict = union + repop, vanilla stone).
-2. Only then: registration (real custom ore), `Vein` genre (SYNTAX-V4),
-   `Loot`, `Spawn` — each its own spec tranche on this proven seam.
+1. Live proof : done 2026-09-09 (see Gates — verdict = union + repop,
+   vanilla stone).
+2. Registration (real custom ore), `Vein` genre (SYNTAX-V4), `Loot`,
+   `Spawn` — each its own spec tranche on this proven seam.
