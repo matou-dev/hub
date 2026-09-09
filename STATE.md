@@ -25,6 +25,11 @@
   / bridge `0bcd2f9` / example1 `ca7e5e2` / minimap `df1383e`, host OpenJDK
   1.8.0_502) : 150s 1614 run, bind clean, world == pure union (256 cells,
   stone only).
+- 2026-09-09 : live proof with structures (hub `42da93a` / spi `4af792a` /
+  bridge `e2c87e0` / example1 `164f707` / minimap `df1383e`, host OpenJDK
+  1.8.0_502) : 150s 1614 run, bind clean, world == pure union (1274 cells,
+  stone only — 2D plane at wire y=63 plus hut composite volumes at
+  y=64..65, chunks (0..1, -1..1)).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
