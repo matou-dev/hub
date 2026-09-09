@@ -131,6 +131,17 @@
   outer timeout) ; (2) mute game sound headless (e.g.
   `ALSOFT_DRIVERS=null`) ; (3) stage pack.mcmeta (pack_format 15) into
   the DEV jars at `run-client.sh` staging.
+- 2026-09-09 : direct client hardening landed (all 3 queued fixes) :
+  `run-client-direct.sh` gains an internal `GAME_TIMEOUT` watchdog
+  (default 600s, FAIL with log tail on 124, never hangs to the outer
+  timeout) + `ALSOFT_DRIVERS=null` headless default (also in the
+  `run-client.sh` XVFB path ; manual LAUNCH keeps real sound) ;
+  `client-common.sh` gains a `PACK_FORMAT` per-version row (1201 → 15,
+  others empty = stage none, never widen silently) and `run-client.sh`
+  stages pack.mcmeta into both DEV jars pre-Reobf (non-class entries
+  pass through, normjar keeps bytes deterministic ; 1165 jars stay
+  byte-identical, still green by construction). 1201 re-proof still TODO
+  (needs a live run).
 - 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
   trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
   positional job indexing) ; structural fix, behaviour-preserving :

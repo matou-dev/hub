@@ -27,7 +27,12 @@
 #           use passes --bridge or $BRIDGE). Unset = auto-detect only when
 #           exactly one ../bridge-*/ sibling resolves, else loud failure.
 # Exports: BRIDGE SFX MC FORGE_COMP LIVE_TAG LIVE_DIR CLIENT_DIR INST
-#          JB JFLAGS JAVA_HOME SRG_DEFAULT ASM_PIN NOTE
+#          JB JFLAGS JAVA_HOME SRG_DEFAULT ASM_PIN NOTE PACK_FORMAT
+# PACK_FORMAT is the resource-pack format the DEV mods/ jars must declare
+# in pack.mcmeta (empty = stage none): modern Forge holds the "loading
+# mods" warning screen when a jar carries no pack metadata (measured on
+# 1201). Only versions with a measured value carry one (1165 proven green
+# without, legacy eras predate the requirement) — never widen silently.
 # Env (no machine paths hardcoded): BRIDGE, CLIENT_DIR, <TAG>_DIR (B3_DIR,
 #   C3_DIR, D3_DIR, E3_DIR), JAVA8_HOME, JAVA17_HOME, FAT.
 # Depends on $0 pointing at a script in hub/tools (sourced files share it).
@@ -54,18 +59,22 @@ case "$SFX" in
   1710) MC="1.7.10"; FORGE_COMP="10.13.4.1614"; LIVE_TAG="B3"; JAVA_MAJOR="8"
     SRG_DEFAULT="$HOME/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/srgs/srg-mcp.srg"
     ASM_PIN="asm-all-5.0.3.jar"
+    PACK_FORMAT=""
     NOTE="EXPERIMENTAL: Prism 1.7.10 Forge provisioning unproven (mmc-pack Forge component best-effort); server proof stays the B3 verdict.";;
   1122) MC="1.12.2"; FORGE_COMP="14.23.5.2860"; LIVE_TAG="C3"; JAVA_MAJOR="8"
     SRG_DEFAULT=""
     ASM_PIN="asm-debug-all-5.2.jar"
+    PACK_FORMAT=""
     NOTE="PROVEN 2026-09-09: launcher-free direct proof green (world == pure union, 1274 cells, stone as numeric ID 1); server proof stays the C3 verdict.";;
   1201) MC="1.20.1"; FORGE_COMP="47.2.0"; LIVE_TAG="D3"; JAVA_MAJOR="17"
     SRG_DEFAULT=""
     ASM_PIN="asm-9.5.jar"
+    PACK_FORMAT="15"
     NOTE="UNTESTED: needs Java 17 in Prism (pinned below); server proof stays the D3 verdict.";;
   1165) MC="1.16.5"; FORGE_COMP="36.2.42"; LIVE_TAG="E3"; JAVA_MAJOR="8"
     SRG_DEFAULT=""
     ASM_PIN="asm-9.6.jar"
+    PACK_FORMAT=""
     NOTE="PROVEN 2026-09-09: Prism singleplayer save replays world == pure union (1274 cells, stone only).";;
   *) echo "FAIL client-common : unknown bridge suffix <$SFX> (want 1710|1122|1201|1165)"
     echo "fix: add a row above (copy the 1165 row, adjust MC/FORGE_COMP/LIVE_TAG/JAVA_MAJOR/ASM_PIN)"; return 1 2>/dev/null || exit 1;;

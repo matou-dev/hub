@@ -160,6 +160,17 @@ mkjar() {
   (cd "$stage" && "$JB/jar" cfm "$out" "$BLD/MANIFEST.MF" $files)
   normjar "$out"
 }
+stage_packmcmeta() {
+  # $1 = jar stage dir, $2 = description. Stages pack.mcmeta at the jar
+  # root (pre-Reobf: non-class entries pass through untouched, normjar
+  # clamps the timestamp — deterministic bytes). Empty PACK_FORMAT stages
+  # nothing; a non-numeric one fails loud (table-owned, never guessed).
+  case "${PACK_FORMAT:-}" in
+    "") return 0;;
+    *[!0-9]*) echo "FAIL run-client : PACK_FORMAT=<${PACK_FORMAT:-}> (want digits, table-owned)"; exit 1;;
+  esac
+  printf '{"pack":{"pack_format":%s,"description":"%s"}}\n' "$PACK_FORMAT" "$2" > "$1/pack.mcmeta"
+}
 mkjar "$BLD/jars/matou-spi.jar" "$BLD/spi"
 mkjar "$BLD/jars/matou-example1.jar" "$BLD/ex1"
 mkjar "$BLD/jars/matou-minimap.jar" "$BLD/mini"
@@ -184,6 +195,7 @@ if [ "$MODS_STYLE" = "mods.toml" ]; then
 else
   cp "$BLD/mcmod.info" "$BLD/bridgemod/mcmod.info"
 fi
+stage_packmcmeta "$BLD/bridgemod" "MatouBridge DEV (hub run-client.sh, not release)"
 mkjar "$BLD/jars/matoubridge.jar" "$BLD/bridgemod"
 "$JB/javac" -nowarn -cp "$REOBF_CP" -d "$BLD" tools/live/Reobf.java
 "$JB/java" -cp "$BLD:$REOBF_CP" Reobf "$SRG" "$BLD/jars/matoubridge.jar" "$BLD/jars/matoubridge-reobf.jar"
@@ -516,6 +528,7 @@ EOF
   else
     cp "$BLD/autoplaymod/mcmod.info" "$BLD/autoplaystage/mcmod.info"
   fi
+  stage_packmcmeta "$BLD/autoplaystage" "MatouAutoplay DEV (hub run-client.sh, not release)"
   mkjar "$BLD/jars/matouautoplay.jar" "$BLD/autoplaystage"
   "$JB/javac" -nowarn -cp "$REOBF_CP" -d "$BLD" tools/live/Reobf.java
   "$JB/java" -cp "$BLD:$REOBF_CP" Reobf "$SRG_AUTO" "$BLD/jars/matouautoplay.jar" "$BLD/jars/matouautoplay-reobf.jar"
@@ -679,6 +692,9 @@ if [ "${XVFB:-}" = "1" ]; then
   # exactly like wiped accounts). Pin Qt to the Xvfb display instead.
   QT_QPA_PLATFORM=xcb; export QT_QPA_PLATFORM
   unset WAYLAND_DISPLAY
+  # No audio device under Xvfb either: null OpenAL driver (same pin as
+  # run-client-direct.sh; manual LAUNCH without XVFB keeps real sound).
+  ALSOFT_DRIVERS="${ALSOFT_DRIVERS:-null}"; export ALSOFT_DRIVERS
   echo "note run-client : XVFB=1 implies LAUNCH=1 (headless play under Xvfb)"
 fi
 if [ "${LAUNCH:-}" = "1" ]; then

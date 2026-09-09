@@ -25,6 +25,11 @@
 #   OFFLINE_NAME    offline player (default MatouDev, deterministic UUID).
 #   VERIFY=0    skip the post-play verdict replay (default: verify).
 #   JAVA_XMX    game heap (default 2G).
+#   GAME_TIMEOUT  internal game watchdog in seconds (default 600): past the
+#              deadline the game is killed and the run FAILs with a log
+#              tail — never hangs to the outer timeout silently.
+#   ALSOFT_DRIVERS  OpenAL driver (default null: no audio device headless;
+#              override explicitly if a sounding box ever wants real sound).
 # Fails loudly (never silently): unstaged instance, installer sha1 drift
 # vs the bridge run-live.sh pin, vanilla json drift, missing library /
 # asset / native, game crash. The verdict owns the exit status.
@@ -63,6 +68,8 @@ GDIR="$PRISM_DIR/instances/$INST/minecraft"
   || { echo "FAIL run-direct : unstaged game dir ($GDIR/mods/matoubridge.jar absent; run AUTOPLAY=1 run-client.sh first)"; exit 1; }
 command -v xvfb-run >/dev/null \
   || { echo "FAIL run-direct : xvfb-run absent (this script is headless-only)"; exit 1; }
+command -v timeout >/dev/null \
+  || { echo "FAIL run-direct : timeout absent (coreutils; the game needs an internal watchdog)"; exit 1; }
 "$JB/java" -version >/dev/null 2>&1 || { echo "FAIL run-direct : no java under <$JB>"; exit 1; }
 
 # 1. Pinned Forge installer (owned + pinned by the bridge run-live.sh; this
@@ -346,9 +353,23 @@ printf '%s\n%s\n' "$JB/java" "$LAUNCH_LINE" > "$UP/last-launch.txt"
 #    RELATIVE (like every launcher CWD; a missing file means passive Q1,
 #    never an error — launching from anywhere else proves nothing).
 unset WAYLAND_DISPLAY
+# Headless means HEADLESS: no audio device under Xvfb, so force the null
+# OpenAL driver (documented default above — override explicitly if ever
+# wanted; never a silent host-dependent ALSA probe).
+ALSOFT_DRIVERS="${ALSOFT_DRIVERS:-null}"
+export ALSOFT_DRIVERS
 cd "$GDIR" || { echo "FAIL run-direct : cannot cd to game dir <$GDIR>"; exit 1; }
+GAME_TIMEOUT="${GAME_TIMEOUT:-600}"
+case "$GAME_TIMEOUT" in
+  ""|*[!0-9]*) echo "FAIL run-direct : GAME_TIMEOUT=<$GAME_TIMEOUT> (want seconds, digits)"; exit 1;;
+esac
 rc=0
-printf '%s\n' "$LAUNCH_LINE" | xvfb-run -a xargs -d '\n' "$JB/java" >"$UP/game.log" 2>&1 || rc=$?
+printf '%s\n' "$LAUNCH_LINE" | timeout "$GAME_TIMEOUT" xvfb-run -a xargs -d '\n' "$JB/java" >"$UP/game.log" 2>&1 || rc=$?
+if [ "$rc" = "124" ]; then
+  echo "FAIL run-direct : game timed out after ${GAME_TIMEOUT}s (tail of $UP/game.log):"
+  tail -n 40 "$UP/game.log" || true
+  exit 1
+fi
 echo "note run-direct : game exited ($rc), full log at $UP/game.log"
 if [ "${VERIFY:-}" = "0" ]; then
   echo "note run-direct : VERIFY=0, skipping verdict (game rc=$rc)"
