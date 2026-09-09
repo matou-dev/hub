@@ -51,7 +51,9 @@
 #   AUTOPLAY=1 build + stage the dev-only autoplay companion
 #              (bridge tools/autoplay/, needs want.txt + client-pin.txt)
 #              and preseed a fresh flat world. NOT a gate.
-#   XVFB=1     launch under xvfb-run (implies LAUNCH=1, headless play).
+#   XVFB=1     launch under xvfb-run (implies LAUNCH=1, headless play;
+#              Qt pinned to xcb + WAYLAND_DISPLAY dropped, so the window
+#              can never leak onto a real Wayland session).
 #   AUTOVERIFY=1 after the game exits, replay verify-client-save.sh on
 #              $AUTOPLAY_WORLD (default matou) and exit with its status.
 #              AUTOPLAY_WORLD names the proof world (preseed + companion
@@ -466,6 +468,11 @@ if [ "${XVFB:-}" = "1" ]; then
   command -v xvfb-run >/dev/null \
     || { echo "FAIL run-client : xvfb-run absent (XVFB=1 needs it)"; exit 1; }
   LAUNCH=1
+  # Headless means HEADLESS: Qt prefers Wayland when WAYLAND_DISPLAY leaks
+  # into this env, so a virgin Prism pops onto the real screen (looking
+  # exactly like wiped accounts). Pin Qt to the Xvfb display instead.
+  QT_QPA_PLATFORM=xcb; export QT_QPA_PLATFORM
+  unset WAYLAND_DISPLAY
   echo "note run-client : XVFB=1 implies LAUNCH=1 (headless play under Xvfb)"
 fi
 if [ "${LAUNCH:-}" = "1" ]; then
