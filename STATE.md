@@ -58,6 +58,19 @@
   mapping derive, ref bridge-1122, pin v1.1.0) : etages 1+2 green at
   scaffold, parity holds over 3 bridges ; phases D1-D3 opened, D3 live TODO
   (placeholder fails loud until ported from bridge-1122).
+- 2026-09-09 : D3 live-proven on Forge 47.2.0 (bridge-1201 `baef65f`,
+  image `matou-live-1201` temurin17, docker) : 150s 47.2.0 run, bind
+  clean, world == pure union (1274 cells, stone only — same count as the
+  1614/2860 proofs : same content, third runtime). D3 note (production
+  model, measured via the installer MERGE_MAPPING chain, not assumed) :
+  Mojmap classes + SRG members (4-line narrow map derived at D3 time from
+  Mojang server.txt + mcp_config joined.tsrg v2 + javap) ; bridge ships
+  FAT (spi+example1 embedded — 1.20.1 modules isolate every mods/ jar,
+  NoClassDefFoundError found live) ; stub annotations mirror RUNTIME
+  retention (eventbus discovers handlers through visible annotations
+  only — invisible @SubscribeEvent registered nothing, silently, found
+  live) ; anvil probe reads the palette format (incl. nested lists,
+  single-valued sections, signed bytes).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -82,6 +95,6 @@
 - C3 preuve-live-1122 : done 2026-09-09
 - D1 forge-reel-1201 : done 2026-09-09
 - D2 contenu-wire-1201 : done 2026-09-09
-- D3 preuve-live-1201 : todo
-- 23/24 phases done
+- D3 preuve-live-1201 : done 2026-09-09
+- 24/24 phases done
 <!-- END GENERATED:phases -->
