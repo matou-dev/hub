@@ -47,12 +47,16 @@ recreates the exact drift it is supposed to fix.
 
 <!-- GENERATED:decisions front-matter -> index | do not hand-edit | tools/check.sh --fix -->
 ### ruling
+- BRIDGE_PARITY.md : active (roadmap -)
+- BRIDGE_SCAFFOLD.md : active (roadmap -)
 - DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
 - DOCS_DEFINITION_OF_DONE.md : active (roadmap -)
 - FOUNDATION_QF1_QH1.md : active (roadmap -)
 - HEADLESS_XVFB_QT_XCB.md : active (roadmap -)
 - LAYER_Q1_Q11.md : active (roadmap -)
 - NAMING_QN1_QN3.md : active (roadmap -)
+### spec
+- SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
 <!-- END GENERATED:decisions -->
 
 ## To-write queue
@@ -63,11 +67,11 @@ recreates the exact drift it is supposed to fix.
 - [x] `NAMING_QN1_QN3.md` (ruling, landed 2026-09-09) — `matou-dev`, `NAMES.md` SSOT,
       strict reservation protocol.
 - [x] `FOUNDATION_QF1_QH1.md` (ruling, landed 2026-09-09) — foundation-first, hub doctrine.
-- [ ] `SHARED_APPLY_SEAM_V1_1_0.md` (spec) — `fr.iamacat.bridge` seam in
-      `matou-spi`, re-pointed bridges, `ForgeContentCheck` stays.
-- [ ] `BRIDGE_PARITY.md` (ruling) — `SPI_PIN`, forge file-set, `E_FORGE_*`
+- [x] `SHARED_APPLY_SEAM_V1_1_0.md` (spec, landed 2026-09-09) —
+      `fr.iamacat.bridge` seam in `matou-spi`, re-pointed bridges, `ForgeContentCheck` stays.
+- [x] `BRIDGE_PARITY.md` (ruling, landed 2026-09-09) — `SPI_PIN`, forge file-set, `E_FORGE_*`
       catalog, `tools/check-bridges.sh`.
-- [ ] `BRIDGE_SCAFFOLD.md` (ruling) — `tools/scaffold-bridge.sh` template,
+- [x] `BRIDGE_SCAFFOLD.md` (ruling, landed 2026-09-09) — `tools/scaffold-bridge.sh` template,
       N-bridge parity at scaffold.
 - [ ] `DEV_CLIENT_SSOT.md` (ruling) — `hub/tools/run-client.sh` +
       `verify-client-save.sh`, `tools/client-common.sh` per-version table.
@@ -84,5 +88,10 @@ recreates the exact drift it is supposed to fix.
 - [ ] `RELEASE_ENG.md` (ruling) — tags, BUILD_ONLY dist, DRAFT stores.
 - [x] `HEADLESS_XVFB_QT_XCB.md` (ruling, landed 2026-09-09 as catch-up
       on `a3097de`) — XVFB implies LAUNCH,
+      Qt pinned to xcb, `WAYLAND_DISPLAY` dropped. Pairs with the
+      `tools/run-client.sh` fix.
+- [ ] `DIRECT_CLIENT_PROOF.md` (ruling) — `tools/run-client-direct.sh`
+      launcher-free automated client proof (landed in `fb1e600` with no
+      decision — catch-up owed, same class as `a3097de`).
       Qt pinned to xcb, `WAYLAND_DISPLAY` dropped. Pairs with the
       uncommitted `tools/run-client.sh` fix.
