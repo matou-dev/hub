@@ -32,11 +32,14 @@ existe déjà sous un autre nom (un audit sans grep est invalide). Type partagé
 = base commune, jamais d'import latéral. Fichier vers 450 lignes = alerte de
 conception (table-driven, fusion, suppression — jamais split satellite).
 
-## 4. Après — docs dans le même commit que le code
+## 4. Après — docs dans le même commit, commit immédiat
 
 Un commit qui rend un doc faux sans le mettre à jour est incomplet. `NAMES.md`
 suit dans le même commit que tout rename. Dérivés `STATE.md` : tenus à la
 main tant que `check --fix` n'existe pas (dette explicite, voir ROADMAP).
+Unité terminée (gates verts) = commit local immédiat, un par repo touché,
+avant de passer à la suivante : un travail non committé est écrasable par la
+session suivante. Le push passe par `tools/autopush.sh` (`--execute`).
 
 ## 5. Règles transversales
 
