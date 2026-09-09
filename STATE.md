@@ -30,6 +30,11 @@
   1.8.0_502) : 150s 1614 run, bind clean, world == pure union (1274 cells,
   stone only — 2D plane at wire y=63 plus hut composite volumes at
   y=64..65, chunks (0..1, -1..1)).
+- 2026-09-09 : live re-proof after cross-file wiring (hub `3adb395` / spi
+  `4af792a` / bridge `e2c87e0` / example1 `2bd9dd6` / minimap `df1383e`,
+  clean B3_DIR) : 150s 1614 run, bind clean, world == pure union (1274
+  cells, stone only — hut path byte-identical through the multi-file
+  machinery; cross-file `ext` proven at the gate, 19 cells).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -48,5 +53,6 @@
 - S4 syntax-v3 : done 2026-09-09
 - B4 structures-wire : done 2026-09-09
 - B5 live-structures : done 2026-09-09
-- 17/17 phases done
+- B6 cross-file-parts : done 2026-09-09
+- 18/18 phases done
 <!-- END GENERATED:phases -->

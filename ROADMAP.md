@@ -19,6 +19,7 @@
 | S4 syntax-v3 | SYNTAX-V3 structure genre version-gated + 18 goldens py+java, ContentPack both cell shapes | done 2026-09-09 |
 | B4 structures-wire | StructurePlaceJob pur + recursive parts + palette aliases + V3 volume landing, E2E pur gate | done 2026-09-09 |
 | B5 live-structures | Forge 1614 live hut composite 1274 cells, verdict slice from packs.cfg | done 2026-09-09 |
+| B6 cross-file-parts | fromFiles multi-fichiers + pack structureFiles/structureRoot, imports parser-enforced, live hut re-proof | done 2026-09-09 |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =
