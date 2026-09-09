@@ -28,7 +28,7 @@
 | D3 preuve-live-1201 | Forge 47.2.0 live run : bind reel + tick serveur, world == pure union | done 2026-09-09 |
 | E1 forge-reel-1165 | Bridge 1.16.5 Forge 36.2.42 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
 | E2 contenu-wire-1165 | PackWire.bind 1165 + ForgeContent + packs.cfg, E2E pur gate | done 2026-09-09 |
-| E3 preuve-live-1165 | Forge 36.2.42 live run : bind reel + tick serveur, world == pure union | todo |
+| E3 preuve-live-1165 | Forge 36.2.42 live run : bind reel + tick serveur, world == pure union | done 2026-09-09 |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =

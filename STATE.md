@@ -87,6 +87,17 @@
   pure E2E green since scaffold, `PackWire.bind` 1165-native from E1,
   `packs.cfg` contract unchanged) ; etages 1+2 green, parity holds
   over 4 bridges.
+- 2026-09-09 : E3 live-proven on Forge 36.2.42 (bridge-1165 `61af2a4`,
+  Java 8) : 150s 36.2.42 run, bind clean, world == pure union (1274
+  cells, stone only — same count as the 1614/2860/47.2.0 proofs : same
+  content, fourth runtime). E3 notes (measured, not assumed) : MCP
+  model like C3 (SRG runtime, MCP sources + Reobf) with a snapshot
+  name lock (three same-type static RegistryKey fields — descriptor
+  alone cannot pick OVERWORLD) ; FAT bridge + `mods.toml` (ModLauncher
+  isolation, D3 family) ; `IForgeRegistryEntry` bound mirrored in
+  stubs (erased getValue descriptor, NoSuchMethodError found live) ;
+  1.16.5 anvil reads `Level.Sections`/`Palette`/`BlockStates` ; JDK8
+  javap prints annotations as pool refs (pool-resolving check).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -114,6 +125,6 @@
 - D3 preuve-live-1201 : done 2026-09-09
 - E1 forge-reel-1165 : done 2026-09-09
 - E2 contenu-wire-1165 : done 2026-09-09
-- E3 preuve-live-1165 : todo
-- 26/27 phases done
+- E3 preuve-live-1165 : done 2026-09-09
+- 27/27 phases done
 <!-- END GENERATED:phases -->
