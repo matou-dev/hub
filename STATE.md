@@ -44,9 +44,16 @@
   `7ae5746` covers C2, C3 harness + proof in bridge-1122 `36782d5` ;
   spi `0073226` / example1 `80e6c59` / minimap `df1383e`, host OpenJDK
   1.8.0_502) : 150s 2860 run, bind clean, world == pure union (1274
-  cells, stone only — same count as the 1614 proof : same content,
-  same seam, second runtime ; narrow MCP→SRG map derived in-run from
-  pinned bytes, `getDimension` Forge-added passthrough).
+   cells, stone only — same count as the 1614 proof : same content,
+   same seam, second runtime ; narrow MCP→SRG map derived in-run from
+   pinned bytes, `getDimension` Forge-added passthrough).
+- 2026-09-09 : release v1.1.0 (bridge-1710 `114ee19` / bridge-1122
+  `cdd6baf` / spi `0073226`, `@Mod` 1.1.0 both bridges) : `BUILD_ONLY`
+  drops assembled + self-verified both sides (pins, reobf, java-52,
+  SHA256SUMS), tags pushed (spi/1710/1122), 3 GitHub releases (spi
+  source + 2 server drops with `structure.matou`). Same round:
+  `run-live.sh` 1710 seam fix (no `java/src` stage), `AGENTS.md`
+  6-repo fix, GitHub descriptions set (6/6).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
