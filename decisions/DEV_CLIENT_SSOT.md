@@ -37,8 +37,9 @@ E3), `ASM` from the provisioned live dir with a loud pin check against
 `tools/run-live.sh` (`run-client.sh:98-103`), `SRG` from
 `$LIVE_DIR/srg-narrow.srg` falling back to `SRG_MCP`
 (`run-client.sh:88-97`). `FAT=0|1` overrides a future bridge loudly,
-never silently. Row status is explicit: 1710 EXPERIMENTAL, 1122/1201
-UNTESTED, 1165 PROVEN (`client-common.sh:57,61,64,69`).
+never silently. Row status is explicit: all four direct rows PROVEN
+(`client-common.sh:59-78`); Prism path stays UNTESTED for 1201 only
+(`client-common.sh:73`).
 
 Build mirrors the bridge pipeline (`run-client.sh:116-194`): same
 javac level, normjar EPOCH clamp, stub-leak refusal (`net/cpw` never

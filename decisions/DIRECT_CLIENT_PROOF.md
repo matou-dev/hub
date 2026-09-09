@@ -30,7 +30,7 @@ construction. Flow is two commands, zero duplicated staging:
 preseeds a fresh world, then
 `run-client-direct.sh` provisions, plays, and replays the verdict.
 
-1165+1122+1201 guard (`run-client-direct.sh` case table): any other `SFX` fails
+1165+1122+1201+1710 guard (`run-client-direct.sh` case table): any other `SFX` fails
 loud with "no measured client pins (provision once, pin, extend the
 table below)". Measured pins, never silent upgrades: vanilla json URL +
 SHA1 per version (`run-client-direct.sh` case table: 1.16.5 fba9f783…,
