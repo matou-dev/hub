@@ -44,5 +44,9 @@
 - R1 live-repro : done 2026-09-09
 - R2 release-eng : done 2026-09-09
 - R3 hygiene : done 2026-09-09
-- 13/13 phases done
+- S3 syntax-v2 : done 2026-09-09
+- S4 syntax-v3 : done 2026-09-09
+- B4 structures-wire : done 2026-09-09
+- B5 live-structures : done 2026-09-09
+- 17/17 phases done
 <!-- END GENERATED:phases -->

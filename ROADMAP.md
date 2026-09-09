@@ -15,6 +15,10 @@
 | R1 live-repro | Live rejouable: SRG auto-discover + pins sha1, cache offline, Docker Java 8, LIVE opt-in | done 2026-09-09 |
 | R2 release-eng | Tags v1 + dist versionné reproductible (BUILD_ONLY), stores restent DRAFT | done 2026-09-09 |
 | R3 hygiene | Docs EN, README public, changelog, docker non-root | done 2026-09-09 |
+| S3 syntax-v2 | SYNTAX-V2 i32/vec3/list + 14 goldens py+java, gate vert | done 2026-09-09 |
+| S4 syntax-v3 | SYNTAX-V3 structure genre version-gated + 18 goldens py+java, ContentPack both cell shapes | done 2026-09-09 |
+| B4 structures-wire | StructurePlaceJob pur + recursive parts + palette aliases + V3 volume landing, E2E pur gate | done 2026-09-09 |
+| B5 live-structures | Forge 1614 live hut composite 1274 cells, verdict slice from packs.cfg | done 2026-09-09 |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =
