@@ -69,8 +69,14 @@
   NoClassDefFoundError found live) ; stub annotations mirror RUNTIME
   retention (eventbus discovers handlers through visible annotations
   only — invisible @SubscribeEvent registered nothing, silently, found
-  live) ; anvil probe reads the palette format (incl. nested lists,
-  single-valued sections, signed bytes).
+   live) ; anvil probe reads the palette format (incl. nested lists,
+   single-valued sections, signed bytes).
+- 2026-09-09 : `bridge-1165` scaffolded (1.16.5/Forge 36.2.42, installer
+  HTTP 200 on Maven, sink modern, mapping derive, ref bridge-1122, pin
+  v1.1.0) : etages 1+2 green at scaffold against the copied 1.12 stubs —
+  the 1.16.5 port (event bus, LogicalSide, dimension key, BlockState,
+  stubs) is the body of E1 ; phases E1-E3 opened, E3 live TODO
+  (placeholder fails loud until ported).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -96,5 +102,8 @@
 - D1 forge-reel-1201 : done 2026-09-09
 - D2 contenu-wire-1201 : done 2026-09-09
 - D3 preuve-live-1201 : done 2026-09-09
-- 24/24 phases done
+- E1 forge-reel-1165 : todo
+- E2 contenu-wire-1165 : todo
+- E3 preuve-live-1165 : todo
+- 24/27 phases done
 <!-- END GENERATED:phases -->

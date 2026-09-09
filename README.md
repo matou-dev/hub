@@ -4,8 +4,8 @@ See `AGENTS.md`.
 
 ## Checkout convention
 
-Clone the 7 repos as siblings (`hub spi bridge-1710 bridge-1122 bridge-1201
-example1 minimap` in one folder): the `AGENTS.md` pointers resolve `../hub` with no network.
+Clone the 8 repos as siblings (`hub spi bridge-1710 bridge-1122 bridge-1201
+bridge-1165 example1 minimap` in one folder): the `AGENTS.md` pointers resolve `../hub` with no network.
 Repos are private during dev: authenticated clone required
 (`gh auth login`, else 404 on clone).
 

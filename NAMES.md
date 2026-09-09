@@ -12,6 +12,7 @@ CurseForge). Statut PROPOSED = pas encore réservé sur la plateforme.
 | `matou-dev/bridge-1710` | `fr.iamacat:matou-bridge-1710` | `matoubridge` | — (traducteur, pas de contenu) | — (jamais publié seul) | — (jamais publié seul) | PROPOSED |
 | `matou-dev/bridge-1122` | `fr.iamacat:matou-bridge-1122` | `matoubridge` | — (traducteur, pas de contenu) | — (jamais publié seul) | — (jamais publié seul) | PROPOSED |
 | `matou-dev/bridge-1201` | `fr.iamacat:matou-bridge-1201` | `matoubridge` | — (traducteur, pas de contenu) | — (jamais publié seul) | — (jamais publié seul) | PROPOSED |
+| `matou-dev/bridge-1165` | `fr.iamacat:matou-bridge-1165` | `matoubridge` | — (traducteur, pas de contenu) | — (jamais publié seul) | — (jamais publié seul) | PROPOSED |
 | `matou-dev/example1` | — (mod, pas publié maven) | `example1` | `example1:` | `matou-example1` (`4QYpffM9`, draft) | `matou-example1` | DRAFT MR+CF |
 | `matou-dev/minimap` | — (mod, pas publié maven) | `matouminimap` | `minimap:` | `matou-minimap` (`bUEFEfMK`, draft) | `matou-minimap` | DRAFT MR+CF |
 
