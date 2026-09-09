@@ -4,3 +4,4 @@ out/
 .vscode/*
 !.vscode/tasks.json
 *.iml
+forge-installer.jar.log
