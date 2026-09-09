@@ -35,6 +35,11 @@
   clean B3_DIR) : 150s 1614 run, bind clean, world == pure union (1274
   cells, stone only — hut path byte-identical through the multi-file
   machinery; cross-file `ext` proven at the gate, 19 cells).
+- 2026-09-09 : shared apply seam up into `matou-spi` v1.1.0
+  (`fr.iamacat.bridge`, FQNs unchanged, `BridgeCheck` green in SPI) ;
+  `bridge-1710` re-points (drops its 6 copies, `ForgeContentCheck`
+  stays) ; `bridge-1122` repo opened (PROPOSED) against the seam,
+  phases C1-C3 todo.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
