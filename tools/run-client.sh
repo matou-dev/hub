@@ -205,7 +205,12 @@ for m in $MATOU_MODS; do
   mkjar "$BLD/jars/matou-$m.jar" "$BLD/modstage-$m"
   MOD_CP="$MOD_CP:$BLD/mod-$m"
 done
-"$JB/javac" $JFLAGS -nowarn -cp "$MOD_CP" -d "$BLD/forge" $(find tools/live/stub forge/src -name '*.java')
+# Spike stage (1710 repop, absent elsewhere): bridge-owned zero-MC sources
+# the forge hook links against. ${SPIKE:+...} vanishes when the dir is
+# absent, so other bridges compile exactly as before.
+SPIKE=""
+[ -d java/src ] && SPIKE="java/src"
+"$JB/javac" $JFLAGS -nowarn -cp "$MOD_CP" -d "$BLD/forge" $(find ${SPIKE:+$SPIKE} tools/live/stub forge/src -name '*.java')
 if [ "$MODS_STYLE" = "mods.toml" ]; then
   mkdir -p "$BLD/modstoml/META-INF"
   sed "s/@VERSION@/$VERSION/g" forge/src/META-INF/mods.toml > "$BLD/modstoml/META-INF/mods.toml"

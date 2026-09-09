@@ -212,6 +212,12 @@
   `--offline` reuses the provision cache ; live proofs stay full-length
   and verdict-owned, the loop only decides when to pay for them
   (`decisions/DEV_LOOP.md`).
+- 2026-09-09 : repop spike hook + seal (bridge-1710 `spike/` : `RepopSeal`
+  pur + hook `BreakEvent` -> `MinedStore` + seal par tick dans
+  `MatouBridgeMod`, delay 200, vanilla stone, SPI untouched, `E_SPIKE_*`
+  only) ; live-build replica green sans boot (17/17 pins, stub compile
+  avec spike linké, reobf vérifié) ; parité 4 bridges inchangée
+  (`decisions/REPOP_SPIKE.md`, preuve live nommée en suivant).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
