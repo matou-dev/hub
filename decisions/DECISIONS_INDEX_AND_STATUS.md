@@ -59,6 +59,8 @@ recreates the exact drift it is supposed to fix.
 - NAMING_QN1_QN3.md : active (roadmap -)
 ### spec
 - SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
+### note
+- SCALING_AUDIT_STRUCTURAL_FIX.md : active (roadmap -)
 <!-- END GENERATED:decisions -->
 
 ## To-write queue
@@ -77,7 +79,7 @@ recreates the exact drift it is supposed to fix.
       N-bridge parity at scaffold.
 - [x] `DEV_CLIENT_SSOT.md` (ruling, landed 2026-09-09) — `hub/tools/run-client.sh` +
       `verify-client-save.sh`, `tools/client-common.sh` per-version table.
-- [ ] `SCALING_AUDIT_STRUCTURAL_FIX.md` (note) — `Cell` + `Counts` +
+- [x] `SCALING_AUDIT_STRUCTURAL_FIX.md` (note, landed 2026-09-09) — `Cell` + `Counts` +
       typed `Snapshot`, `ExampleIds` + pack `job(id)` registry,
       table-driven gates.
 - [ ] `SYNTAX_V1_V2_V3.md` (spec) — SYNTAX freeze + goldens py+java,
