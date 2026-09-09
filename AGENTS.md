@@ -48,6 +48,8 @@ table `ROADMAP.md`, miroir dérivé = bloc GENERATED de `STATE.md`
 Unité terminée (gates verts) = commit local immédiat, un par repo touché,
 avant de passer à la suivante : un travail non committé est écrasable par la
 session suivante. Le push passe par `tools/autopush.sh` (`--execute`).
+Bridges portent `SPI_PIN` (SPI validé) ; `tools/check-bridges.sh` refuse
+toute parité rompue (pins, file-set forge, catalogue `E_FORGE_*`).
 
 ## 5. Règles transversales
 
