@@ -206,21 +206,31 @@ normjar "$BLD/jars/matoubridge-reobf.jar"
 echo "ok run-client : dev jars built ($SFX, VERSION=$VERSION, DEV bytes, not release)"
 
 # 1b. Autoplay companion (DEV ONLY, AUTOPLAY=1): derive the companion
-#     narrow map from the pinned vanilla CLIENT jar + joined.tsrg (same
-#     javap/tsrg practice as the live derive, but DEV-scoped: the live
+#     narrow map (MCP era: pinned vanilla CLIENT jar + joined.tsrg, or the
+#     searge-era srg-mcp filter when the bridge ships tools/autoplay/
+#     srg-mcp.txt; Mojmap era: official client mappings + joined.tsrg v2 —
+#     same javap/tsrg practice as the live derive, but DEV-scoped: the live
 #     srg-narrow.srg is never touched), pin every WANT line plus the
 #     bridge universal-pin.txt Forge surface, then build + reobf the
 #     companion. Bridge owns tools/autoplay/{want.txt,client-pin.txt,
-#     universal-pin.txt,src,stub,autoplay-mods.toml,preseed.py}; hub owns
-#     this machinery. Absent want.txt = bridge without autoplay: loud.
+#     universal-pin.txt,srg-mcp.txt,src,stub,autoplay-mods.toml,preseed.py};
+#     hub owns this machinery. Absent want.txt = bridge without autoplay: loud.
 HAVE_AUTOPLAY=0
 if [ "${AUTOPLAY:-}" = "1" ]; then
   [ -f tools/autoplay/want.txt ] \
     || { echo "FAIL run-client : no autoplay WANT (tools/autoplay/want.txt absent in $BRIDGE)"; exit 1; }
-  [ -f tools/autoplay/client-pin.txt ] && [ -f tools/autoplay/universal-pin.txt ] \
-    || { echo "FAIL run-client : tools/autoplay/{client-pin,universal-pin}.txt absent in $BRIDGE"; exit 1; }
+  if [ -f tools/autoplay/srg-mcp.txt ]; then
+    # Searge mode (e.g. 1710): no vanilla client fetch (javap runs against
+    # the universal — the runtime is searge-named, vanilla is true-obf).
+    [ -f tools/autoplay/universal-pin.txt ] \
+      || { echo "FAIL run-client : tools/autoplay/universal-pin.txt absent in $BRIDGE"; exit 1; }
+  else
+    [ -f tools/autoplay/client-pin.txt ] && [ -f tools/autoplay/universal-pin.txt ] \
+      || { echo "FAIL run-client : tools/autoplay/{client-pin,universal-pin}.txt absent in $BRIDGE"; exit 1; }
+  fi
   UP="$CLIENT_DIR/upstream"
   mkdir -p "$UP"
+  if [ ! -f tools/autoplay/srg-mcp.txt ]; then
   PIN_URL="$(sed -n 's/^URL=//p' tools/autoplay/client-pin.txt)"
   PIN_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/client-pin.txt)"
   [ -n "$PIN_URL" ] && [ -n "$PIN_SHA1" ] \
@@ -234,6 +244,10 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
       || { echo "FAIL run-client : client jar sha1 drift (want $PIN_SHA1, never silent upgrade)"; exit 1; }
   fi
   echo "ok run-client : pinned vanilla client ($PIN_SHA1)"
+  else
+    echo "note run-client : searge mode, no vanilla client fetch (javap runs against the universal)"
+  fi
+  if [ ! -f tools/autoplay/srg-mcp.txt ]; then
   MCP_ZIP=$(find "$LIVE_DIR" -maxdepth 1 -name "mcp_config*.zip" | head -n 1 || true)
   [ -n "$MCP_ZIP" ] \
     || { echo "FAIL run-client : no mcp_config*.zip in <$LIVE_DIR> (run tools/run-live.sh once first)"; exit 1; }
@@ -247,6 +261,9 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
       unzip -o -q "$SNAP_ZIP" -d "$UP/mcp" "fields.csv" "methods.csv" \
         || { echo "FAIL run-client : cannot extract snapshot csvs from <$SNAP_ZIP>"; exit 1; }
     fi
+  fi
+  else
+    echo "note run-client : searge mode, no mcp_config (map is the pinned srg-mcp.srg)"
   fi
   UNI=$(find "$LIVE_DIR/server/libraries" -name "forge-*-universal.jar" 2>/dev/null | head -n 1 || true)
   # mcmod.info era (LaunchWrapper): the old installer lays the universal at
@@ -271,7 +288,44 @@ if [ "${AUTOPLAY:-}" = "1" ]; then
   # as the D3 live derive in the bridge run-live.sh (which uses server.txt
   # for server members; client members need the client map). MCP era keeps
   # the historical joined.tsrg-v1 (+ optional snapshot) path below.
-  if [ -f tools/autoplay/client-mappings-pin.txt ]; then
+  # Searge era (srg-mcp.txt present, e.g. 1710): the runtime is itself
+  # searge-named, so the narrow map filters the pinned srg-mcp.srg — no
+  # mcp_config, no snapshot CSVs, no vanilla javap (true-obf names). Each
+  # WANT line must match exactly one MD line (searge + MCP + both descs);
+  # static-ness rides the 1122-pinned triple (same searge + desc proven
+  # there by javap + snapshot). Matched lines pass through verbatim: Reobf
+  # already consumes this shape live (bridge run-live.sh reobfuscates
+  # against $SRG_MCP directly).
+  if [ -f tools/autoplay/srg-mcp.txt ]; then
+    WANT_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/srg-mcp.txt)"
+    BRIDGE_SRG_PIN="$(sed -n 's/^SRG_MCP_SHA1="//p' tools/run-live.sh | cut -d'"' -f1)"
+    [ -n "$WANT_SHA1" ] && [ "$WANT_SHA1" = "$BRIDGE_SRG_PIN" ] \
+      || { echo "FAIL run-client : srg-mcp.txt SHA1 != bridge SRG_MCP_SHA1 (bridge owns it: <$BRIDGE_SRG_PIN>)"; exit 1; }
+    SRG_MCP_FILE="${SRG_MCP:-$SRG_DEFAULT}"
+    [ -f "$SRG_MCP_FILE" ] \
+      || { echo "FAIL run-client : SRG_MCP=<$SRG_MCP_FILE> missing (set SRG_MCP or run a ForgeGradle 1614 setup once)"; exit 1; }
+    echo "$WANT_SHA1  $SRG_MCP_FILE" | sha1sum -c - >/dev/null 2>&1 \
+      || { echo "FAIL run-client : searge map sha1 drift (want $WANT_SHA1, never silent upgrade)"; exit 1; }
+    echo "ok run-client : searge map pinned ($WANT_SHA1)"
+    python3 - "$SRG_MCP_FILE" "tools/autoplay/want.txt" "$SRG_AUTO" <<'EOF'
+import sys
+srg, wantf, outpath = sys.argv[1:4]
+md = [l.rstrip("\n") for l in open(srg) if l.startswith("MD: ")]
+lines = []
+for raw in open(wantf):
+    raw = raw.strip()
+    if not raw or raw.startswith("#"):
+        continue
+    kind, owner, mcp, srg_want, desc, want_static = raw.split()
+    assert kind == "M", "E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw
+    want = "MD: %s/%s %s %s/%s %s" % (owner, srg_want, desc, owner, mcp, desc)
+    hits = [l for l in md if l == want]
+    assert len(hits) == 1, "E_AUTO_DERIVE:searge member <%s %s %s> matches %d" % (owner, mcp, srg_want, len(hits))
+    lines.append(hits[0])
+open(outpath, "w").write("\n".join(lines) + "\n")
+print("ok autoplay-derive : narrow SRG derived (%d lines, srg-mcp)" % len(lines))
+EOF
+  elif [ -f tools/autoplay/client-mappings-pin.txt ]; then
     MAP_URL="$(sed -n 's/^URL=//p' tools/autoplay/client-mappings-pin.txt)"
     MAP_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/client-mappings-pin.txt)"
     [ -n "$MAP_URL" ] && [ -n "$MAP_SHA1" ] \

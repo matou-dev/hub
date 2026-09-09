@@ -131,8 +131,11 @@ Render thread idle in glfwWaitEventsTimeout).
 ## What would re-open it
 
 - The remaining 1710 work: provision is landed (assembled runtime, pins
-  in the `case SFX` tables); left unmeasured are the companion WANT +
-  preseed shape, the join path (no quick-play pre-1.11), and the live run
-  itself — never widen the guard silently.
+  in the `case SFX` tables) and the companion is landed (bridge-1710
+  `tools/autoplay/`: searge derive, reobf-verified `func_` calls, 1.7.10
+  preseed — staging green); left unmeasured is the live run itself: the
+  `launchIntegratedServer` join and the 4600-tick stop clock are
+  1122-proven shapes on a 1.7.10 runtime nobody has played yet — never
+  widen the guard silently.
 - Prism stays the manual-dev convenience; automation never grows a
   launcher dependency back.

@@ -176,6 +176,13 @@
   pinned `ed5d8789` json) ; the game never launches yet — join path
   unmeasured (no quick-play pre-1.11), the script refuses loudly after
   assembly until the companion port lands.
+- 2026-09-09 : direct client 1710 companion landed (still red) :
+  bridge-1710 `8d466c7` (`tools/autoplay/` + searge pins + 1.7.10
+  preseed), hub searge derive arm in `run-client.sh` ; staging green
+  (narrow map 3 lines filtered from the pinned srg-mcp.srg, companion
+  reobf-verified to `func_` calls, `matouautoplay.jar` staged with no
+  stub leak, flat world preseeded). Live run TODO (join + 4600-tick
+  clock unplayed on 1.7.10).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
