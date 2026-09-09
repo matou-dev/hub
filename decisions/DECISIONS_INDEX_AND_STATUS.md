@@ -49,6 +49,7 @@ recreates the exact drift it is supposed to fix.
 ### ruling
 - BRIDGE_PARITY.md : active (roadmap -)
 - BRIDGE_SCAFFOLD.md : active (roadmap -)
+- CI_SIBLING_REF_MAIN.md : active (roadmap -)
 - DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
 - DEV_CLIENT_SSOT.md : active (roadmap -)
 - DIRECT_CLIENT_PROOF.md : active (roadmap -)
@@ -99,5 +100,8 @@ recreates the exact drift it is supposed to fix.
       Qt pinned to xcb, `WAYLAND_DISPLAY` dropped. Pairs with the
       `tools/run-client.sh` fix.
 - [x] `DIRECT_CLIENT_PROOF.md` (ruling, landed 2026-09-09) — `tools/run-client-direct.sh`
-      launcher-free automated client proof (landed in `fb1e600` with no
-      decision — catch-up, same class as `a3097de`).
+       launcher-free automated client proof (landed in `fb1e600` with no
+       decision — catch-up, same class as `a3097de`).
+- [x] `CI_SIBLING_REF_MAIN.md` (ruling, landed 2026-09-09) — cross-repo
+      checkouts pin `ref: main` (GITHUB_TOKEN 404s cross-repo default-branch
+      lookup), self checkout unpinned, SHA pins checkout v7 + setup-java v6.

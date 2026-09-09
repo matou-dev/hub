@@ -9,28 +9,37 @@ jobs:
       # Refuses loudly
       # when drifted, skips
       # loudly when absent (never green by omission in CI).
-      # Action pinned by SHA 2026-09-09 (tag v4); Dependabot keeps it fresh.
+      # Actions pinned by SHA (checkout v7, setup-java v6); Dependabot keeps them fresh.
+      # Siblings pin ref: main: GITHUB_TOKEN cannot resolve another repo's
+      # default branch via API (404), so an unpinned cross-repo checkout dies
+      # before the gate ever runs. The self checkout stays unpinned so PRs
+      # test their own merge commit.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: hub
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: matou-dev/spi
+          ref: main
           path: spi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: matou-dev/bridge-1710
+          ref: main
           path: bridge-1710
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: matou-dev/bridge-1122
+          ref: main
           path: bridge-1122
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: matou-dev/bridge-1201
+          ref: main
           path: bridge-1201
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: matou-dev/bridge-1165
+          ref: main
           path: bridge-1165
       - run: sh hub/tools/check.sh
