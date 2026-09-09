@@ -13,4 +13,8 @@
   `Snapshot` + `MatouJob` purs) + self-test gate vert ; `bridge-1710`
   walking skeleton (`SpiBridge` decide→apply pur, `TODO(FORGE)` nommé) +
   gate vert contre le sibling `../spi` ; goldens py+java toujours verts.
-- Prochain : preuve SPI contenu (`example1`, M2).
+- M2 done : `example1` preuve contenu (`content/owned.matou` 4 owned +
+  `content/additive.matou` tardif, jobs purs `OwnedVeinJob` +
+  `AdditiveScatterJob` + `merge` additif, parité py/java) + gate vert et
+  mordant (refus bare-ident identique des 2 parsers).
+- Prochain : preuve SPI client (`minimap`, M3).
