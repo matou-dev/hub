@@ -39,9 +39,17 @@ for r in $REPOS; do
   if [ "$br" != "main" ]; then
     echo "=== $r : SKIP (branche $br, seul main pousse) ==="; continue
   fi
+  if ! git -C "$d" rev-parse --verify --quiet origin/main >/dev/null; then
+    echo "=== $r : FAIL (origin/main inconnu : remote absent ou repo jamais poussé — git remote add origin <url> puis git push -u origin main à la main) ==="
+    FAIL=1; continue
+  fi
   git -C "$d" fetch origin --quiet 2>/dev/null || true
   ah=$(git -C "$d" rev-list --count origin/main..HEAD 2>/dev/null || echo "?")
   bh=$(git -C "$d" rev-list --count HEAD..origin/main 2>/dev/null || echo "?")
+  if [ "$ah" = "?" ] || [ "$bh" = "?" ]; then
+    echo "=== $r : FAIL (ahead/behind illisible malgré origin/main) ==="
+    FAIL=1; continue
+  fi
   st=$(git -C "$d" status --short)
   echo "=== $r (ahead=$ah behind=$bh) ==="
   if [ -n "$st" ]; then echo "$st"; fi
@@ -79,7 +87,7 @@ for r in $REPOS; do
   if [ "$EXEC" -eq 0 ]; then
     if [ -n "$st" ]; then
       echo "dry-run : committerait + pousserait (-m requis)"
-    elif [ "$ah" != "0" ] && [ "$ah" != "?" ]; then
+    elif [ "$ah" != "0" ]; then
       echo "dry-run : pousserait $ah commit(s)"
     else
       echo "dry-run : rien à faire"
@@ -89,7 +97,7 @@ for r in $REPOS; do
   if [ "$GATE" = "ROUGE" ]; then
     echo "SKIP push (gate rouge)"; FAIL=1; continue
   fi
-  if [ -z "$st" ] && { [ "$ah" = "0" ] || [ "$ah" = "?" ]; }; then
+  if [ -z "$st" ] && [ "$ah" = "0" ]; then
     echo "rien à faire"; continue
   fi
   if [ -n "$st" ]; then
