@@ -26,18 +26,25 @@ example1, minimap, reobf bridge) + content + `packs.cfg.example`
 (1710 `:255+`). Release bytes are self-describing: pins
 (`SRG_MCP_SHA1` at 1710 `:41`, `MCP_CONFIG_SHA1` on modern),
 Reobf MCP→SRG (`:220-226`, the MCP-named jar never ships), and
-the java-52 contract — 4 jars, no `module-info`, no
-multi-release entries, v52 loads on 8 and 21 alike, anything
-newer fails loudly (`:229-250`). v1.1.0 round: bridge-1710
-`114ee19` + bridge-1122 `cdd6baf` (structures drop, `@Mod`
-1.1.0 both bridges) over spi `0073226` seam; tags pushed
-(spi/1710 v1.0.0 + v1.1.0, 1122 v1.1.0); 3 GitHub releases (spi
-source + 2 server drops shipping `structure.matou`).
+  the java-52 contract — 4 jars, no `module-info`, no
+  multi-release entries, v52 loads on 8 and 21 alike, anything
+  newer fails loudly (`:229-250`). v1.1.0 round: bridge-1710
+  `114ee19` + bridge-1122 `cdd6baf` (structures drop, `@Mod`
+  1.1.0 both bridges) over spi `0073226` seam; tags pushed
+  (spi/1710 v1.0.0 + v1.1.0, 1122 v1.1.0); 3 GitHub releases (spi
+  source + 2 server drops shipping `structure.matou`). v1.2.0 round
+  (unified, ROADMAP R4): spi `3e819a9` (authoring surface,
+  additive-only, retro `[1.1.0]` changelog section) + 4 bridges
+  re-pinned to it (1710/1122 `@Mod` 1.2.0, 1201/1165 first drops at
+  1.2.0 via the `mods.toml` `@VERSION@` stamp — no v1.0.0/v1.1.0
+  tags on those repos); tags pushed (spi/1710/1122 v1.2.0, 1201/1165
+  v1.2.0 first); 5 GitHub releases (spi source + 4 server drops
+  shipping `structure.matou`).
 Platform fiches stay DRAFT (`NAMES.md`: spi/example1/minimap
 draft IDs, bridges never published alone) until a loadable mod
 release exists — the bridge never ships solo, and R2 v1.0.0 set
-the precedent (source + server-drop only). 1201/1165 have no
-tags yet: they follow this same path, no new machinery.
+  the precedent (source + server-drop only). 1201/1165 landed as
+  first drops in the v1.2.0 round (same path, no new machinery).
 
 ## Gates
 

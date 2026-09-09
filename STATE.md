@@ -150,5 +150,6 @@
 - E1 forge-reel-1165 : done 2026-09-09
 - E2 contenu-wire-1165 : done 2026-09-09
 - E3 preuve-live-1165 : done 2026-09-09
-- 27/27 phases done
+- R4 release-parity : done 2026-09-09
+- 28/28 phases done
 <!-- END GENERATED:phases -->
