@@ -17,4 +17,8 @@
   `content/additive.matou` tardif, jobs purs `OwnedVeinJob` +
   `AdditiveScatterJob` + `merge` additif, parité py/java) + gate vert et
   mordant (refus bare-ident identique des 2 parsers).
-- Prochain : preuve SPI client (`minimap`, M3).
+- M3 done : `minimap` preuve client (`MinimapJob` rend des lignes d'overlay
+  depuis des snapshots SPI, jamais de draw ni de remplacement vanilla, void
+  explicite, refus bruyants) + gate vert et mordant (golden 3x3 exact,
+  vue qui suit le joueur).
+- Toutes les phases sont done (F0, F1, S1, S2, M1, M2, M3).
