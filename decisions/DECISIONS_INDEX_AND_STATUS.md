@@ -65,6 +65,8 @@ recreates the exact drift it is supposed to fix.
 - SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
 - STRUCTURES_CROSS_FILE.md : active (roadmap -)
 - SYNTAX_V1_V2_V3.md : active (roadmap -)
+### direction
+- REPOP_SPIKE.md : active (roadmap -)
 ### note
 - SCALING_AUDIT_STRUCTURAL_FIX.md : active (roadmap -)
 <!-- END GENERATED:decisions -->

@@ -201,6 +201,11 @@
   metadata and refuses the rest loudly — minimap stages on 1710/1122,
   names its missing wrapper on 1165/1201) ; VS Code tasks drop the
   hardcoded `/tmp/matou-prism` and the stale row labels.
+- 2026-09-09 : repop spike pure half green (bridge-1710 `spike/`
+  : `MinedStore` bridge-owned + `RepopJob` pur + `RepopCheck` gate
+  avec comparateur store-vs-job, vanilla stone, zéro registration) ;
+  hook forge + preuve live nommés en suivants
+  (`decisions/REPOP_SPIKE.md`).
 - 2026-09-09 : fast dev loop (hub `tools/dev-loop.sh`, NOT a gate) :
   E0 pure in seconds by default (hub check + bridge check with LIVE
   cleared), `--server` / `--client` opt-in only after E0 green,
