@@ -30,5 +30,6 @@
 - M2 example1 : done 2026-09-09
 - M3 minimap : done 2026-09-09
 - B1 forge-reel : done 2026-09-09
-- 8/8 phases done
+- B2 contenu-wire : done 2026-09-09
+- 9/9 phases done
 <!-- END GENERATED:phases -->
