@@ -104,10 +104,12 @@ Render thread idle in glfwWaitEventsTimeout).
 
 ## Gates
 
-- Green runs (1165, 1122): world == pure union (1274 cells, stone only —
-  same count as every live proof; numeric ID 1 on pre-flattening eras).
-- 1201 assembly landed but still red: boots, never joins (pack.mcmeta
-  cause above) — re-proof TODO once the hardening above is staged.
+- Green runs (1165, 1122, 1201): world == pure union (1274 cells,
+  stone only — same count as every live proof; numeric ID 1 on
+  pre-flattening eras, namespaced names on 1.13+).
+- 1201 went green on re-proof once pack.mcmeta was staged (quick-play
+  join ~16s after boot, clean exit 0 after ~4 min, 600s watchdog never
+  fired) — the red cause above is closed.
 - `tools/check.sh` green; other versions stay refused until provisioned
   and pinned per version.
 

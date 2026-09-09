@@ -70,7 +70,7 @@ case "$SFX" in
     SRG_DEFAULT=""
     ASM_PIN="asm-9.5.jar"
     PACK_FORMAT="15"
-    NOTE="UNTESTED: needs Java 17 in Prism (pinned below); server proof stays the D3 verdict.";;
+    NOTE="PROVEN 2026-09-09: launcher-free direct proof green (world == pure union, 1274 cells, stone only); Prism path UNTESTED (needs Java 17, pinned below); server proof stays the D3 verdict.";;
   1165) MC="1.16.5"; FORGE_COMP="36.2.42"; LIVE_TAG="E3"; JAVA_MAJOR="8"
     SRG_DEFAULT=""
     ASM_PIN="asm-9.6.jar"

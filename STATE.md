@@ -142,6 +142,15 @@
   pass through, normjar keeps bytes deterministic ; 1165 jars stay
   byte-identical, still green by construction). 1201 re-proof still TODO
   (needs a live run).
+- 2026-09-09 : direct client proof 1201 GREEN on Forge 47.2.0 (hub
+  `450d78a` / spi `4217ada` / bridge-1201 `f625e70` + dirty autoplay
+  delta (ClientTick/ServerTick stub, +2 universal pins, untracked
+  tools/autoplay/) / example1 `7370fde` / minimap `2a1270f`, host
+  Temurin 17.0.20) : quick-play join ~16s after boot (no "Missing
+  metadata" anywhere — the pack.mcmeta fix is validated), clean
+  shutdown exit 0 after ~4 min (600s watchdog never fired), world ==
+  pure union (1274 cells, stone only — same count as every live proof,
+  third client runtime).
 - 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
   trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
   positional job indexing) ; structural fix, behaviour-preserving :
