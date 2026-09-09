@@ -7,4 +7,6 @@
   mordant (un bug réel trouvé par les goldens avant freeze).
 - S2 done : port Java (`java/src/fr.iamacat.spi`, bytecode 8), comparaison
   structurelle, divergence Java dénoncée nommément par le gate.
+- Outil : `hub/tools/autopush.sh` (dry-run par défaut, gate vert exigé,
+  jamais de force).
 - Prochain : walking skeleton SPI (`spi` squelette + `bridge-1710` parity).
