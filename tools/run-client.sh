@@ -45,6 +45,17 @@
 #              is the point. The script never downloads mods itself.
 #   LAUNCH=1   actually exec prismlauncher --launch (default prints the
 #              command; launching needs a display and blocks the shell).
+#              The game always launches OFFLINE as $OFFLINE_NAME
+#              (default MatouDev): deterministic player UUID, no account
+#              needed — without it Prism waits on an account dialog.
+#   AUTOPLAY=1 build + stage the dev-only autoplay companion
+#              (bridge tools/autoplay/, needs want.txt + client-pin.txt)
+#              and preseed a fresh flat world. NOT a gate.
+#   XVFB=1     launch under xvfb-run (implies LAUNCH=1, headless play).
+#   AUTOVERIFY=1 after the game exits, replay verify-client-save.sh on
+#              $AUTOPLAY_WORLD (default matou) and exit with its status.
+#              AUTOPLAY_WORLD names the proof world (preseed + companion
+#              + verify read the same value).
 set -eu
 if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
 [ $# = "0" ] || { echo "FAIL run-client : unknown arg <$1> (want [--bridge <dir>]; env carries the rest)"; exit 1; }
@@ -55,6 +66,13 @@ cd "$BRIDGE"
 VERSION="${VERSION:-0.0-dev}"
 PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
 PRISM_BIN="${PRISM_BIN:-prismlauncher}"
+# Never touch the user's live Prism home: automated runs stage into
+# isolated roots only (a launch without -d once rewrote accounts.json).
+case "${PRISM_DIR%/}" in
+  "$HOME/.local/share/PrismLauncher")
+    echo "FAIL run-client : PRISM_DIR is the live user dir ($HOME/.local/share/PrismLauncher)"
+    echo "fix: point PRISM_DIR at an isolated root (e.g. \${TMPDIR:-/tmp}/matou-<tag>-prism)"; exit 1;;
+esac
 
 command -v "$PRISM_BIN" >/dev/null 2>&1 \
   || { echo "FAIL run-client : <$PRISM_BIN> not on PATH (install PrismLauncher 11+)"; exit 1; }
@@ -173,6 +191,150 @@ normjar "$BLD/jars/matoubridge-reobf.jar"
 "$JB/javac" -nowarn -cp "$BLD/spi:$BLD/ex1" -d "$BLD" tools/live/CellUnion.java
 echo "ok run-client : dev jars built ($SFX, VERSION=$VERSION, DEV bytes, not release)"
 
+# 1b. Autoplay companion (DEV ONLY, AUTOPLAY=1): derive the companion
+#     narrow map from the pinned vanilla CLIENT jar + joined.tsrg (same
+#     javap/tsrg practice as the live derive, but DEV-scoped: the live
+#     srg-narrow.srg is never touched), pin every WANT line plus the
+#     bridge universal-pin.txt Forge surface, then build + reobf the
+#     companion. Bridge owns tools/autoplay/{want.txt,client-pin.txt,
+#     universal-pin.txt,src,stub,autoplay-mods.toml,preseed.py}; hub owns
+#     this machinery. Absent want.txt = bridge without autoplay: loud.
+HAVE_AUTOPLAY=0
+if [ "${AUTOPLAY:-}" = "1" ]; then
+  [ -f tools/autoplay/want.txt ] \
+    || { echo "FAIL run-client : no autoplay WANT (tools/autoplay/want.txt absent in $BRIDGE)"; exit 1; }
+  [ -f tools/autoplay/client-pin.txt ] && [ -f tools/autoplay/universal-pin.txt ] \
+    || { echo "FAIL run-client : tools/autoplay/{client-pin,universal-pin}.txt absent in $BRIDGE"; exit 1; }
+  UP="$CLIENT_DIR/upstream"
+  mkdir -p "$UP"
+  PIN_URL="$(sed -n 's/^URL=//p' tools/autoplay/client-pin.txt)"
+  PIN_SHA1="$(sed -n 's/^SHA1=//p' tools/autoplay/client-pin.txt)"
+  [ -n "$PIN_URL" ] && [ -n "$PIN_SHA1" ] \
+    || { echo "FAIL run-client : malformed tools/autoplay/client-pin.txt (want URL= + SHA1=)"; exit 1; }
+  if [ ! -f "$UP/client.jar" ] || ! echo "$PIN_SHA1  $UP/client.jar" | sha1sum -c - >/dev/null 2>&1; then
+    echo "note run-client : fetching pinned vanilla client (network once, $PIN_SHA1)"
+    rm -f "$UP/client.jar"
+    curl -sL -o "$UP/client.jar" "$PIN_URL" \
+      || { echo "FAIL run-client : client jar download failed"; exit 1; }
+    echo "$PIN_SHA1  $UP/client.jar" | sha1sum -c - >/dev/null 2>&1 \
+      || { echo "FAIL run-client : client jar sha1 drift (want $PIN_SHA1, never silent upgrade)"; exit 1; }
+  fi
+  echo "ok run-client : pinned vanilla client ($PIN_SHA1)"
+  MCP_ZIP=$(find "$LIVE_DIR" -maxdepth 1 -name "mcp_config*.zip" | head -n 1 || true)
+  [ -n "$MCP_ZIP" ] \
+    || { echo "FAIL run-client : no mcp_config*.zip in <$LIVE_DIR> (run tools/run-live.sh once first)"; exit 1; }
+  SNAP_ZIP=$(find "$LIVE_DIR" -maxdepth 1 -name "mcp_snapshot*.zip" | head -n 1 || true)
+  if [ ! -f "$UP/joined.tsrg" ]; then
+    rm -rf "$UP/mcp" && mkdir -p "$UP/mcp"
+    unzip -o -q "$MCP_ZIP" -d "$UP/mcp" "config/joined.tsrg" \
+      || { echo "FAIL run-client : cannot extract joined.tsrg from <$MCP_ZIP>"; exit 1; }
+    cp "$UP/mcp/config/joined.tsrg" "$UP/joined.tsrg"
+    if [ -n "$SNAP_ZIP" ]; then
+      unzip -o -q "$SNAP_ZIP" -d "$UP/mcp" "fields.csv" "methods.csv" \
+        || { echo "FAIL run-client : cannot extract snapshot csvs from <$SNAP_ZIP>"; exit 1; }
+    fi
+  fi
+  UNI=$(find "$LIVE_DIR/server/libraries" -name "forge-*-universal.jar" 2>/dev/null | head -n 1 || true)
+  [ -n "$UNI" ] \
+    || { echo "FAIL run-client : no forge universal under <$LIVE_DIR/server/libraries> (run tools/run-live.sh once first)"; exit 1; }
+  while read -r cls pat; do
+    [ -n "$cls" ] || continue
+    case "$cls" in \#*) continue;; esac
+    "$JB/javap" -p -cp "$UNI" "$cls" 2>/dev/null | grep -q "$pat" \
+      || { echo "FAIL run-client : universal pin unmet <$cls :: $pat>"; exit 1; }
+  done < tools/autoplay/universal-pin.txt
+  echo "ok run-client : companion Forge surface pinned to universal"
+  SRG_AUTO="$CLIENT_DIR/autoplay-narrow.srg"
+  "$JB/javap" -version >/dev/null 2>&1 || { echo "FAIL run-client : no javap next to <$JB>"; exit 1; }
+  python3 - "$UP/joined.tsrg" "$UP/mcp/fields.csv" "$UP/mcp/methods.csv" "tools/autoplay/want.txt" "$SRG_AUTO" "$JB/javap" "$UP/client.jar" <<'EOF'
+import sys, subprocess, csv, re
+tsrg, fcsv, mcsv, wantf, outpath, javap, client = sys.argv[1:8]
+srg2obf, classes = {}, {}
+cur = None
+for raw in open(tsrg).read().splitlines():
+    line = raw.strip()
+    if not line or line.startswith("#"):
+        continue
+    if raw[0] in (" ", "\t"):
+        classes.setdefault(cur, []).append(line.split())
+    else:
+        obf, srg = line.split()
+        srg2obf[srg] = obf
+        cur = srg
+snap_m, snap_f = {}, {}
+try:
+    for row in csv.DictReader(open(mcsv)):
+        snap_m[row["searge"]] = row["name"]
+    for row in csv.DictReader(open(fcsv)):
+        snap_f[row["searge"]] = row["name"]
+except IOError:
+    pass
+def obf_desc(d):
+    return re.sub(r"L([^;]+);", lambda m: "L" + srg2obf.get(m.group(1), m.group(1)) + ";", d)
+def javap_flags(cls):
+    out = subprocess.check_output([javap, "-p", "-s", "-cp", client, cls]).decode()
+    res, name, static = {}, None, False
+    for l in out.splitlines():
+        s = l.strip()
+        if s.startswith("descriptor:"):
+            res[(name, s.split(None, 1)[1])] = static
+        elif s and not s.startswith("Compiled"):
+            m = re.match(r".*\s([\w$<>]+)\(", s)
+            if m:
+                static = bool(re.search(r"\bstatic\b", s.split("(")[0]))
+                name = m.group(1)
+            elif "(" not in s and s.endswith(";") and "{" not in s:
+                m2 = re.match(r"(?:(.*)\s)?([\w.$\[\]<>, ]+?)\s+([\w$]+);", s)
+                assert m2, "E_AUTO_DERIVE:unparsed javap line <%s> in <%s>" % (s, cls)
+                static = bool(re.search(r"\bstatic\b", m2.group(1) or ""))
+                name = m2.group(3)
+                res[(name, "F:" + re.sub(r"<.*>", "", m2.group(2)))] = static
+    return res
+lines = []
+for raw in open(wantf):
+    raw = raw.strip()
+    if not raw or raw.startswith("#"):
+        continue
+    kind, owner, mcp, srg_want, desc, want_static = raw.split()
+    want_static = want_static == "1"
+    obf_owner = srg2obf[owner]
+    members = classes[owner]
+    if kind == "M":
+        od = obf_desc(desc)
+        cands = [(mm[0], mm[2]) for mm in members if len(mm) == 3 and mm[1] == od]
+        assert cands, "E_AUTO_DERIVE:no tsrg member <%s %s>" % (owner, mcp)
+        flags = javap_flags(obf_owner)
+        hits = [(n, s) for n, s in cands if flags.get((n, od)) == want_static and s == srg_want]
+        assert len(hits) == 1, "E_AUTO_DERIVE:unresolved <%s %s %s> %s" % (owner, mcp, srg_want, hits)
+        srg_name = hits[0][1]
+        if snap_m:
+            assert snap_m.get(srg_name) == mcp, "E_AUTO_DERIVE:snapshot lock <%s> is <%s>, want <%s>" % (srg_name, snap_m.get(srg_name), mcp)
+        lines.append("MD: %s/%s %s %s/%s %s" % (owner, hits[0][0], desc, owner, mcp, desc))
+    else:
+        raise SystemExit("E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw)
+open(outpath, "w").write("\n".join(lines) + "\n")
+print("ok autoplay-derive : narrow SRG derived (%d lines)" % len(lines))
+EOF
+  [ "$(grep -c . "$SRG_AUTO")" = "$(grep -cv -e '^#' -e '^$' tools/autoplay/want.txt)" ] \
+    || { echo "FAIL run-client : autoplay narrow map drift (want $(grep -cv -e '^#' -e '^$' tools/autoplay/want.txt) lines)"; exit 1; }
+  echo "ok run-client : companion narrow map pinned ($SRG_AUTO)"
+  mkdir -p "$BLD/auto" "$BLD/autoplaymod/META-INF"
+  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/auto" $(find tools/autoplay/src tools/autoplay/stub tools/live/stub -name '*.java')
+  sed "s/@VERSION@/$VERSION/g" tools/autoplay/autoplay-mods.toml > "$BLD/autoplaymod/META-INF/mods.toml"
+  rm -rf "$BLD/autoplaystage" && mkdir -p "$BLD/autoplaystage"
+  mkdir -p "$BLD/autoplaystage/fr"
+  cp -r "$BLD/auto/fr/"* "$BLD/autoplaystage/fr/"
+  [ -e "$BLD/autoplaystage/net" ] && { echo "FAIL run-client : stub leak into autoplay jar"; exit 1; }
+  mkdir -p "$BLD/autoplaystage/META-INF"
+  cp "$BLD/autoplaymod/META-INF/mods.toml" "$BLD/autoplaystage/META-INF/mods.toml"
+  mkjar "$BLD/jars/matouautoplay.jar" "$BLD/autoplaystage"
+  "$JB/javac" -nowarn -cp "$REOBF_CP" -d "$BLD" tools/live/Reobf.java
+  "$JB/java" -cp "$BLD:$REOBF_CP" Reobf "$SRG_AUTO" "$BLD/jars/matouautoplay.jar" "$BLD/jars/matouautoplay-reobf.jar"
+  normjar "$BLD/jars/matouautoplay-reobf.jar"
+  echo "ok run-client : autoplay companion built (DEV-only, never in dist/)"
+  HAVE_AUTOPLAY=1
+fi
+
 # 2. Prism instance (MultiMC format, as proven by local Prism 11 instances:
 #    instance.cfg + mmc-pack.json + minecraft/ game dir).
 IDIR="$PRISM_DIR/instances/$INST"
@@ -218,6 +380,10 @@ else
   mv "$IDIR/minecraft/mods/matoubridge-reobf.jar" "$IDIR/minecraft/mods/matoubridge.jar"
 fi
 rm -rf "$IDIR/minecraft/matou-content" && cp -r ../example1/content "$IDIR/minecraft/matou-content"
+if [ "${HAVE_AUTOPLAY:-0}" = "1" ]; then
+  cp "$BLD/jars/matouautoplay-reobf.jar" "$IDIR/minecraft/mods/matouautoplay.jar"
+  echo "ok run-client : autoplay companion staged (DEV-only, never in dist/)"
+fi
 GDIR="$IDIR/minecraft"
 # packs.cfg: written once, then KEPT. Re-staging must never clobber a dev's
 # alias bindings (e.g. hut_wall=oak_planks for a varied hut) back to the
@@ -227,6 +393,16 @@ if [ -f "$IDIR/minecraft/config/matoubridge/packs.cfg" ]; then
   grep -v "^#" "$IDIR/minecraft/config/matoubridge/packs.cfg" || true
 else
   printf 'fr.iamacat.example1.ExamplePack 63 minecraft:stone ownedFile=%s/matou-content/owned.matou scatterFile=%s/matou-content/additive.matou structureFile=%s/matou-content/structure.matou block.example1.structures:hut_wall=minecraft:stone block.example1.structures:hut_roof=minecraft:stone\n' "$GDIR" "$GDIR" "$GDIR" > "$IDIR/minecraft/config/matoubridge/packs.cfg"
+fi
+WORLD="${AUTOPLAY_WORLD:-matou}"
+export AUTOPLAY_WORLD="$WORLD"
+OFFLINE_NAME="${OFFLINE_NAME:-MatouDev}"
+if [ "${HAVE_AUTOPLAY:-0}" = "1" ]; then
+  # Fresh proof every automated run: reset the world, then preseed flat.
+  # (Manual varied-hut dev keeps the kept-packs.cfg flow above by running
+  # without AUTOPLAY.) Refuses loudly when the save cannot be written.
+  python3 tools/autoplay/preseed.py "$GDIR/saves" "$WORLD" \
+    || { echo "FAIL run-client : preseed failed"; exit 1; }
 fi
 if [ -n "${TELLME_JAR:-}" ]; then
   [ -f "$TELLME_JAR" ] || { echo "FAIL run-client : TELLME_JAR=<$TELLME_JAR> absent"; exit 1; }
@@ -265,7 +441,7 @@ echo "note run-client : $NOTE"
 # 3. Play protocol (owned slice, same geometry as the server proof).
 cat <<EOF
 --- play protocol ($INST, MC $MC / Forge $FORGE_COMP) ---
-1. Launch:  prismlauncher --launch "$INST"   (offline works: --offline MatouDev)
+1. Launch:  prismlauncher -d "$PRISM_DIR" --launch "$INST" -o "$OFFLINE_NAME"   (offline name, deterministic UUID)
    First launch downloads MC $MC + Forge $FORGE_COMP into the instance (network once).
 2. Singleplayer: create NEW world named "matou", game mode Creative, FLAT type.
    The wire lands plane cells at y=63 and hut volumes at y=64..65 around the
@@ -286,8 +462,30 @@ cat <<EOF
      sh $HUB_ABS/verify-client-save.sh --bridge $BRIDGE [world-name]   (default: matou)
    replays the $LIVE_TAG verdict (world == pure union) on the client save.
 EOF
+if [ "${XVFB:-}" = "1" ]; then
+  command -v xvfb-run >/dev/null \
+    || { echo "FAIL run-client : xvfb-run absent (XVFB=1 needs it)"; exit 1; }
+  LAUNCH=1
+  echo "note run-client : XVFB=1 implies LAUNCH=1 (headless play under Xvfb)"
+fi
 if [ "${LAUNCH:-}" = "1" ]; then
-  exec "$PRISM_BIN" --launch "$INST"
+  if [ "${AUTOVERIFY:-}" = "1" ]; then
+    # Automated proof: play (or fail loud), then judge the save. The game
+    # exit code is reported but the verdict owns the script exit status.
+    if [ "${XVFB:-}" = "1" ]; then
+      xvfb-run -a "$PRISM_BIN" -d "$PRISM_DIR" --launch "$INST" -o "$OFFLINE_NAME"
+    else
+      "$PRISM_BIN" -d "$PRISM_DIR" --launch "$INST" -o "$OFFLINE_NAME"
+    fi
+    rc=$?
+    echo "note run-client : game exited ($rc), replaying verdict on <$WORLD>"
+    sh "$HUB_ABS/verify-client-save.sh" --bridge "$BRIDGE" "$WORLD"
+    exit $?
+  fi
+  if [ "${XVFB:-}" = "1" ]; then
+    exec xvfb-run -a "$PRISM_BIN" -d "$PRISM_DIR" --launch "$INST" -o "$OFFLINE_NAME"
+  fi
+  exec "$PRISM_BIN" -d "$PRISM_DIR" --launch "$INST" -o "$OFFLINE_NAME"
 else
-  echo "staged (no launch: LAUNCH=1 to exec $PRISM_BIN --launch $INST)"
+  echo "staged (no launch: LAUNCH=1 to exec $PRISM_BIN -d $PRISM_DIR --launch $INST -o $OFFLINE_NAME)"
 fi

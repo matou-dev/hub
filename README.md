@@ -24,5 +24,9 @@ Repos are private during dev: authenticated clone required
   `tools/client-common.sh` (1165 proven, other rows experimental/untested).
   `tools/verify-client-save.sh` replays the live verdict on the client
   save. NOT a gate (needs display + Prism + a provisioned live dir).
+  `PRISM_DIR` must be an isolated root (the live Prism home is refused
+  loudly). `AUTOPLAY=1` (1165 only) stages a dev-only companion that
+  plays the proof without a keyboard (`XVFB=1` headless, `AUTOVERIFY=1`
+  replays the verdict on exit).
 - `.vscode/tasks.json`: the same dev-client tasks for editors (bridge
   picker input; bridge repos keep their own gate-oriented tasks).

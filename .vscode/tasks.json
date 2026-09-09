@@ -7,7 +7,10 @@
             "type": "shell",
             "command": "sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PRISM_DIR": "/tmp/matou-prism"
+                }
             },
             "group": "build",
             "presentation": {
@@ -22,7 +25,10 @@
             "type": "shell",
             "command": "LAUNCH=1 sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PRISM_DIR": "/tmp/matou-prism"
+                }
             },
             "group": "build",
             "presentation": {
@@ -37,7 +43,10 @@
             "type": "shell",
             "command": "sh tools/verify-client-save.sh --bridge ../bridge-${input:bridge} \"${input:worldName}\"",
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PRISM_DIR": "/tmp/matou-prism"
+                }
             },
             "group": "test",
             "presentation": {

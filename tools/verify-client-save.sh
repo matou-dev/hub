@@ -24,6 +24,10 @@ case "${1:-}" in --*) echo "FAIL verify-client : unknown flag <$1> (want [--brid
 . "$(dirname "$0")/client-common.sh"
 cd "$BRIDGE"
 PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
+case "${PRISM_DIR%/}" in
+  "$HOME/.local/share/PrismLauncher")
+    echo "FAIL verify-client : PRISM_DIR is the live user dir (automated runs use isolated roots only)"; exit 1;;
+esac
 WORLD="${1:-matou}"
 GDIR="$PRISM_DIR/instances/$INST/minecraft"
 PACKS="$GDIR/config/matoubridge/packs.cfg"
