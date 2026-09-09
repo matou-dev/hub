@@ -19,3 +19,7 @@ Notes :
 - `matouminimap` : `minimap` seul est pris partout, d'où le préfixe.
 - Historique `quentin452/*` (MatouMap, Cat-Culling, matoulib-core...) : gelé tel
   quel, jamais renommé (JitPack/saves).
+- R2 (2026-09-09) : v1.0.0 = release source + server-drop (tags git,
+  releases GitHub) ; les fiches restent DRAFT tant qu'il n'existe pas de
+  release de mod chargeable (le bridge ne se publie jamais seul,
+  example1/minimap n'ont pas encore de câblage FML).

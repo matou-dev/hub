@@ -33,7 +33,7 @@
 - B2 contenu-wire : done 2026-09-09
 - B3 preuve-live : done 2026-09-09
 - R1 live-repro : done 2026-09-09
-- R2 release : todo
+- R2 release-eng : done 2026-09-09
 - R3 hygiene : todo
-- 11/13 phases done
+- 12/13 phases done
 <!-- END GENERATED:phases -->
