@@ -18,3 +18,9 @@ Repos are private during dev: authenticated clone required
   `LIVE=1` until the live run is ported.
 - `tools/check-bridges.sh`: N-bridge parity over `../bridge-*/` (same
   `SPI_PIN`, same `forge/` file-set, same `E_FORGE_*` catalog).
+- `tools/run-client.sh` (`--bridge <dir>` or `BRIDGE`, else the bridge
+  `tools/run-client.sh` wrapper): stages a Prism Launcher dev-client
+  instance (DEV build + content) for any bridge; per-version table in
+  `tools/client-common.sh` (1165 proven, other rows experimental/untested).
+  `tools/verify-client-save.sh` replays the live verdict on the client
+  save. NOT a gate (needs display + Prism + a provisioned live dir).

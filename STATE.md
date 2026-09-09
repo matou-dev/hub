@@ -98,6 +98,14 @@
   stubs (erased getValue descriptor, NoSuchMethodError found live) ;
   1.16.5 anvil reads `Level.Sections`/`Palette`/`BlockStates` ; JDK8
   javap prints annotations as pool refs (pool-resolving check).
+- 2026-09-09 : dev-client helpers generalized into the hub (SSOT
+  `hub/tools/run-client.sh` + `verify-client-save.sh`, per-version table
+  `tools/client-common.sh`, ASM pin checked against each bridge
+  `run-live.sh`) ; `bridge-1165` logic replaced by thin wrappers, other
+  bridges gain the same wrappers (rows experimental/untested) ;
+  `scaffold-bridge.sh` copies them to future bridges. Equivalence proven
+  for 1165 : generalized staging builds byte-identical jars to the moved
+  script (same EPOCH, normjar-clamped).
 - 2026-09-09 : test-mod scaling audit closed green (no red gate, metric
   trigger: ExampleCheck 840 lines, MatouParse-adjacent codec triplication,
   positional job indexing) ; structural fix, behaviour-preserving :

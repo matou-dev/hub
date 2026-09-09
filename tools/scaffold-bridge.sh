@@ -139,7 +139,7 @@ render() {
 if [ "$DRY" = "1" ]; then
   echo "plan bridge-$SFX (mc $MC, forge $FORGE_LONG, sink $SINK, mapping $MAPPING, ref $REF, pin $SPI_PIN)"
   echo "  render: MatouBridgeMod.java PackWire.java WorldCellSink-$SINK.java check.sh run-live.sh Dockerfile README.md CHANGELOG.md check.yml live-proof.yml"
-  echo "  copy: AGENTS.md .gitignore LICENSE ForgeContentCheck.java anvil.py CellUnion.java Reobf.java stub/"
+  echo "  copy: AGENTS.md .gitignore LICENSE ForgeContentCheck.java anvil.py CellUnion.java Reobf.java stub/ run-client.sh verify-client-save.sh (hub wrappers)"
   echo "  out: $OUT"
   exit 0
 fi
@@ -165,6 +165,7 @@ for f in AGENTS.md .gitignore LICENSE; do
   cp "$REF/$f" "$OUT/$f"
 done
 for f in tools/live/anvil.py tools/live/CellUnion.java tools/live/Reobf.java \
+  tools/run-client.sh tools/verify-client-save.sh \
   java/test/fr/iamacat/bridge/ForgeContentCheck.java; do
   [ -f "$REF/$f" ] || { echo "FAIL scaffold : ref file <$REF/$f> absent"; exit 1; }
   cp "$REF/$f" "$OUT/$f"
@@ -178,7 +179,8 @@ sed -i -e "s/same pattern as B2 in bridge-1710/bridge-$REF_SFX pattern/" \
   -e "s/C2 end-to-end gate/$P2 end-to-end gate/" \
   "$OUT/java/test/fr/iamacat/bridge/ForgeContentCheck.java"
 
-chmod +x "$OUT/tools/check.sh" "$OUT/tools/run-live.sh"
+chmod +x "$OUT/tools/check.sh" "$OUT/tools/run-live.sh" \
+  "$OUT/tools/run-client.sh" "$OUT/tools/verify-client-save.sh"
 
 if grep -r "@[A-Z_]*@" "$OUT" --include='*' -l | grep -v build/ | head -n 5 | grep -q .; then
   echo "FAIL scaffold : unrendered @TOKEN@ left in $OUT"
