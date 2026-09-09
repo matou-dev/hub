@@ -15,7 +15,8 @@
 # silently.
 #
 # Env: BRIDGE / --bridge (see run-client.sh), CLIENT_DIR, <TAG>_DIR,
-#      PRISM_DIR (same defaults as run-client.sh).
+#      PRISM_DIR (per-tag isolated default, same as run-client.sh —
+#      stage and verify resolve the same instance by construction).
 # Usage: verify-client-save.sh [--bridge <dir>] [world-name] (dflt: matou)
 set -eu
 if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
@@ -23,10 +24,11 @@ case "${1:-}" in --*) echo "FAIL verify-client : unknown flag <$1> (want [--brid
 # shellcheck disable=SC1091
 . "$(dirname "$0")/client-common.sh"
 cd "$BRIDGE"
-PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
+# PRISM_DIR already defaults to the per-tag isolated root
+# (client-common.sh) — only an explicit live home lands here.
 case "${PRISM_DIR%/}" in
   "$HOME/.local/share/PrismLauncher")
-    echo "FAIL verify-client : PRISM_DIR is the live user dir (automated runs use isolated roots only)"; exit 1;;
+    echo "FAIL verify-client : PRISM_DIR is the live user dir (unset it for the per-tag isolated default)"; exit 1;;
 esac
 WORLD="${1:-matou}"
 GDIR="$PRISM_DIR/instances/$INST/minecraft"
@@ -39,7 +41,12 @@ BLD="$CLIENT_DIR/build"
   || { echo "FAIL verify-client : CellUnion not compiled ($BLD, run hub tools/run-client.sh first)"; exit 1; }
 command -v python3 >/dev/null || { echo "FAIL verify-client : python3 required (anvil)"; exit 1; }
 command -v java >/dev/null || { echo "FAIL verify-client : java required (CellUnion)"; exit 1; }
-java -cp "$BLD:$BLD/spi:$BLD/ex1" CellUnion \
+# Runtime classpath mirrors the run-client.sh build (spi + staged mods).
+MOD_CP_VERIFY="$BLD:$BLD/spi"
+for d in "$BLD"/mod-*/; do
+  [ -d "$d" ] && MOD_CP_VERIFY="$MOD_CP_VERIFY:$d"
+done
+java -cp "$MOD_CP_VERIFY" CellUnion \
   "$PACKS" 4000 "$CLIENT_DIR/union.txt"
 : > "$CLIENT_DIR/world.txt"
 for spec in "r.0.0.mca 0 0" "r.0.0.mca 1 0" "r.0.0.mca 0 1" \

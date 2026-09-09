@@ -193,6 +193,14 @@
   `MinecraftForge.EVENT_BUS` (1122 shape) booted 5 mods then sat silent
   to the watchdog — 1.7.10 ticks flow on the FML bus only (the bridge
   itself registers there, B3 green).
+- 2026-09-09 : dev-client staging fixed (hub) : `PRISM_DIR` defaults to
+  a per-tag isolated root in `client-common.sh` (stage/verify/direct
+  agree by construction, live home still refused) ; `MATOU_MODS`
+  (default `example1`) DEV-builds + stages the sibling mod set,
+  metadata-aware (slim copies all, FAT only stages jars with Forge
+  metadata and refuses the rest loudly — minimap stages on 1710/1122,
+  names its missing wrapper on 1165/1201) ; VS Code tasks drop the
+  hardcoded `/tmp/matou-prism` and the stale row labels.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

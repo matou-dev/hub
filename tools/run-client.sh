@@ -27,8 +27,23 @@
 #   CLIENT_DIR work dir (default: live dir with -live -> -client)
 #   <TAG>_DIR  provisioned live dir, e.g. E3_DIR (default
 #              ${TMPDIR:-/tmp}/matou-<tag>-live)
-#   PRISM_DIR  Prism data root (default ~/.local/share/PrismLauncher;
+#   PRISM_DIR  Prism data root (default per-tag isolated root
+#              ${TMPDIR:-/tmp}/matou-<tag>-prism, same convention as the
+#              live/client dirs in client-common.sh; the live Prism home
+#              is refused loudly even when passed explicitly;
 #              the instance installs to $PRISM_DIR/instances/matou-<sfx>-dev)
+#   MATOU_MODS space-separated matou-dev sibling mods to DEV-build + stage
+#              (default "example1"; each needs ../<name>/java/src — absent
+#              dir fails loudly). Staging is metadata-aware: the mcmod.info
+#              era (flat classpath) copies every listed mod jar next to the
+#              bridge, while the mods.toml era (isolated jars) only stages
+#              a mod jar carrying Forge metadata (mods.toml or mcmod.info)
+#              and refuses a metadata-less one loudly — an unmarked jar
+#              would break the ModLauncher boot silently-ish. example1
+#              stays embedded in the FAT bridge (server parity) and is
+#              required there; minimap has no Forge wrapper yet, so it
+#              stages on slim eras and fails loud on FAT ones until that
+#              tranche lands (never skipped silently).
 #   PRISM_BIN  launcher binary (default prismlauncher on PATH)
 #   JAVA8_HOME / JAVA17_HOME per-bridge toolchain (defaults /usr/lib/jvm/...)
 #   FAT=0|1    override the derived slim-vs-FAT assembly (default derives
@@ -66,14 +81,15 @@ if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
 HUB_ABS="$(cd "$(dirname "$0")" && pwd)"
 cd "$BRIDGE"
 VERSION="${VERSION:-0.0-dev}"
-PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
 PRISM_BIN="${PRISM_BIN:-prismlauncher}"
 # Never touch the user's live Prism home: automated runs stage into
 # isolated roots only (a launch without -d once rewrote accounts.json).
+# PRISM_DIR already defaults to a per-tag isolated root (client-common.sh);
+# only an explicit live home lands here — refused loudly.
 case "${PRISM_DIR%/}" in
   "$HOME/.local/share/PrismLauncher")
     echo "FAIL run-client : PRISM_DIR is the live user dir ($HOME/.local/share/PrismLauncher)"
-    echo "fix: point PRISM_DIR at an isolated root (e.g. \${TMPDIR:-/tmp}/matou-<tag>-prism)"; exit 1;;
+    echo "fix: unset PRISM_DIR (per-tag isolated default) or point it at another isolated root"; exit 1;;
 esac
 
 command -v "$PRISM_BIN" >/dev/null 2>&1 \
@@ -81,8 +97,14 @@ command -v "$PRISM_BIN" >/dev/null 2>&1 \
 [ -x "$JB/java" ] || { echo "FAIL run-client : no Java $JAVA_MAJOR at <$JAVA_HOME>"; exit 1; }
 [ -x "$JB/javac" ] || { echo "FAIL run-client : no javac at <$JAVA_HOME>"; exit 1; }
 [ -d ../spi/java/src ] || { echo "FAIL run-client : spi sibling absent"; exit 1; }
-[ -d ../example1/java/src ] || { echo "FAIL run-client : example1 sibling absent"; exit 1; }
-[ -d ../minimap/java/src ] || { echo "FAIL run-client : minimap sibling absent"; exit 1; }
+# Dynamic matou-dev mod set (default: the proven content backend only).
+# Names, never paths: each must resolve to a sibling source tree.
+MATOU_MODS="${MATOU_MODS:-example1}"
+for m in $MATOU_MODS; do
+  case "$m" in ""|*/*|*.*) echo "FAIL run-client : MATOU_MODS bad entry <$m> (want plain sibling names, e.g. MATOU_MODS=\"example1 minimap\")"; exit 1;; esac
+  [ -d "../$m/java/src" ] \
+    || { echo "FAIL run-client : <$m> sibling absent (../$m/java/src; clone it next to hub or drop <$m> from MATOU_MODS)"; exit 1; }
+done
 command -v python3 >/dev/null || { echo "FAIL run-client : python3 required (Reobf/normjar)"; exit 1; }
 # Provisioning truth comes from the live pipeline, never re-derived here.
 SRG_NARROW="$LIVE_DIR/srg-narrow.srg"
@@ -113,28 +135,8 @@ if [ -n "${FAT:-}" ]; then
   case "$FAT" in 0|1) ;; *) echo "FAIL run-client : FAT=<$FAT> (want 0|1)"; exit 1;; esac
 elif [ "$MODS_STYLE" = "mods.toml" ]; then FAT=1; else FAT=0; fi
 
-# 1. DEV build (same flags as the bridge run-live.sh steps 3-4; dirty tree
-#    allowed). normjar/mkjar mirror run-live.sh (DEV bytes, not release).
-BLD="$CLIENT_DIR/build"
-rm -rf "$BLD" \
-  || { echo "FAIL run-client : cannot clear <$BLD>"; exit 1; }
-mkdir -p "$BLD/spi" "$BLD/ex1" "$BLD/mini" "$BLD/forge" "$BLD/jars"
-# Controlled tree, no spaces in class paths: word-splitting of $JFLAGS and
-# $files below is intended (same practice as run-live.sh).
-"$JB/javac" $JFLAGS -nowarn -d "$BLD/spi" $(find ../spi/java/src -name '*.java')
-"$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/ex1" $(find ../example1/java/src -name '*.java')
-"$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/mini" $(find ../minimap/java/src -name '*.java')
-"$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi:$BLD/ex1" -d "$BLD/forge" $(find tools/live/stub forge/src -name '*.java')
-EPOCH="$(git log -1 --format=%ct 2>/dev/null || date +%s)"
-printf 'Manifest-Version: 1.0\nImplementation-Version: %s\n' "$VERSION" > "$BLD/MANIFEST.MF"
-if [ "$MODS_STYLE" = "mods.toml" ]; then
-  mkdir -p "$BLD/modstoml/META-INF"
-  sed "s/@VERSION@/$VERSION/g" forge/src/META-INF/mods.toml > "$BLD/modstoml/META-INF/mods.toml"
-else
-  cat > "$BLD/mcmod.info" <<EOF
-[{"modid": "matoubridge", "name": "MatouBridge", "description": "SPI bridge for Minecraft $MC (reobfuscated SRG).", "version": "$VERSION", "mcversion": "$MC", "authorList": ["matou-dev"], "url": "https://github.com/matou-dev/bridge-$SFX"}]
-EOF
-fi
+# Jar helpers (mirror run-live.sh; DEV bytes, not release). Defined before
+# the build so the per-mod loop below can call them directly.
 normjar() {
   python3 - "$1" "$EPOCH" <<'EOF'
 import sys, zipfile, datetime
@@ -171,9 +173,48 @@ stage_packmcmeta() {
   esac
   printf '{"pack":{"pack_format":%s,"description":"%s"}}\n' "$PACK_FORMAT" "$2" > "$1/pack.mcmeta"
 }
+# True when the jar carries Forge mod metadata (mods.toml era or
+# mcmod.info era marker). A metadata-less jar in mods/ is inert on the
+# flat slim classpath but breaks the isolated FAT boot — callers decide
+# loudly on the answer, never silently.
+mod_has_metadata() {
+  "$JB/jar" tf "$1" 2>/dev/null | grep -q -e "META-INF/mods.toml$" -e "mcmod.info$"
+}
+
+# 1. DEV build (same flags as the bridge run-live.sh steps 3-4; dirty tree
+#    allowed). normjar/mkjar mirror run-live.sh (DEV bytes, not release).
+BLD="$CLIENT_DIR/build"
+rm -rf "$BLD" \
+  || { echo "FAIL run-client : cannot clear <$BLD>"; exit 1; }
+mkdir -p "$BLD/spi" "$BLD/forge" "$BLD/jars"
+EPOCH="$(git log -1 --format=%ct 2>/dev/null || date +%s)"
+printf 'Manifest-Version: 1.0\nImplementation-Version: %s\n' "$VERSION" > "$BLD/MANIFEST.MF"
+# Controlled tree, no spaces in class paths: word-splitting of $JFLAGS and
+# $files below is intended (same practice as run-live.sh).
+"$JB/javac" $JFLAGS -nowarn -d "$BLD/spi" $(find ../spi/java/src -name '*.java')
+MOD_CP="$BLD/spi"
+for m in $MATOU_MODS; do
+  mkdir -p "$BLD/mod-$m" "$BLD/modstage-$m"
+  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/mod-$m" $(find "../$m/java/src" -name '*.java')
+  cp -r "$BLD/mod-$m/"* "$BLD/modstage-$m/"
+  # Same pack.mcmeta discipline as the bridge jar below: a staged mod jar
+  # with Forge metadata on a PACK_FORMAT era must declare it, or modern
+  # Forge holds the "loading mods" warning screen (measured on 1201).
+  # Slim eras (PACK_FORMAT empty) stage bare jars, exactly as before.
+  stage_packmcmeta "$BLD/modstage-$m" "Matou $m DEV (hub run-client.sh, not release)"
+  mkjar "$BLD/jars/matou-$m.jar" "$BLD/modstage-$m"
+  MOD_CP="$MOD_CP:$BLD/mod-$m"
+done
+"$JB/javac" $JFLAGS -nowarn -cp "$MOD_CP" -d "$BLD/forge" $(find tools/live/stub forge/src -name '*.java')
+if [ "$MODS_STYLE" = "mods.toml" ]; then
+  mkdir -p "$BLD/modstoml/META-INF"
+  sed "s/@VERSION@/$VERSION/g" forge/src/META-INF/mods.toml > "$BLD/modstoml/META-INF/mods.toml"
+else
+  cat > "$BLD/mcmod.info" <<EOF
+[{"modid": "matoubridge", "name": "MatouBridge", "description": "SPI bridge for Minecraft $MC (reobfuscated SRG).", "version": "$VERSION", "mcversion": "$MC", "authorList": ["matou-dev"], "url": "https://github.com/matou-dev/bridge-$SFX"}]
+EOF
+fi
 mkjar "$BLD/jars/matou-spi.jar" "$BLD/spi"
-mkjar "$BLD/jars/matou-example1.jar" "$BLD/ex1"
-mkjar "$BLD/jars/matou-minimap.jar" "$BLD/mini"
 rm -rf "$BLD/bridgemod" && mkdir -p "$BLD/bridgemod"
 cp -r "$BLD/forge/"* "$BLD/bridgemod/"
 # Stubs are compile-only: they must never ship (a fake Block on the
@@ -187,7 +228,13 @@ if [ "$FAT" = "1" ]; then
   # D3, then E3): a slim bridge cannot see matou-spi.jar next to it, so
   # the bridge ships FAT — spi + example1 classes embedded, same as the
   # server deploy. The mcmod.info era (flat classpath) stays slim.
-  cp -r "$BLD/spi/"* "$BLD/ex1/"* "$BLD/bridgemod/"
+  # example1 stays required here: the default packs.cfg below wires its
+  # ExamplePack, and the FAT bridge is its only classpath home.
+  case " $MATOU_MODS " in
+    *" example1 "*) ;;
+    *) echo "FAIL run-client : MATOU_MODS=<${MATOU_MODS:-}> lacks example1 (FAT era embeds it — server parity, default packs.cfg wires it)"; exit 1;;
+  esac
+  cp -r "$BLD/spi/"* "$BLD/mod-example1/"* "$BLD/bridgemod/"
 fi
 if [ "$MODS_STYLE" = "mods.toml" ]; then
   mkdir -p "$BLD/bridgemod/META-INF"
@@ -202,7 +249,7 @@ mkjar "$BLD/jars/matoubridge.jar" "$BLD/bridgemod"
 normjar "$BLD/jars/matoubridge-reobf.jar"
 # Keep CellUnion compiled: verify-client-save.sh reuses it, so the
 # union logic is never duplicated between server verdict and client verify.
-"$JB/javac" -nowarn -cp "$BLD/spi:$BLD/ex1" -d "$BLD" tools/live/CellUnion.java
+"$JB/javac" -nowarn -cp "$MOD_CP" -d "$BLD" tools/live/CellUnion.java
 echo "ok run-client : dev jars built ($SFX, VERSION=$VERSION, DEV bytes, not release)"
 
 # 1b. Autoplay companion (DEV ONLY, AUTOPLAY=1): derive the companion
@@ -649,10 +696,32 @@ notes=matou-dev bridge-$SFX dev client (hub run-client.sh; DEV bytes, not releas
 EOF
 rm -f "$IDIR/minecraft/mods/"*.jar
 if [ "$FAT" = "1" ]; then
+  # Isolated jars (found live in D3, then E3): only the FAT bridge (spi +
+  # example1 embedded above) plus listed mod jars that carry Forge mod
+  # metadata. A metadata-less jar here would break the ModLauncher boot,
+  # so it fails loudly instead of staging a red instance — minimap has no
+  # Forge wrapper yet (pure SPI proof), which is exactly what this names.
   cp "$BLD/jars/matoubridge-reobf.jar" "$IDIR/minecraft/mods/matoubridge.jar"
+  for m in $MATOU_MODS; do
+    [ "$m" = "example1" ] && continue
+    if mod_has_metadata "$BLD/jars/matou-$m.jar"; then
+      cp "$BLD/jars/matou-$m.jar" "$IDIR/minecraft/mods/"
+      echo "ok run-client : staged mod <$m> (Forge metadata present)"
+    else
+      echo "FAIL run-client : mod <$m> has no Forge metadata (no mods.toml nor mcmod.info in matou-$m.jar) — FAT era isolates every mods/ jar"
+      echo "fix: drop <$m> from MATOU_MODS, or land its Forge wrapper (era metadata + entrypoint) first"; exit 1
+    fi
+  done
 else
-  cp "$BLD/jars/matou-spi.jar" "$BLD/jars/matou-example1.jar" "$BLD/jars/matoubridge-reobf.jar" "$IDIR/minecraft/mods/"
+  # Flat slim classpath (same 3-jar set the server deploys, plus every
+  # listed mod): non-mod jars are inert here, so the whole MATOU_MODS set
+  # stages — minimap rides along on 1710/1122 from the same build.
+  cp "$BLD/jars/matou-spi.jar" "$BLD/jars/matoubridge-reobf.jar" "$IDIR/minecraft/mods/"
+  for m in $MATOU_MODS; do
+    cp "$BLD/jars/matou-$m.jar" "$IDIR/minecraft/mods/"
+  done
   mv "$IDIR/minecraft/mods/matoubridge-reobf.jar" "$IDIR/minecraft/mods/matoubridge.jar"
+  echo "ok run-client : staged mods <$MATOU_MODS> (slim era, flat classpath)"
 fi
 rm -rf "$IDIR/minecraft/matou-content" && cp -r ../example1/content "$IDIR/minecraft/matou-content"
 if [ "${HAVE_AUTOPLAY:-0}" = "1" ]; then

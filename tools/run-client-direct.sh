@@ -18,9 +18,10 @@
 #      verdict on the save (world == pure union).
 #
 # Env (no machine paths hardcoded):
-#   PRISM_DIR  isolated root holding the staged instance (same value as
-#              step 1; the live Prism home is refused loudly, as in
-#              run-client.sh).
+#   PRISM_DIR  isolated root holding the staged instance (same per-tag
+#              isolated default as run-client.sh step 1 — pass the same
+#              explicit value in both steps, or set it in neither, never
+#              only one; the live Prism home is refused loudly).
 #   AUTOPLAY_WORLD  proof world name (default matou; same default as the
 #              companion mod and run-client.sh preseed — override in both
 #              steps together or not at all).
@@ -45,11 +46,10 @@ case "$SFX" in
   1165|1122|1201|1710) ;;
   *) echo "FAIL run-direct : bridge <$SFX> has no measured client pins (provision once, pin, extend the table below)"; exit 1;;
 esac
-PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
 case "${PRISM_DIR%/}" in
   "$HOME/.local/share/PrismLauncher")
     echo "FAIL run-direct : PRISM_DIR is the live user dir ($HOME/.local/share/PrismLauncher)"
-    echo "fix: point PRISM_DIR at the same isolated root used for staging"; exit 1;;
+    echo "fix: unset PRISM_DIR (per-tag isolated default, same as staging) or point it at the same isolated root used for staging"; exit 1;;
 esac
 # Measured vanilla version jsons (piston-meta manifest v2, never silent
 # upgrade — one row per proven SFX, extended version by version):

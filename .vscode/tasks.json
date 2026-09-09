@@ -7,10 +7,7 @@
             "type": "shell",
             "command": "sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
             "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "PRISM_DIR": "/tmp/matou-prism"
-                }
+                "cwd": "${workspaceFolder}"
             },
             "group": "build",
             "presentation": {
@@ -25,10 +22,7 @@
             "type": "shell",
             "command": "LAUNCH=1 sh tools/run-client.sh --bridge ../bridge-${input:bridge}",
             "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "PRISM_DIR": "/tmp/matou-prism"
-                }
+                "cwd": "${workspaceFolder}"
             },
             "group": "build",
             "presentation": {
@@ -43,10 +37,7 @@
             "type": "shell",
             "command": "sh tools/verify-client-save.sh --bridge ../bridge-${input:bridge} \"${input:worldName}\"",
             "options": {
-                "cwd": "${workspaceFolder}",
-                "env": {
-                    "PRISM_DIR": "/tmp/matou-prism"
-                }
+                "cwd": "${workspaceFolder}"
             },
             "group": "test",
             "presentation": {
@@ -60,7 +51,7 @@
         {
             "id": "bridge",
             "type": "pickString",
-            "description": "Bridge to stage (1165 proven; 1201/1122 untested; 1710 experimental)",
+                "description": "Bridge to stage (all four direct-PROVEN: 1165/1201/1122/1710)",
             "default": "1165",
             "options": [
                 "1165",

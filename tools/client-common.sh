@@ -28,6 +28,11 @@
 #           exactly one ../bridge-*/ sibling resolves, else loud failure.
 # Exports: BRIDGE SFX MC FORGE_COMP LIVE_TAG LIVE_DIR CLIENT_DIR INST
 #          JB JFLAGS JAVA_HOME SRG_DEFAULT ASM_PIN NOTE PACK_FORMAT
+#          PRISM_DIR
+# PRISM_DIR is the Prism data root the dev-client instance stages into.
+# Default is a per-tag isolated root (same TMPDIR convention as LIVE_DIR,
+# so stage/verify/direct agree by construction — never the live Prism
+# home, which every consumer refuses loudly when passed explicitly).
 # PACK_FORMAT is the resource-pack format the DEV mods/ jars must declare
 # in pack.mcmeta (empty = stage none): modern Forge holds the "loading
 # mods" warning screen when a jar carries no pack metadata (measured on
@@ -85,6 +90,7 @@ CLIENT_DIR="${CLIENT_DIR:-$(printf '%s' "$LIVE_DIR" | sed 's/-live$/-client/')}"
 [ "$CLIENT_DIR" != "$LIVE_DIR" ] \
   || { echo "FAIL client-common : CLIENT_DIR == LIVE_DIR ($LIVE_DIR, client build/ would sit inside the live cache)"; return 1 2>/dev/null || exit 1; }
 INST="matou-$SFX-dev"
+PRISM_DIR="${PRISM_DIR:-${TMPDIR:-/tmp}/matou-$(printf '%s' "$LIVE_TAG" | tr 'A-Z' 'a-z')-prism}"
 if [ "$JAVA_MAJOR" = "17" ]; then
   JAVA_HOME="${JAVA17_HOME:-/usr/lib/jvm/java-17-openjdk}"
   JFLAGS="--release 8"
