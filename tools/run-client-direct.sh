@@ -3,7 +3,9 @@
 #
 # Plays the staged dev-client instance without any launcher: the official
 # Forge installer provisions the vanilla + Forge client runtime once
-# (pinned bytes, cached), then plain java replays the production
+# (pinned bytes, cached) on 1165+; 1710 assembles it from pinned bytes
+# instead (the 1614 installer has no --installClient — measured
+# UnrecognizedOptionException, never assumed). Then plain java replays the
 # ModLauncher invocation headless under xvfb-run. No Prism process ever
 # runs here (no accounts, no wizard, no Qt, no Wayland leak by
 # construction) — Prism stays a manual-dev convenience only.
@@ -40,7 +42,7 @@ if [ "${1:-}" = "--bridge" ]; then BRIDGE="${2:-}"; shift 2; fi
 HUB_TOOLS="$(cd "$(dirname "$0")" && pwd)"
 cd "$BRIDGE"
 case "$SFX" in
-  1165|1122|1201) ;;
+  1165|1122|1201|1710) ;;
   *) echo "FAIL run-direct : bridge <$SFX> has no measured client pins (provision once, pin, extend the table below)"; exit 1;;
 esac
 PRISM_DIR="${PRISM_DIR:-$HOME/.local/share/PrismLauncher}"
@@ -61,6 +63,9 @@ case "$SFX" in
   1201)
     VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/f54b1a9b7e7fe6044f7f6525f1eddfe40ee771e1/1.20.1.json"
     VANILLA_JSON_SHA1="f54b1a9b7e7fe6044f7f6525f1eddfe40ee771e1";;
+  1710)
+    VANILLA_JSON_URL="https://piston-meta.mojang.com/v1/packages/ed5d8789ed29872ea2ef1c348302b0c55e3f3468/1.7.10.json"
+    VANILLA_JSON_SHA1="ed5d8789ed29872ea2ef1c348302b0c55e3f3468";;
 esac
 FORGE_ID="$MC-forge-$FORGE_COMP"
 GDIR="$PRISM_DIR/instances/$INST/minecraft"
@@ -102,7 +107,76 @@ if [ ! -f "$GDIR/launcher_profiles.json" ]; then
   printf '{"profiles":{"(Default)":{"name":"(Default)","type":"latest-release"}},"selectedProfile":"(Default)","clientToken":"00000000-0000-4000-8000-000000000000","authenticationDatabase":{},"launcherVersion":{"name":"2.1.0","format":21}}' > "$GDIR/launcher_profiles.json"
   echo "note run-direct : seeded minimal launcher profile (vanilla shape, no accounts)"
 fi
-if [ ! -f "$GDIR/versions/$FORGE_ID/$FORGE_ID.json" ]; then
+if [ "$SFX" = "1710" ]; then
+  # 1710 assembles the client runtime from pinned bytes: the 1614 installer
+  # has no --installClient (measured), so there is no Forge version json on
+  # disk. Sources, all pinned: the Forge version fragment comes from
+  # install_profile.json inside the pinned installer bytes (same trust chain
+  # as step 1); the 18 Forge libs are reused byte-identical from the bridge
+  # B3 server provision (universal + ASM sha1-reverified against the bridge
+  # pins, the rest presence-checked — same Maven bytes the server runs);
+  # the vanilla primary + 33 libs come from the pinned vanilla json
+  # (sha1-addressed, fetched missing-only by the assembly below).
+  UNI_PIN="$(sed -n 's/^UNIVERSAL_SHA1="//p' tools/run-live.sh | cut -d'"' -f1)"
+  ASM_SHA1_PIN="$(sed -n 's/^ASM_SHA1="//p' tools/run-live.sh | cut -d'"' -f1)"
+  [ -n "$UNI_PIN" ] && [ -n "$ASM_SHA1_PIN" ] \
+    || { echo "FAIL run-direct : no UNIVERSAL_SHA1/ASM_SHA1 pins in tools/run-live.sh (bridge owns them)"; exit 1; }
+  echo "note run-direct : assembling 1710 runtime from pinned bytes (no installer client)"
+  python3 - "$INSTALLER" "$LIVE_DIR" "$GDIR" "$FORGE_ID" "$VJSON" "$UNI_PIN" "$ASM_SHA1_PIN" <<'EOF'
+import glob, hashlib, json, os, shutil, sys, urllib.request, zipfile
+installer, live, gdir, fid, vjson, uni_pin, asm_pin = sys.argv[1:8]
+serv = os.path.join(live, "server")
+cands = glob.glob(os.path.join(serv, "forge-*-universal.jar"))
+assert len(cands) == 1, "E_DIRECT_1710:want exactly one server universal, got %s" % cands
+uni = cands[0]
+got = hashlib.sha1(open(uni, "rb").read()).hexdigest()
+assert got == uni_pin, "E_DIRECT_1710:universal sha1 drift (want %s)" % uni_pin
+prof = json.loads(zipfile.ZipFile(installer).read("install_profile.json"))
+libs = prof["versionInfo"]["libraries"]
+def mpath(coord):
+    parts = coord.split(":")
+    assert len(parts) == 3, "E_DIRECT_1710:unshaped coordinate <%s>" % coord
+    g, a, v = parts
+    return "/".join([g.replace(".", "/"), a, v, "%s-%s.jar" % (a, v)])
+n_seed = 0
+for lib in libs:
+    coord = lib["name"]
+    rel = mpath(coord)
+    dst = os.path.join(gdir, "libraries", rel)
+    if coord.startswith("net.minecraftforge:forge:"):
+        src = uni
+    else:
+        src = os.path.join(serv, "libraries", rel)
+        assert os.path.isfile(src), "E_DIRECT_1710:absent server lib <%s> (run bridge tools/run-live.sh first)" % src
+    if coord.startswith("org.ow2.asm:asm-all:"):
+        got = hashlib.sha1(open(src, "rb").read()).hexdigest()
+        assert got == asm_pin, "E_DIRECT_1710:ASM sha1 drift (want %s)" % asm_pin
+    if not os.path.isfile(dst):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(src, dst)
+        n_seed += 1
+    art = {"path": rel}
+    if coord.startswith("net.minecraftforge:forge:"):
+        art["sha1"] = uni_pin
+    if coord.startswith("org.ow2.asm:asm-all:"):
+        art["sha1"] = asm_pin
+    lib["downloads"] = {"artifact": art}
+prof["versionInfo"]["id"] = fid
+fdir = os.path.join(gdir, "versions", fid)
+os.makedirs(fdir, exist_ok=True)
+json.dump(prof["versionInfo"], open(os.path.join(fdir, fid + ".json"), "w"), indent=1)
+vv = json.load(open(vjson))
+dl = vv["downloads"]["client"]
+pj = os.path.join(gdir, "versions", vv["id"], vv["id"] + ".jar")
+if not os.path.isfile(pj):
+    os.makedirs(os.path.dirname(pj), exist_ok=True)
+    print("note run-direct : fetching vanilla primary (network once)", file=sys.stderr)
+    urllib.request.urlretrieve(dl["url"], pj)
+got = hashlib.sha1(open(pj, "rb").read()).hexdigest()
+assert got == dl["sha1"], "E_DIRECT_1710:vanilla primary sha1 drift"
+print("ok run-direct : 1710 runtime assembled (%d forge libs seeded, %s)" % (n_seed, fid), file=sys.stderr)
+EOF
+elif [ ! -f "$GDIR/versions/$FORGE_ID/$FORGE_ID.json" ]; then
   echo "note run-direct : installing client runtime (network once, official installer)"
   "$JB/java" -Djava.awt.headless=true -jar "$INSTALLER" --installClient "$GDIR" >/tmp/matou-direct-install.log 2>&1 \
     || { echo "FAIL run-direct : --installClient (see /tmp/matou-direct-install.log)"; exit 1; }
@@ -273,6 +347,9 @@ subs = {
     "auth_access_token": "0",
     # Offline placeholders (no Xbox auth here): empty like every offline
     # launcher — online-only features (Realms, skins) are dead anyway.
+    # user_properties is a 1.7.10-era placeholder (gone by 1.12): offline
+    # launchers pass an empty JSON object.
+    "user_properties": "{}",
     "auth_xuid": "",
     "clientid": "",
     "user_type": "mojang",
@@ -346,6 +423,10 @@ case "$LAUNCH_LINE" in
   *) echo "FAIL run-direct : launch args polluted (first line is not -Xmx; a stray stdout print leaked into the assembly)"; exit 1;;
 esac
 printf '%s\n%s\n' "$JB/java" "$LAUNCH_LINE" > "$UP/last-launch.txt"
+if [ "$SFX" = "1710" ]; then
+  echo "FAIL run-direct : 1710 join path unmeasured (no --quickPlaySingleplayer pre-1.11; companion port TODO — provision + assembly above are the measured part)"
+  exit 1
+fi
 
 # 5. Play headless (no launcher, no Qt, no accounts — java + Xvfb only), then
 #    judge the save. The exit code is reported but the verdict owns status.

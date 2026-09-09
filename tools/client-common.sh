@@ -60,7 +60,7 @@ case "$SFX" in
     SRG_DEFAULT="$HOME/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/srgs/srg-mcp.srg"
     ASM_PIN="asm-all-5.0.3.jar"
     PACK_FORMAT=""
-    NOTE="EXPERIMENTAL: Prism 1.7.10 Forge provisioning unproven (mmc-pack Forge component best-effort); server proof stays the B3 verdict.";;
+    NOTE="EXPERIMENTAL: Prism 1.7.10 Forge provisioning unproven (mmc-pack Forge component best-effort); direct client runtime assembled from pinned bytes (1614 installer has no --installClient), join path TODO; server proof stays the B3 verdict.";;
   1122) MC="1.12.2"; FORGE_COMP="14.23.5.2860"; LIVE_TAG="C3"; JAVA_MAJOR="8"
     SRG_DEFAULT=""
     ASM_PIN="asm-debug-all-5.2.jar"

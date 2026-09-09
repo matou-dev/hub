@@ -44,6 +44,21 @@ bridge reads `config/matoubridge/packs.cfg` RELATIVE, Q1-passive.
 default replays `verify-client-save.sh` and the verdict owns the exit
 status.
 
+1710 provision differs (measured: the 1614 installer CLI has no
+`--installClient` — `UnrecognizedOptionException`, so the installer path
+above cannot run it): the script assembles the 1710 runtime from pinned
+bytes instead — the Forge version fragment from `install_profile.json`
+inside the pinned installer, the 18 Forge libraries reused byte-identical
+from the bridge B3 server provision (universal + ASM sha1-reverified
+against the bridge pins), the vanilla primary + 33 libraries from the
+pinned vanilla json (sha1-addressed). The written Forge json carries
+injected `downloads.artifact` entries so the generic assembly picks every
+Forge lib up — a seeded-but-unlisted lib would be a silent omission. The
+1.7.10-only `${user_properties}` placeholder substitutes `{}` offline. The
+game itself never launches for 1710 yet: the join path is unmeasured (no
+quick-play pre-1.11) and the script refuses loudly after assembly until
+the companion port lands.
+
 Per-era launch assembly (measured per version, never assumed): modern
 era (arguments dict, e.g. 1165) assembles jvm+game from the json dicts;
 legacy era (<=1.12, no arguments dict, LaunchWrapper main, e.g. 1122)
@@ -115,9 +130,9 @@ Render thread idle in glfwWaitEventsTimeout).
 
 ## What would re-open it
 
-- The remaining 1710 row: provision once, pin its vanilla json +
-  installer + ASM row, port the companion WANT + preseed shape, extend
-  the `case SFX` table and the era assembly if the json shape is new —
-  never widen the guard silently.
+- The remaining 1710 work: provision is landed (assembled runtime, pins
+  in the `case SFX` tables); left unmeasured are the companion WANT +
+  preseed shape, the join path (no quick-play pre-1.11), and the live run
+  itself — never widen the guard silently.
 - Prism stays the manual-dev convenience; automation never grows a
   launcher dependency back.

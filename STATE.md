@@ -166,7 +166,16 @@
   cells, stone only — same count as every live proof). Same round :
   autoplay derive SRG-slot fix (Reobf maps MCP->LEFT), WorldGenSettings
   preseed (legacy generator tags ignored on 1.16.5), Qt-xcb pin under
-  XVFB, game-dir CWD (the bridge reads packs.cfg relative).
+   XVFB, game-dir CWD (the bridge reads packs.cfg relative).
+- 2026-09-09 : direct client 1710 provision IN PROGRESS (red, not green) :
+  the 1614 installer CLI has no `--installClient` (measured
+  `UnrecognizedOptionException`), so `run-client-direct.sh` assembles the
+  1710 runtime from pinned bytes (Forge fragment from
+  `install_profile.json`, 18 libs from the B3 server provision with
+  universal + ASM sha1-reverified, vanilla primary + 33 libs from the
+  pinned `ed5d8789` json) ; the game never launches yet — join path
+  unmeasured (no quick-play pre-1.11), the script refuses loudly after
+  assembly until the companion port lands.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
