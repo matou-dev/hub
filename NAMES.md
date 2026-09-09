@@ -8,10 +8,10 @@ CurseForge). Statut PROPOSED = pas encore réservé sur la plateforme.
 
 | Repo GitHub | Maven | Modid FML | Namespace SPI | Modrinth | CurseForge | Statut |
 |---|---|---|---|---|---|---|
-| `matou-dev/spi` | `fr.iamacat:matou-spi` | — (lib, pas de mod) | `matou:` | `matou-spi` | — (lib, plus tard) | PROPOSED |
+| `matou-dev/spi` | `fr.iamacat:matou-spi` | — (lib, pas de mod) | `matou:` | `matou-spi` (`FulzYVEA`, draft) | — (lib, plus tard) | DRAFT MR |
 | `matou-dev/bridge-1710` | `fr.iamacat:matou-bridge-1710` | `matoubridge` | — (traducteur, pas de contenu) | — (jamais publié seul) | — (jamais publié seul) | PROPOSED |
-| `matou-dev/example1` | — (mod, pas publié maven) | `example1` | `example1:` | `matou-example1` | `matou-example1` | PROPOSED |
-| `matou-dev/minimap` | — (mod, pas publié maven) | `matouminimap` | `minimap:` | `matou-minimap` | `matou-minimap` | PROPOSED |
+| `matou-dev/example1` | — (mod, pas publié maven) | `example1` | `example1:` | `matou-example1` (`4QYpffM9`, draft) | `matou-example1` | DRAFT MR |
+| `matou-dev/minimap` | — (mod, pas publié maven) | `matouminimap` | `minimap:` | `matou-minimap` (`bUEFEfMK`, draft) | `matou-minimap` | DRAFT MR |
 
 Notes :
 - `matoubridge` diffère volontairement de l'ancien `matouengine` (matou-engine)
