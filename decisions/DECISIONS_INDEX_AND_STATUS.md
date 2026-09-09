@@ -52,6 +52,7 @@ recreates the exact drift it is supposed to fix.
 - CI_SIBLING_REF_MAIN.md : active (roadmap -)
 - DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
 - DEV_CLIENT_SSOT.md : active (roadmap -)
+- DEV_LOOP.md : active (roadmap -)
 - DIRECT_CLIENT_PROOF.md : active (roadmap -)
 - DOCS_DEFINITION_OF_DONE.md : active (roadmap -)
 - FOUNDATION_QF1_QH1.md : active (roadmap -)

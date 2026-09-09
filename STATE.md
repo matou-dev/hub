@@ -201,6 +201,12 @@
   metadata and refuses the rest loudly — minimap stages on 1710/1122,
   names its missing wrapper on 1165/1201) ; VS Code tasks drop the
   hardcoded `/tmp/matou-prism` and the stale row labels.
+- 2026-09-09 : fast dev loop (hub `tools/dev-loop.sh`, NOT a gate) :
+  E0 pure in seconds by default (hub check + bridge check with LIVE
+  cleared), `--server` / `--client` opt-in only after E0 green,
+  `--offline` reuses the provision cache ; live proofs stay full-length
+  and verdict-owned, the loop only decides when to pay for them
+  (`decisions/DEV_LOOP.md`).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
