@@ -8,7 +8,7 @@
 set -eu
 HUB=$(cd "$(dirname "$0")/.." && pwd)
 PARENT=$(dirname "$HUB")
-DEFAULT_REPOS="hub spi bridge-1710 bridge-1122 example1 minimap"
+DEFAULT_REPOS="hub spi bridge-1710 bridge-1122 bridge-1201 example1 minimap"
 EXEC=0
 MSG=""
 REQ=""

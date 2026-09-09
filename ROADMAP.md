@@ -23,6 +23,9 @@
 | C1 forge-reel-1122 | Bridge 1.12.2 Forge 2860 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
 | C2 contenu-wire-1122 | PackWire.bind 1122 + ForgeContent + packs.cfg, E2E pur gate | done 2026-09-09 |
 | C3 preuve-live-1122 | Forge 2860 live run : bind reel + tick serveur, world == pure union | done 2026-09-09 |
+| D1 forge-reel-1201 | Bridge 1.20.1 Forge 47.2.0 : seam pur + Mod FML passif, gate 2 étages | done 2026-09-09 |
+| D2 contenu-wire-1201 | PackWire.bind 1201 + ForgeContent + packs.cfg, E2E pur gate | done 2026-09-09 |
+| D3 preuve-live-1201 | Forge 47.2.0 live run : bind reel + tick serveur, world == pure union | todo |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =

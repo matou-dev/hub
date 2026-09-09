@@ -52,8 +52,12 @@
   drops assembled + self-verified both sides (pins, reobf, java-52,
   SHA256SUMS), tags pushed (spi/1710/1122), 3 GitHub releases (spi
   source + 2 server drops with `structure.matou`). Same round:
-  `run-live.sh` 1710 seam fix (no `java/src` stage), `AGENTS.md`
-  6-repo fix, GitHub descriptions set (6/6).
+   `run-live.sh` 1710 seam fix (no `java/src` stage), `AGENTS.md`
+   6-repo fix, GitHub descriptions set (6/6).
+- 2026-09-09 : `bridge-1201` scaffolded (1.20.1/Forge 47.2.0, sink modern,
+  mapping derive, ref bridge-1122, pin v1.1.0) : etages 1+2 green at
+  scaffold, parity holds over 3 bridges ; phases D1-D3 opened, D3 live TODO
+  (placeholder fails loud until ported from bridge-1122).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
@@ -76,5 +80,8 @@
 - C1 forge-reel-1122 : done 2026-09-09
 - C2 contenu-wire-1122 : done 2026-09-09
 - C3 preuve-live-1122 : done 2026-09-09
-- 21/21 phases done
+- D1 forge-reel-1201 : done 2026-09-09
+- D2 contenu-wire-1201 : done 2026-09-09
+- D3 preuve-live-1201 : todo
+- 23/24 phases done
 <!-- END GENERATED:phases -->

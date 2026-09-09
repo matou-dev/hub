@@ -1,7 +1,7 @@
 # matou-dev — agent entry point (SSOT org)
 
 **Ce fichier seul gouverne le travail dans l'org.** Tout autre fichier agent
-des 5 repos est un pointeur d'une ligne vers ici.
+des 6 repos est un pointeur d'une ligne vers ici.
 
 > **State : voir `STATE.md` (présent) + `ROADMAP.md` (file).** Une ligne est
 > done seulement quand ses gates passent verts.
@@ -15,6 +15,7 @@ des 5 repos est un pointeur d'une ligne vers ici.
 | `matou-dev/spi` | contrat pur, zéro MC | `zero-mc-import` |
 | `matou-dev/bridge-1710` | seul traducteur MC 1.7.10, modid `matoubridge` | `no-legacy-matoulib` |
 | `matou-dev/bridge-1122` | seul traducteur MC 1.12.2, modid `matoubridge` | `no-legacy-matoulib` |
+| `matou-dev/bridge-1201` | seul traducteur MC 1.20.1, modid `matoubridge` | `no-legacy-matoulib` |
 | `matou-dev/example1` | preuve SPI contenu, zéro MC | `zero-mc-import` |
 | `matou-dev/minimap` | preuve SPI client, zéro MC | `zero-mc-import` |
 
