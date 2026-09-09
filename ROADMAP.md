@@ -20,6 +20,9 @@
 | B4 structures-wire | StructurePlaceJob pur + recursive parts + palette aliases + V3 volume landing, E2E pur gate | done 2026-09-09 |
 | B5 live-structures | Forge 1614 live hut composite 1274 cells, verdict slice from packs.cfg | done 2026-09-09 |
 | B6 cross-file-parts | fromFiles multi-fichiers + pack structureFiles/structureRoot, imports parser-enforced, live hut re-proof | done 2026-09-09 |
+| C1 forge-reel-1122 | Bridge 1.12.2 Forge 2860 : seam pur + Mod FML passif, gate 2 étages | todo |
+| C2 contenu-wire-1122 | PackWire.bind 1122 + ForgeContent + packs.cfg, E2E pur gate | todo |
+| C3 preuve-live-1122 | Forge 2860 live run : bind reel + tick serveur, world == pure union | todo |
 
 Contexte décisions : Q1 cohabitation 1.7.10 passive + multi-version ouvert ;
 Q2 layering strict zéro-MC submods ; Q3-Q4 bypass nos contenus (owned =
