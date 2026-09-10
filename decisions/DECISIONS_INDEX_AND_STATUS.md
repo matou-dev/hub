@@ -102,6 +102,7 @@ is the same lie class as the Problem above.
 - NAMING_QN1_QN3.md : active (maturity unrated, scope shared, roadmap -)
 - RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
 ### spec
+- ITEM_REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
 - LOOT.md : active (maturity prototype, scope shared, roadmap -)
 - REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
 - SHARED_APPLY_SEAM_V1_1_0.md : active (maturity standard, scope shared, roadmap -)

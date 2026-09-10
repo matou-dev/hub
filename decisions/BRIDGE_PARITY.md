@@ -89,6 +89,7 @@ never with the code copy.
 | Vocabulary seals, T3 (`SPI_STATE_VOCABULARY.md`) | live | live | live | live |
 | Repop hook+seal, `E_SPIKE_*` (`REPOP_SPIKE.md`) | live | live | live | live |
 | Pack-driven loot/spawn policy, T4 (`SPI_STATE_VOCABULARY.md`) | live | live | live | live |
+| Item registration MatouItem, `E_REG_ITEM` (`ITEM_REGISTRATION.md`) | live | shell | shell | shell |
 
 ## Gates
 
