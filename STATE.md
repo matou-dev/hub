@@ -447,6 +447,21 @@
   (1922 cells — 1274 + 648 vein band y=60..61, same count as the 1710
   vein proof : same content, fourth/fifth/sixth runtime).
   `PORT_QUEUE` vein row live x4.
+- 2026-09-10 : loot seam E0-landed on bridge-1122 (bridge-1122
+  `8ea7a2e` : `DropStore`/`LootSeal`/`OperatorPolicy` byte-identical
+  copies, `LootCheck` battery + comparateur + overrides green,
+  1122-native hooks `onHarvest`/`onKill`/`lootTick`/`dropCarrier`
+  stub-compile green, `no-stub-const` + `no-lateral-import` gates
+  ported ; run-live.sh stages java/src into the bridge jar, narrow map
+  8→21 rows with a primitive-field derive fix, `E_LOOT` refusal grep).
+  1122-native spelling (measured at write time, proven at live time) :
+  `BlockEvent` world/pos/state (no x/y/z ints), kills through
+  `LivingEvent.getEntityLiving()`, sink `World.spawnEntity`, coords
+  through declaring `Vec3i`, inherited members through declaring
+  `Entity` ; T1 any-kill-pays (no species filter until beast
+  registration). Live proof TODO (companion harvest/kill/poll legs).
+  `PORT_QUEUE` loot + vocabulary rows e0 on 1122 (T3 seals ride the
+  loot tranche, no separate port).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
