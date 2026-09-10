@@ -301,6 +301,14 @@ for lib in f["libraries"] + v["libraries"]:
             cp.append(need(dl["artifact"], "natives-lib"))
         continue
     if key in seen:
+        # Deduped main lib still donates its natives: vanilla repeats the
+        # same group:artifact twice (plain entry, then the natives entry
+        # with classifiers) — skipping the second wholesale leaves the
+        # natives dir empty and LWJGL dies with liblwjgl.so missing
+        # (measured on 1165). Main jar stays Forge-first, natives additive.
+        dl = lib.get("downloads", {})
+        if "classifiers" in dl and "natives-linux" in dl["classifiers"]:
+            natives.append(need(dl["classifiers"]["natives-linux"], "natives"))
         continue
     seen.add(key)
     dl = lib.get("downloads", {})
