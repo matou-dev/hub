@@ -36,7 +36,8 @@ des 7 repos est un pointeur d'une ligne vers ici.
 
 Avant struct, fonction de conversion ou fixture : grep workspace si le concept
 existe déjà sous un autre nom (un audit sans grep est invalide). Type partagé
-= base commune, jamais d'import latéral. Fichier vers 450 lignes = alerte de
+= base commune, jamais d'import latéral. Fichier vers 450 lignes effectives
+(eSLOC, hors commentaires et lignes vides — `tools/check_sloc.py`) = alerte de
 conception (table-driven, fusion, suppression — jamais split satellite).
 Si du code existant — ou ce qu'on s'apprête à écrire — contredit le layering
 Q1-Q11 : STOP + signaler avec preuve `file:line`, jamais d'extension

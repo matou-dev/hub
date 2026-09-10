@@ -20,3 +20,4 @@ echo "ok (hub-check)"
 python3 "$SCRIPT_DIR/check_state.py" $MODE
 sh "$SCRIPT_DIR/check-decisions.sh" $MODE
 sh "$SCRIPT_DIR/check-bridges.sh"
+python3 "$SCRIPT_DIR/check_sloc.py" --self-test

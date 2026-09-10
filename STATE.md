@@ -939,6 +939,11 @@
   unmodified, parity untouched, no re-pin, no live re-proof — public
   API, sealed values and `E_*` codes unchanged). The 450-line design alert
   is closed.
+- 2026-09-11 : effective SLOC standard adopted from CatzEngineNext
+  (`decisions/EFFECTIVE_SLOC.md`, tool `tools/check_sloc.py`, `AGENTS.md`
+  §3 amended) : blank lines and comments never count against design alerts ;
+  `code_part` + `effective_sloc` state machine with 6 self-test cases wired
+  into `tools/check.sh` ; `ExamplePack` sits at 297 eSLOC (341 raw).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

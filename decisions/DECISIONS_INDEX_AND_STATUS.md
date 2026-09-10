@@ -94,6 +94,7 @@ is the same lie class as the Problem above.
 - DEV_LOOP.md : active (maturity unrated, scope hub, roadmap -)
 - DIRECT_CLIENT_PROOF.md : active (maturity unrated, scope client, roadmap -)
 - DOCS_DEFINITION_OF_DONE.md : active (maturity unrated, scope hub, roadmap -)
+- EFFECTIVE_SLOC.md : active (maturity unrated, scope hub, roadmap -)
 - FOUNDATION_QF1_QH1.md : active (maturity unrated, scope hub, roadmap -)
 - HEADLESS_XVFB_QT_XCB.md : active (maturity unrated, scope client, roadmap -)
 - LAYER_Q1_Q11.md : active (maturity unrated, scope shared, roadmap -)
