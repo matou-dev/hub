@@ -9,7 +9,9 @@ roadmap: -
 # Registration — real custom ore, bridge-owned generic block
 
 Date: 2026-09-10
-Status: active (first consumer: bridge-1710 `Example1Mod` preInit, live-proven 2026-09-10)
+Status: active (first consumer: bridge-1710 `Example1Mod` preInit,
+live-proven 2026-09-10; second consumer: bridge-1122 registry-event
+`Example1Mod`, live-proven 2026-09-10 — block-only both, no beast)
 
 ## Problem
 
@@ -63,7 +65,22 @@ from the spec — never hardcoded per content).
   `E_REG_UNRESOLVED` (pack read), `E_REG_BEAST` (beast spec),
   `E_REG_DUP` / `E_REG_SPEC` / `E_REG_NOSPEC` / `E_REG_BLOCK` /
   `E_REG_TABLE` (spec shape); sibling shells throw
-  `E_REG_SHELL:unwired` and point here.
+  `E_REG_SHELL:unwired` and point here. Block-only ports (no beast
+  path, `MatouEntity` stays shelled) narrow the set to the six
+  non-beast codes — still cited, still green under dim 4a.
+- Ports: 1122 does NOT repeat the 1710 shape — 1.12.2 Forge 2860 has
+  no `GameRegistry.registerBlock` (measured: absent from the pinned
+  universal by `javap`, the earlier same-shape claim was intent, never
+  measured). Version-native 1122: preInit queues validated specs,
+  `RegistryEvent.Register<Block>` on the Forge bus registers them
+  (`@Mod.EventBusSubscriber`), init verifies + prints the same
+  `registered <…> id …` line; live-proven 2026-09-10 on Forge 2860
+  (bridge-1122 `49aa98a`, my_ore id 253 dynamic, world == pure union
+  1274 cells ids 1,253). 1165/1201 use `DeferredRegister` — same
+  `BlockSpec` in, native call out, E0-landed 2026-09-10
+  (bridge-1165 `02e29a4`, bridge-1201 `37fb977`), live TODO. One spec
+  per content, one generic class per bridge, never a `Block` subclass
+  in `example1` (Q2 zero-MC holds).
 - Stubs/pins: `tools/live/stub/net/minecraft/block/Block.java:16`
   today pins `getBlockFromName` plus the registration surface
   (`run-live.sh:84-94`); the tranche adds stub members plus pins for
@@ -88,11 +105,13 @@ from the spec — never hardcoded per content).
   Live-proven 2026-09-10 on Forge 1614: `my_ore` id 165, world == pure
   union (1274 cells, ids 1,165); repop seam re-proven same day
   (`SPIKE=1` direct client: mined tick 1000, repopped 1199, delay
-  exactly 200).
-- Ports: 1122 repeats the same shape (`GameRegistry`); 1165/1201 use
-  `DeferredRegister` — same `BlockSpec` in, native call out. One spec
-  per content, one generic class per bridge, never a `Block` subclass
-  in `example1` (Q2 zero-MC holds).
+  exactly 200). Second runtime 2026-09-10 on Forge 2860: `my_ore` id
+  253 dynamic, world == pure union (1274 cells, ids 1,253 —
+  bridge-1122 `49aa98a`).
+- Port rule (measured on 1122, applies to every block-owning bridge):
+  same `BlockSpec` in, native call out. One spec per content, one
+  generic class per bridge, never a `Block` subclass in `example1`
+  (Q2 zero-MC holds).
 
 Explicit non-goals for tranche 1: metadata/TileEntity restore, one
 `Block` subclass per content, second custom block (rides the same path
@@ -108,6 +127,47 @@ with no new codes when it comes).
 - Live proof green on Forge 1614: world contains `example1:my_ore`
   cells at the wired positions (dynamic ID resolved per name), the
   rest == pure union, and the repop seam stays green (`SPIKE=1` run).
+
+## Port lessons (1122 block-only, 2026-09-10)
+
+Measured porting registration off the lead bridge — each applies to
+every block-owning bridge (1165/1201 live tranches clear the same
+bars, flagged at their E0, not solved there):
+
+- `GameRegistry` is not a portable shape: 2860 has no
+  `registerBlock` (`javap` on the pinned universal). Port from the
+  spec (`BlockSpec` in, native call out), never from the 1710 calls;
+  an in-repo "same shape" claim is intent until a `javap` confirms
+  it.
+- Hierarchy-aware reobf ships with the tranche: inherited member refs
+  compile with the project class as owner (`MatouBlock.setHardness`
+  died `NoSuchMethodError` at the registry event under the old
+  owner-blind map). 1710's chain-walking `Reobf.java` ports verbatim;
+  sibling copies predate it (1165 confirmed stale, 1201 to verify at
+  live time).
+- Erased descriptors for generic Forge calls: `javac` emits the
+  erasure for inherited generic methods (probed locally:
+  `Sub.m:String>Sub` emits `(String)I`, the bound). The stub chain
+  must mirror the real generics (`Block extends Impl<Block>`, no
+  concrete redeclare) or the call emits an unlinkable reference
+  (measured: `Block.setRegistryName(Lnf;)Laow;` against runtime
+  `(Lnf;)LIForgeRegistryEntry;`). Forge members need no narrow-map
+  row (runtime-final MCP names, `pin_uni` presence only).
+- Overrides link through the same walk: `isOpaqueCube` carries the
+  spec opacity in a project-side slot (no vanilla slot on 1.12.2),
+  its declaration renamed via the superclass chain — the slot splits
+  no reader (no vanilla `opaque` member on 1.12.2).
+- Descriptor collisions anchor on SRG names: `setHardness` shares its
+  descriptor with `setResistance`, every `Material` field shares one
+  type — the narrow derive takes an optional 6th `WANT` element (SRG
+  anchor from `de.oceanlabs.mcp:mcp_stable:39-1.12`, zip sha1
+  `eead02d7aea31dcd0e2080cac702720a0b979a6e`, build-time reference
+  only, re-verified from pinned bytes at every run); an anchor
+  missing from the bytes fails loud.
+- Deferred-bridge bind timing: `MatouBridgeMod` binds at construction
+  on 1165/1201, before deferred registries fill — binds move to
+  at/after setup there (1122 binds at init, safe by construction);
+  1201 pins plus a name-based id token (no numeric ids on 1.20.1).
 
 ## What would re-open it
 

@@ -407,6 +407,20 @@
   decided path E0-locked. The Mod keeps its four `example1` imports
   (tables + jobs + kinds — T4 pack-driven re-opener, same file).
     (`decisions/SPI_STATE_VOCABULARY.md` active.)
+- 2026-09-10 : registration block-only ported off the lead bridge
+  (beast stays shell, row 2 untouched) : 1122 live-proven on Forge
+  2860 (bridge-1122 `49aa98a`, registry-event `Example1Mod`,
+  `my_ore` id 253 dynamic, world == pure union 1274 cells ids 1,253)
+  ; 1165 E0-landed (bridge-1165 `02e29a4`, `DeferredRegister`, every
+  stub member `javap`-measured) ; 1201 E0-landed (bridge-1201
+  `37fb977`, `DeferredRegister`, pins + bind-timing + id token flagged
+  for the live tranche). Measured on the way (hub
+  `decisions/REGISTRATION.md` port lessons) : no `GameRegistry`
+  on 2860 (registry event instead) ; hierarchy-aware `Reobf` ports
+  with any block-owning bridge ; erased descriptors for generic Forge
+  calls (stub chain mirrors `Impl<Block>`) ; SRG-anchored derive rows
+  for descriptor collisions. `PORT_QUEUE` gains the `e0` state
+  (E0-green, live TODO).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

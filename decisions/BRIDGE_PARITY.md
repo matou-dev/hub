@@ -72,14 +72,16 @@ MCP snapshot name (`mcp_snapshot-20210309`;
 ## PORT_QUEUE (hand-kept — a port tranche flips its cells live in the same commit)
 
 `live` = version-native code live-proven on that bridge ; `shell` =
-same-basename zero-import shell pointing at the decision ; `TODO` =
+same-basename zero-import shell pointing at the decision ; `e0` =
+version-native code E0-green, live proof TODO (a port tranche may land
+E0 and live separately — the cell says which) ; `TODO` =
 not ported (no shell stands in — the files match by basename only).
 A cell flips to `live` with the version-native live proof alone,
 never with the code copy.
 
 | Tranche (decision) | 1710 | 1122 | 1165 | 1201 |
 |---|---|---|---|---|
-| Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | shell | shell | shell |
+| Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | live (block-only) | e0 (block-only) | e0 (block-only) |
 | Custom entity `MatouEntity` (`SPAWN.md`) | live | shell | shell | shell |
 | Vein wire (`VEIN_V4.md`) | live | TODO | TODO | TODO |
 | Loot seam+wire, `E_LOOT_*` (`LOOT.md`) | live | TODO | TODO | TODO |
