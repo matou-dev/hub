@@ -109,6 +109,39 @@ conditional tables (biome, moon phase), experience orbs.
   tranche (first field-needing companion). T1 victim is a vanilla pig
   until custom-entity registration lands.
 
+- 1201 port shapes (measured via server.txt + joined.tsrg v2 + javap
+  against the pinned 47.2.0 bytes, live-proven 2026-09-10, bridge-1201
+  `58b9707`): the harvest post is a `level`-package `BreakEvent`
+  (the 1.12 `HarvestDropsEvent` shape is gone — breaks arrive through
+  it on the forge side too); clears go through `removeBlock` (the 1.12
+  `setBlockToAir` shape does not port); air probes go through
+  `BlockStateBase.isAir`; the victim is a `new Pig(type, level)` (the
+  1.12 no-arg shape does not port — the type resolves through
+  `ForgeRegistries.ENTITY_TYPES`); positioning goes through
+  `Entity.setPos` and removal through `Entity.discard` (the 1.12
+  `setPositionAndRotation`/`setDead` shapes do not port); carriers poll
+  through `EntityGetter.getEntitiesOfClass` over one `AABB` per spot
+  (the 1.12 `loadedEntityList` field shape does not port); the diamond
+  resolves through `ForgeRegistries.ITEMS` (the Mojmap autoplay derive
+  pins methods only — no vanilla field touched); the dim gate compares
+  `dimension().location()` to `"minecraft:overworld"` (no `OVERWORLD`
+  field); the echo gate is `isClientSide()` (no `LogicalSide` surface
+  in the companion at all). `IEventBus.post` lives in the eventbus lib,
+  not the universal: unstaged pin, proven live. T1 victim is a vanilla
+  pig until custom-entity registration lands.
+- Owner-discipline re-measurement (first 1201 live run failed loud at
+  the first harvest post, the derive green): `onHarvest` read
+  `isClientSide`/`dimension` through the narrowed `ServerLevel`
+  (`NoSuchMethodError: ServerLevel.isClientSide` — Reobf maps the exact
+  bytecode owner, the `Level`-keyed narrow map never sees a subclass
+  call site). Fixed by a `Level` upcast (same as `onKill`, same as the
+  1710 `worldObj` lesson). Standing rule, third measurement: inherited
+  vanilla members go through the declaring stub type at every call
+  site, forge and companion alike — and the dedicated-server gate never
+  fires harvest/kill events, so only the client proof covers the hooks
+  (the 150s server re-proof on the fixed bytes stayed green throughout,
+  blind to the bug).
+
 - Stub-owner discipline: reobf only walks in-jar superclass chains and
   stub supertypes never ship, so `EntityItem.posX`,
   `EntityLivingBase.worldObj` and pig calls kept their MCP names into

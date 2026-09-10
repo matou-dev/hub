@@ -566,8 +566,27 @@
   (the 1.16.5 `(Item,int)` shape does not port — `Item implements
   ItemLike`). T1 any-break-pays (no species filter until beast
   registration). Live proof TODO (companion harvest/kill/poll legs).
-  `PORT_QUEUE` loot + vocabulary rows e0 on 1201 (T3 seals ride the
-  loot tranche, no separate port).
+   `PORT_QUEUE` loot + vocabulary rows e0 on 1201 (T3 seals ride the
+   loot tranche, no separate port).
+- 2026-09-10 : LOOT live-proven on Forge 47.2.0 (bridge-1201 `58b9707`
+  companion + E0 owner fix, host Temurin 17.0.20) : `LOOT=1` direct
+  client run, bind clean, exit 0 after 4600 server ticks — companion
+  harvests registered ore at (8,10,8) at worldTick 1000 and kills a
+  spawned pig at (12,10,8) at 1005, bridge records at ticks 1000/1005
+  and drops one diamond carrier the same tick each, both polled within
+  1 tick (immediate — same ticks both legs, tighter than the
+  1614/2860 proofs) ; world == pure union (1274 cells, ore + stone
+  names — ore-wire legacy pack, no numeric ids on 1.20.1).
+  First run caught one E0 guess loud at the first harvest post (the
+  derive refused nothing — the call linked) : `onHarvest` read
+  `isClientSide`/`dimension` through the narrowed `ServerLevel`
+  (bytecode owner missed the `Level`-keyed narrow map,
+  `NoSuchMethodError: ServerLevel.isClientSide`, never silent) —
+  fixed by owner discipline (`Level` upcast, same as `onKill`) ; the
+  dedicated-server gate never fires harvest events, so only the client
+  proof covers the hooks. Same round : server path re-proven on the
+  fixed bytes (150s 47.2.0 run, world == pure union 1922 cells, vein
+  wire). `PORT_QUEUE` loot row live on 1201 (third runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
