@@ -904,6 +904,26 @@
   1274 cells, zero `E_*` refusals. No stub change in the tranche
   (the `OnlyIn` side-strip stub already carries RUNTIME retention,
   live-locked). `PORT_QUEUE` T4 row live on 1165 (third runtime).
+- 2026-09-11 : T4 PolicyPack live-proven on Forge 47.2.0 (bridge-1201
+  `b15eaf2` E0, zero fix — green first try, host Temurin 17.0.20
+  extracted from the `matou-live-1201` image to machine-local
+  `/tmp/jdk17`, never committed) : fourth boot of the policy path.
+  Server `run-live.sh` 150s structured+owned+vein in docker
+  (D3_OFFLINE, warm cache), bind clean, world == pure union (1922
+  cells, ore + stone names — no numeric ids on 1.20.1). `LOOT=1` /
+  `SPAWN=1` direct client legs on structured ore-wire packs : harvest
+  at worldTick 1000 → carrier the same bridge tick → polled at 1001
+  (elapsed 1), beast kill at 1005 → carrier elapsed 1 ; 4 landings at
+  ticks 0..3 (census 1→4 at worldTicks 1..4, cap), `spawn hp <20.0>`
+  at worldTick 1, fallen beast paid through loot with same-tick
+  replacement at 73, companion kill at worldTick 1000 → diamond
+  carrier the same bridge tick, polled at 1001 (elapsed 1,
+  immediate), replacement landed at 1000 (spawn-to-loot chain through
+  the served tables) ; both unions 1274 cells, zero `E_*` refusals.
+  No stub change in the tranche (no side-stripped annotation stub on
+  1.20.1 — nested dist-filtered renderer subscriber, live-proven).
+  `PORT_QUEUE` T4 row live x4 (fourth runtime), vocabulary row
+  already live.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
