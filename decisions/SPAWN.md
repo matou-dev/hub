@@ -426,6 +426,105 @@ vanilla, always sourced).
   exit 0 after 4600 server ticks ; world == pure union (1274 cells,
   ids 1,253 — `NUMERIC_IDS=example1:my_ore=253` passed to the
   verifier, same id as every 2860 proof). Zero `E_*` refusals. Same
-  round : server path re-proven on the fixed bytes (150s 2860 run,
-  world == pure union 1922 cells, vein wire, spawn passive).
-  `PORT_QUEUE` spawn row live on 1122 (second runtime).
+   round : server path re-proven on the fixed bytes (150s 2860 run,
+   world == pure union 1922 cells, vein wire, spawn passive).
+   `PORT_QUEUE` spawn row live on 1122 (second runtime).
+
+## 1165 port tranche (live-proven 2026-09-10)
+
+T1 vanilla scope on Forge 36.2.42 (bridge-1165 `a848669` E0 +
+`c2bad06` live): the full 1710 behavior minus the custom entity —
+census, seal, content-decided hp/cap/budget/band, operator overrides,
+T3 vocabulary — landing vanilla pigs (zero registration risk, same
+species as the loot victim until registration lands).
+`SpawnStore`/`SpawnSeal`/`SpawnCheck` are byte-identical copies ;
+`MatouEntity` stays a shell (the `PORT_QUEUE` custom-entity row does
+not move) ; the companion counts / hp-polls / kills pigs.
+
+- 36.2.42 shapes (measured via javap + joined.tsrg + snapshot
+  20210309 against the pinned bytes, live-proven) : the census poll
+  is `World.getEntitiesWithinAABB` (no `loadedEntityList` field ships
+  on 1.16.5, tranche-1 +-512 window) ; the living check is the
+  `removed` field ; the id is `getEntityId` (`func_145782_y`, never
+  the 1122 memory-anchored `func_82145_z`) ; landings position
+  through `setPositionAndRotation` ; the sink is
+  `ServerWorld.addEntity` ; the victim is
+  `new PigEntity(EntityType.PIG, world)` ; the hp lands through
+  `LivingEntity.getAttribute` on `Attributes.MAX_HEALTH` ; the
+  simulated kill removes through `remove()` ; the veto cancels a
+  `@Cancelable` `EntityJoinWorldEvent`. Narrow map 19→29 rows ;
+  `E_SPAWN` joins the run-live refusal grep ; autoplay derive
+  3→16 rows.
+- Three red runs, all loud by design. First (hub tooling) : the
+  Forge-first classpath dedup (log4j fix) shadowed the vanilla
+  duplicate lwjgl entries (plain + natives-classifier rows share one
+  group:artifact) and starved the natives dir — the game died
+  `UnsatisfiedLinkError: liblwjgl.so` before boot. Fixed in hub
+  `tools/run-client-direct.sh` : a deduped lib still donates its
+  `natives-linux` classifier (main jar stays Forge-first, natives
+  additive). Second (bridge) : the `ItemStack` ctor was stubbed
+  `(Item,int)` from javap alone, but the runtime shape is
+  `(IItemProvider,int)` (obf `brw` maps to the interface per
+  joined.tsrg, `blx`/`Item` implements it) — `NoSuchMethodError` at
+  the first carrier drop. Fixed by an `IItemProvider` stub plus
+  `Item implements` (the E0 comment claimed the wrong shape measured
+  — a stub comment is a guess until the carrier drops live). Third
+  (companion) : the kill/poll legs read `getPosX/Y/Z` with no WANT
+  rows (Reobf left the MCP names) — `NoSuchMethodError` at the
+  worldTick-1000 kill. Fixed by 3 SRG-anchored M rows
+  (`func_226277_ct_/226278_cu_/226281_cx_`, snapshot + tsrg + javap
+  triple-locked — `()D` is shared by nine Entity members, the anchor
+  picks the intended three). Standing rule, fourth measurement : the
+  dedicated-server gate never fires the harvest/kill paths, so only
+  the client proof covers them (the 150s server re-proof stayed
+  green through all three reds, blind).
+- Live proof (`SPAWN=1` direct client, Forge 36.2.42, host OpenJDK
+  1.8.0_502, ore-wire legacy pack) : `spawn wired
+  <example1.content:my_beast> hp <20> cap <4> budget <1> y <66..68>`,
+  4 landings at ticks 0..3 (census 4 at worldTick 4, cap), `spawn hp
+  <20.0>` at worldTick 1, natural adopted at tick 49 with its death
+  paid through the loot table the same tick, sweep + replacement at
+  69, companion kill at worldTick 1000 → bridge tick 1000, diamond
+  carrier the same tick, polled at 1001 (elapsed 1, immediate),
+  replacement landed at 1000, clean shutdown exit 0 after 4600
+  server ticks ; world == pure union (1274 cells, stone names — no
+  numeric ids on 1.16.5). Zero `E_*` refusals, zero past-cap vetos
+  this seed (the veto path stays T1/1122-proven). Same round :
+  server path re-proven on the fixed bytes (150s 36.2.42 run, world
+  == pure union 1922 cells, vein wire, spawn passive).
+  `PORT_QUEUE` spawn row live on 1165 (third runtime).
+
+## 1201 port tranche (live-proven 2026-09-10)
+
+T1 vanilla scope on Forge 47.2.0 (bridge-1201 `7c68916` E0, zero fix
+— green first try) : same behavior as above, landing vanilla pigs.
+The E0 spelling held end to end : the join is
+`EntityJoinLevelEvent` (`@Cancelable`, entity on the `EntityEvent`
+base, level on the subclass) ; the census poll is
+`EntityGetter.getEntitiesOfClass` ; the id is `Entity.getId` ; the
+living check `Entity.isAlive` ; landings position through
+`Entity.moveTo` ; the sink is `ServerLevel.addFreshEntity` ; the
+victim is `new Pig(EntityType.PIG, level)` ; the hp lands through
+`LivingEntity.getAttribute` on `Attributes.MAX_HEALTH`. Narrow map
+17→27 rows ; the companion coords (`getX/Y/Z`), `discard` and the
+carrier poll rode rows the loot tranche already pinned — the 1165
+missing-WANT class does not repeat.
+
+- Live proof (`SPAWN=1` direct client, Forge 47.2.0, host Temurin
+  17.0.20, ore-wire legacy pack) : `spawn wired
+  <example1.content:my_beast> hp <20> cap <4> budget <1> y <66..68>`
+  (`loot wired <{ore,beast}> count <1> ore <[example1:my_ore]>` —
+  the registered ore by name), 4 landings at ticks 0..3 (census 4 at
+  worldTick 5, cap), `spawn hp <20.0>` at worldTick 2, fallen pig
+  paid through the loot table at tick 73 (y=-60, off-plane fall like
+  the 1614 proof) with replacement landed the same tick, companion
+  kill at worldTick 1000 → bridge tick 999, diamond carrier the same
+  tick, polled at 1001 (elapsed 1, immediate), replacement landed at
+  999, clean shutdown exit 0 after 4600 server ticks ; world == pure
+  union (1274 cells, ore + stone names — no numeric ids on 1.20.1).
+  Zero `E_*` refusals, zero past-cap vetos this seed. No bridge code
+  change (E0 bytes), so no server re-proof (bytes-identical
+  precedent — the E0 tranche already re-proved 1922 cells).
+  `PORT_QUEUE` spawn row live on 1201 (fourth runtime) ; vocabulary
+  row live on 1201 (loot live + spawn live, same rationale as the
+  1122 flip).

@@ -563,8 +563,9 @@
   ports) ; coords through declaring `Vec3i` (`net.minecraft.core`),
   the ore match through declaring `BlockBehaviour.BlockStateBase`
   (owns `getBlock`), the carrier ctor through `(ItemLike,int)`
-  (the 1.16.5 `(Item,int)` shape does not port — `Item implements
-  ItemLike`). T1 any-break-pays (no species filter until beast
+  (the 1165 `(IItemProvider,int)` shape does not port — proven live
+  2026-09-10 : obf `brw` maps to the interface per joined.tsrg).
+  T1 any-break-pays (no species filter until beast
   registration). Live proof TODO (companion harvest/kill/poll legs).
    `PORT_QUEUE` loot + vocabulary rows e0 on 1201 (T3 seals ride the
    loot tranche, no separate port).
@@ -626,8 +627,52 @@
    `new Pig(EntityType.PIG, level)` ; the hp lands through
    `LivingEntity.getAttribute` on `Attributes.MAX_HEALTH`. T1 vanilla
    scope (zero registration risk). Live proof TODO (companion
-   census/kill/carrier legs staged).
-   `PORT_QUEUE` spawn row e0 on 1201.
+    census/kill/carrier legs staged).
+    `PORT_QUEUE` spawn row e0 on 1201.
+- 2026-09-10 : direct-client natives fix (hub `8d63849`) : the
+  Forge-first classpath dedup (log4j fix) shadowed the vanilla
+  duplicate lwjgl entries (plain + natives-classifier rows share one
+  group:artifact) and starved the natives dir — the 1165 game died
+  `UnsatisfiedLinkError: liblwjgl.so` before boot. A deduped lib
+  still donates its `natives-linux` classifier (main jar stays
+  Forge-first, natives additive). Caught loud, never silent.
+- 2026-09-10 : SPAWN live-proven on Forge 36.2.42 (bridge-1165
+  `c2bad06` bridge + companion fixes, host OpenJDK 1.8.0_502) :
+  `SPAWN=1` direct client run, bind clean, exit 0 after 4600 server
+  ticks — `spawn wired <...my_beast> hp <20> cap <4> budget <1> y
+  <66..68>`, 4 landings at ticks 0..3 (census 4 at worldTick 4,
+  cap), `spawn hp <20.0>` at worldTick 1, natural adopted at tick 49
+  with death paid through loot the same tick, sweep + replacement at
+  69, companion kill at worldTick 1000 → bridge tick 1000, diamond
+  carrier the same tick, polled at 1001 (elapsed 1, immediate),
+  replacement landed at 1000 ; world == pure union (1274 cells,
+  stone names — no numeric ids on 1.16.5). Three red runs pre-green,
+  all loud by design : starved natives (hub tooling, above),
+  `ItemStack` ctor stubbed `(Item,int)` from javap alone while the
+  runtime takes `(IItemProvider,int)` (obf `brw` maps to the
+  interface per joined.tsrg — `NoSuchMethodError` at the first
+  carrier drop), companion `getPosX/Y/Z` with no WANT rows
+  (`NoSuchMethodError` at the worldTick-1000 kill — 3 SRG-anchored
+  rows added, `()D` shared by nine Entity members). Same round :
+  server path re-proven on the fixed bytes (150s 36.2.42 run, world
+  == pure union 1922 cells, vein wire, spawn passive).
+  `PORT_QUEUE` spawn row live on 1165 (third runtime).
+- 2026-09-10 : SPAWN live-proven on Forge 47.2.0 (bridge-1201
+  `7c68916` E0 bytes, zero fix — green first try, host Temurin
+  17.0.20) : `SPAWN=1` direct client run, bind clean, exit 0 after
+  4600 server ticks — `spawn wired <...my_beast> hp <20> cap <4>
+  budget <1> y <66..68>`, 4 landings at ticks 0..3 (census 4 at
+  worldTick 5, cap), `spawn hp <20.0>` at worldTick 2, fallen pig
+  paid through loot at tick 73 (y=-60, off-plane fall like the 1614
+  proof) with replacement landed the same tick, companion kill at
+  worldTick 1000 → bridge tick 999, diamond carrier the same tick,
+  polled at 1001 (elapsed 1, immediate), replacement landed at 999 ;
+  world == pure union (1274 cells, ore + stone names — no numeric
+  ids on 1.20.1). Zero `E_*` refusals. No server re-proof
+  (bytes-identical E0, already re-proven 1922 cells).
+  `PORT_QUEUE` spawn row live on 1201 (fourth runtime), vocabulary
+  row live on 1201 (loot live + spawn live, same rationale as the
+  1122 flip).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
