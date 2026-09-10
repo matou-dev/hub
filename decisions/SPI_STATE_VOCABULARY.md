@@ -165,3 +165,42 @@ decision). The 450-line design alert from T3 now bites: the next
 structural pass (table-driven jobs + policy holders out of the pack,
 same file) is due before the next feature lands here — named, not
 silent.
+
+## Structural-pass amendment (E0 green, no live re-proof)
+
+The T4 E0 battery probed policy only on the legacy 2-file path, while
+the structure-wiring overloads rebuilt through the policy-free
+constructor — so every structure-wired pack (including the live
+`configure()` path) threw `E_EXAMPLE_POLICY:unwired` instead of serving
+the seal. The "byte-identical, no live re-proof" claim above was wrong
+for that path, and no live run has happened on T4 bytes to catch it
+(proven E0-side with a scratch probe pre-fix, green post-fix — the next
+structured live run on T4 bytes would have refused loud at `wireLoot`,
+whose packs.cfg always combines ownedFile with structureFile).
+
+Fix (example1 `73eadb8`, behaviour-preserving elsewhere):
+`withStructures()` is the single structure-wiring tail and carries the
+sealed tables across (same carry rule as the vein path, which already
+did); `ExampleCheck` gains a policy comparateur asserting identical
+sealed values across legacy / structured / configured-structured /
+veined paths. Fusions in the same commit: `wiredPaths()` (the
+`configure()` twin loops, byte-identical messages and order),
+`singleton()` into `checked()` (identical refusal), `loot()` /
+`spawn()` guards beside the data, `job(id)` over `jobs()` via `idOf()`
+(the order lives in one place). Public API and `E_*` codes unchanged.
+
+No live re-proof, on the corrected rationale: the legacy policy path is
+live-proven (the loot/spawn proofs ran legacy packs) and the
+comparateur locks the fixed paths to identical sealed values, which is
+all the bridge reads through `PolicyPack`. Lesson recorded: the risk
+was E0 coverage, not decided bytes — the battery now covers every
+wiring path.
+
+Measured floor: `ExamplePack` 600 → 637 lines (code 442 → 450, docs
+117 → 142). The bulk is gate-pinned public surface (6 `fromFiles`
+overloads, 4 ctors, 12 `PolicyPack` methods — every one called by E0
+gates across 5 repos), not branch bloat: the remaining mirrors have
+distinct contracts (`states()` seals counts, `jobs()` / `job()` serve
+jobs) and are gate-locked. Under 450 needs cross-repo API narrowing (a
+user decision), not another internal pass — the 450 alert is answered,
+not stacked.

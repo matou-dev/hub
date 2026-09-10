@@ -834,7 +834,19 @@
   already exact from the loot tranche, no map changes (25/24 rows).
   No server re-proof (tools-only tranches — shipped bytes are the
   E0 bytes, companion `SPIKE`-gated so unset runs stay
-  byte-for-byte the union). `PORT_QUEUE` repop row live x4.
+   byte-for-byte the union). `PORT_QUEUE` repop row live x4.
+- 2026-09-10 : ExamplePack structural pass (example1 `73eadb8`, E0
+  green, no live re-proof) : the T4 battery never probed policy on
+  structured packs, whose wiring dropped the seal
+  (`E_EXAMPLE_POLICY:unwired` on every structured path incl. the live
+  `configure()` path — proven E0 pre-fix, green post-fix) ;
+  `withStructures()` now carries loot/spawn across, locked by a policy
+  comparateur over all wiring paths ; fusions (`wiredPaths`,
+  `singleton` into `checked()`, typed guards, `job(id)` over `jobs()`),
+  public API and `E_*` codes unchanged. Measured floor 637 lines, bulk
+  gate-pinned — the 450 alert is answered, not stacked
+  (`decisions/SPI_STATE_VOCABULARY.md` structural-pass amendment).
+  Bridge-1710 gate green unmodified (no bridge change : identical API).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
