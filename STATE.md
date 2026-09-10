@@ -708,6 +708,42 @@
   `PORT_QUEUE` loot row live on 1165 (fourth runtime), vocabulary row
   live on 1165 (loot live + spawn live, same rationale as the 1122
   and 1201 flips).
+- 2026-09-10 : custom entity seam E0-landed on bridge-1165
+  (bridge-1165 `0b86c2d` : `MatouEntity` generic beast (`extends
+  PigEntity`, `(EntityType, World)` ctor), 36.2.42-native
+  `DeferredRegister` over `ForgeRegistries.ENTITIES` (short mob name
+  from the single-mob table — the 1.7.10/1.12 `EntityRegistry` call
+  does not exist here, measured absent from the pinned universal) +
+  setup-time `ENTITIES.getValue` tripwire + `registered-entity` log +
+  client-only vanilla `PigRenderer` mapping through `IRenderFactory`
+  (single `(EntityRendererManager)` ctor, notch `egd` — measured on the
+  pinned client jar via joined.tsrg) behind `DistExecutor` + `@OnlyIn`
+  + census/veto/reconcile/kill/landing + companion species switch with
+  `matoubridge` AFTER ordering in autoplay-mods.toml (lead-measured,
+  unproven on 36.2.42 until live).
+- Measured on bytes pinned, not recalled : vanilla PIG builds
+  CREATURE / `0.9 x 0.9` / tracking 10 (javap -c on the pinned SRG
+  EntityType init — the Builder default update interval stands,
+  pig-identical) ; `EntityType` is a registry entry only through the
+  Forge binary patch (`extends ForgeRegistryEntry`, read on the
+  official 1.16.x patch file — the SRG jar does not carry it, same
+  mechanism as the E3-proven Block bound) ; `Dist` ships forgespi
+  (no bare SERVER — `DEDICATED_SERVER`), `FMLCommonHandler` is gone on
+  1.16.5 (measured absent — `DistExecutor.runWhenOn` guards instead) ;
+  `EntityClassification` enum constants ship MCP-named in joined.tsrg
+  (no SRG rename — passthrough, no narrow row).
+- 0 red E0 runs : etages 1+2 green first try, sh -n run-live.sh,
+  derive replayed standalone against the pinned cache (33/33 snapshot
+  names, 4 new Builder rows SRG-notch triple-locked, all Forge +
+  forgespi pins green), standalone Reobf check (4/4 Builder calls land
+  SRG in the shipped bytes, zero MCP left), companion shape-check
+  javac green, check.sh + check-bridges.sh green (gap 1165 shells=0,
+  `E_REG_BEAST`/`E_REG_TABLE` already cited). Zero new `E_*` code, no
+  new forge file, no live boot.
+- `PORT_QUEUE` custom entity row e0 on 1165. Live proof TODO
+  (companion census/kill/carrier legs on the registered beast, client
+  link — what the client runtime wants the renderer named is measured
+  at live time, like the 1122 load path).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

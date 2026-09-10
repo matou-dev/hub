@@ -82,7 +82,7 @@ never with the code copy.
 | Tranche (decision) | 1710 | 1122 | 1165 | 1201 |
 |---|---|---|---|---|
 | Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | live (block-only) | live (block-only) | live (block-only) |
-| Custom entity `MatouEntity` (`SPAWN.md`) | live | e0 | shell | shell |
+| Custom entity `MatouEntity` (`SPAWN.md`) | live | e0 | e0 | shell |
 | Vein wire (`VEIN_V4.md`) | live | live | live | live |
 | Loot seam+wire, `E_LOOT_*` (`LOOT.md`) | live | live | live | live |
 | Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | live | live | live |
