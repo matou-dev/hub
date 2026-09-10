@@ -85,7 +85,7 @@ never with the code copy.
 | Custom entity `MatouEntity` (`SPAWN.md`) | live | shell | shell | shell |
 | Vein wire (`VEIN_V4.md`) | live | live | live | live |
 | Loot seam+wire, `E_LOOT_*` (`LOOT.md`) | live | live | TODO | TODO |
-| Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | TODO | TODO | TODO |
+| Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | e0 | TODO | TODO |
 | Vocabulary seals, T3 (`SPI_STATE_VOCABULARY.md`) | live | e0 | TODO | TODO |
 | Repop hook+seal, `E_SPIKE_*` (`REPOP_SPIKE.md`) | live | TODO | TODO | TODO |
 

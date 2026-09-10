@@ -477,6 +477,21 @@
   plus a missing build dir. Same round : server path re-proven on the
   fixed bytes (150s 2860 run, world == pure union 1922 cells, vein
   wire). `PORT_QUEUE` loot row live on 1122 (second runtime).
+- 2026-09-10 : SPAWN E0 on Forge 2860 (bridge-1122 `c53cc23`) :
+  `SpawnStore`/`SpawnSeal`/`SpawnCheck` byte-identical copies,
+  1122-native hooks `onJoin`/`spawnTick`/`reconcile`/`landBeast`/`onKill`
+  release stub-compile green, companion spawn legs (census/hp/kill polls,
+  `E_AUTOPLAY_SPAWN_CAP`), narrow map 21→30 rows with a dots-normalize
+  derive fix (unobfuscated `java.util.List` keeps dots in javap — same
+  replace as the hub autoplay derive) + `E_SPAWN` refusal grep.
+  1122-native spelling (measured at write time, proven at live time) :
+  join entity/world behind `getEntity()`/`getWorld()` (no public
+  fields), census/poll/landing on vanilla `EntityPig` (T1, zero
+  registration risk), `@Cancelable` join veto, hp through
+  `getEntityAttribute`/`setBaseValue`/`setHealth`/`getMaxHealth`,
+  `getEntityId` is `func_82145_z` (the 1710 `func_70077_b` does not
+  exist on 2860 — anchor picks it). Live proof TODO (companion
+  census/kill/carrier legs). `PORT_QUEUE` spawn row e0 on 1122.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
