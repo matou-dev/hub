@@ -785,9 +785,35 @@
   with a class-keyed tripwire, pig attributes inherited through
   `EntityPig` (no attribute event on the old `EntityRegistry` path),
   E0 universal pins only (narrow map unchanged at 30 lines). Same
-  round : server path re-proven on the same bytes (C3 run, world ==
-  pure union 1922 cells, vein wire, spawn passive). `PORT_QUEUE`
-  custom entity row live on 1122 (third runtime).
+   round : server path re-proven on the same bytes (C3 run, world ==
+   pure union 1922 cells, vein wire, spawn passive). `PORT_QUEUE`
+   custom entity row live on 1122 (third runtime).
+- 2026-09-10 : custom entity live-proven on Forge 47.2.0 (bridge-1201
+  `4ede749` E0 + `bfe18f1` live fix, host Temurin 17.0.20) :
+  `SPAWN=1` direct client run, bind clean, exit 0 after 4600 server
+  ticks — `spawn wired <example1.content:my_beast> hp <20> cap <4>
+  budget <1> y <66..68>`, `registered-entity <example1:my_beast>`
+  (registry id, never the SPI mob ref — 1165 lesson, held by
+  construction), attribute map on the mod-bus
+  `EntityAttributeCreationEvent` (pig map reused wholesale — 1165
+  lesson, held by construction), 4 landings at ticks 0..3 (census 1→4
+  at worldTicks 1..4, cap), `spawn hp <20.0>` at worldTick 1, fallen
+  beast paid through loot with same-tick replacement at 73, companion
+  kill at worldTick 1000 → diamond carrier the same tick, polled at
+  1001 (elapsed 1, immediate), replacement landed at 1000 ; world ==
+  pure union (1274 cells over 4000 ticks, ore + stone names — no
+  numeric ids on 1.20.1). Zero `E_*` refusals ; the client tracked the
+  registered beast on the vanilla `PigRenderer` mapping (nested
+  dist-filtered subscriber + `RegisterRenderers` event) with no
+  renderer complaint. One red run pre-green, loud by design :
+  `invokedynamic` names its SAM in the compiled namespace while both
+  vanilla SAMs are SRG-renamed at runtime (`AbstractMethodError` at
+  the renderer registration — fixed in the shared `Reobf` tooling with
+  two narrow-map SAM rows, map 27→35, 1165/1122 exempt by
+  construction). Same round : server path re-proven on the fixed bytes
+  (150s 47.2.0 run, world == pure union 1922 cells, vein wire, spawn
+  passive). `PORT_QUEUE` custom entity row live on 1201 (fourth
+  runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

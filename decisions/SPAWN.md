@@ -596,6 +596,62 @@ missing-WANT class does not repeat.
   Zero `E_*` refusals, zero past-cap vetos this seed. No bridge code
   change (E0 bytes), so no server re-proof (bytes-identical
   precedent — the E0 tranche already re-proved 1922 cells).
-  `PORT_QUEUE` spawn row live on 1201 (fourth runtime) ; vocabulary
-  row live on 1201 (loot live + spawn live, same rationale as the
-  1122 flip).
+   `PORT_QUEUE` spawn row live on 1201 (fourth runtime) ; vocabulary
+   row live on 1201 (loot live + spawn live, same rationale as the
+   1122 flip).
+
+- Custom entity live addendum, same bridge (bridge-1201 `4ede749` E0 +
+  `bfe18f1` live fix) : the T1 pig retires, landings use
+  `new MatouEntity(Example1Mod.beastType(), level)` on the registered
+  `example1:my_beast`. One red run, loud by design. The E0 guessed the
+  renderer shape right (dist-filtered nested `@Mod.EventBusSubscriber`
+  — the 1.16.5 `RenderingRegistry` call does not exist on 1.20.1) but
+  missed what no earlier bridge could teach : an `invokedynamic` names
+  its SAM in the compiled namespace, and both vanilla SAMs the beast
+  touches are SRG-renamed at runtime
+  (`EntityRendererProvider.create` → `m_174009_`,
+  `EntityType$EntityFactory.create` → `m_20721_`, measured via the
+  pinned SRG client/server jars). The first client run died
+  `AbstractMethodError` at the renderer registration (the factory
+  would have died the same way at the first landing — same mechanism,
+  unreached). Fixed in the shared tooling, not the sources :
+  `tools/live/Reobf.java` rewrites indy names off the same narrow-map
+  MD lines (owner ignored — an indy carries none — with an ambiguity
+  refusal), fed by two new SAM rows (the factory through the server
+  chain, the provider through the pinned client.txt — client classes
+  never ship server-side, no javap leg there by construction, the
+  exact-one asserts on both hops plus this run lock the row ; narrow
+  map 27→35). The 1165/1122 SAMs need nothing (runtime-stable there by
+  construction : a Forge SAM on 1165, `java.util` factories on 1122).
+  Standing rule : any lambda/method-ref targeting a vanilla SAM ships
+  the SRG indy name or dies at link time — method calls were never
+  affected (only indys name their target in the compiled namespace).
+- Both 1165 lessons held by construction here, verified live rather
+  than re-hit : the setup tripwire looks up the registry id
+  (`example1:my_beast` from this `DeferredRegister`'s own modid, never
+  the SPI mob ref `example1.content:my_beast`) and the beast's
+  attribute map registers on the mod-bus
+  `EntityAttributeCreationEvent` (vanilla pig map reused wholesale as
+  `Pig.createAttributes().build()` — pig-identical values measured on
+  the pinned 47.2.0 bytes : `CREATURE` / `0.9 x 0.9` / tracking 10 via
+  `javap -c` on the SRG game jar, update interval default). Vanilla
+  PIG values mirrored, never recalled.
+- Custom entity live proof (`SPAWN=1` direct client, Forge 47.2.0,
+  host Temurin 17.0.20, ore-wire legacy pack) : `spawn wired
+  <example1.content:my_beast> hp <20> cap <4> budget <1> y <66..68>`,
+  `registered-entity <example1:my_beast>`, 4 landings at ticks 0..3
+  (census 1→4 at worldTicks 1..4, cap), `spawn hp <20.0>` at worldTick
+  1, fallen beast paid through loot at tick 73 with replacement landed
+  the same tick (off-plane fall, same-tick pattern as the T1 1201
+  proof), companion kill at worldTick 1000 → bridge tick 1000,
+  diamond carrier the same tick, polled at 1001 (elapsed 1,
+  immediate), replacement landed at 1000, clean shutdown exit 0 after
+  4600 server ticks ; world == pure union (1274 cells over 4000 ticks,
+  ore + stone names — no numeric ids on 1.20.1). Zero `E_*` refusals.
+  The client tracked the registered beast on the vanilla `PigRenderer`
+  mapping with no renderer complaint (the nested-subscriber +
+  `RegisterRenderers` path measured green, not assumed). Same round :
+  server path re-proven on the fixed bytes (150s 47.2.0 run, world ==
+  pure union 1922 cells, vein wire, spawn passive — the run that
+  regenerated the shared 35-line map).
+  `PORT_QUEUE` custom entity row live on 1201 (fourth runtime).
