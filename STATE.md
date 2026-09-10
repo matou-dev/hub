@@ -586,7 +586,48 @@
   dedicated-server gate never fires harvest events, so only the client
   proof covers the hooks. Same round : server path re-proven on the
   fixed bytes (150s 47.2.0 run, world == pure union 1922 cells, vein
-  wire). `PORT_QUEUE` loot row live on 1201 (third runtime).
+   wire). `PORT_QUEUE` loot row live on 1201 (third runtime).
+- 2026-09-10 : spawn seam E0-landed on bridge-1165 (bridge-1165
+  `a848669` : `SpawnStore`/`SpawnSeal` byte-identical copies,
+  1165-native hooks `onJoin`/`spawnTick`/`reconcile`/`landBeast`/`onKill`
+  release stub-compile green, companion spawn legs
+  (census/hp/kill polls, `E_AUTOPLAY_SPAWN_CAP`), narrow map 19->29
+  rows, `E_SPAWN` refusal grep).
+   1165-native spelling (measured at write time against the pinned
+   36.2.42 bytes -- snapshot 20210309 + joined.tsrg + javap, proven at
+   live time) : the census poll is `World.getEntitiesWithinAABB` (no
+   `loadedEntityList` field ships on 1.16.5, tranche-1 +-512 window) ;
+   the living check is the `removed` field (the 1.12 `isDead` name does
+   not port) ; the id is `getEntityId`, landings position through
+   `setPositionAndRotation`, the sink is `ServerWorld.addEntity` (the
+   loot sink) ; the victim is `new PigEntity(EntityType.PIG, world)` ;
+   the hp lands through `LivingEntity.getAttribute` on
+   `Attributes.MAX_HEALTH` (the 1.12 `getEntityAttribute` /
+   `SharedMonsterAttributes` shapes do not port) ; the simulated kill
+   removes through `remove()` ; the veto cancels a `@Cancelable`
+   `EntityJoinWorldEvent`. T1 vanilla scope (zero registration risk).
+   Live proof TODO (companion census/kill/carrier legs staged).
+   `PORT_QUEUE` spawn row e0 on 1165.
+- 2026-09-10 : spawn seam E0-landed on bridge-1201 (bridge-1201
+  `7c68916` : `SpawnStore`/`SpawnSeal` byte-identical copies,
+  1201-native hooks `onJoin`/`spawnTick`/`reconcile`/`landBeast`/`onKill`
+  release stub-compile green, companion spawn legs
+  (census/hp/kill polls, `E_AUTOPLAY_SPAWN_CAP`), narrow map 17->27
+  rows, `E_SPAWN` refusal grep).
+   1201-native spelling (measured at write time against the pinned
+   47.2.0 bytes -- server.txt + joined.tsrg v2 + javap, proven at live
+   time) : the join is `EntityJoinLevelEvent` (the 1.16.5
+   `EntityJoinWorldEvent` name does not exist on 1.20.1),
+   `@Cancelable`, entity on the `EntityEvent` base, level on the
+   subclass ; the census poll is `EntityGetter.getEntitiesOfClass` ; the
+   id is `Entity.getId` (not `getEntityId`), the living check
+   `Entity.isAlive` ; landings position through `Entity.moveTo`, the
+   sink is `ServerLevel.addFreshEntity` (the loot sink) ; the victim is
+   `new Pig(EntityType.PIG, level)` ; the hp lands through
+   `LivingEntity.getAttribute` on `Attributes.MAX_HEALTH`. T1 vanilla
+   scope (zero registration risk). Live proof TODO (companion
+   census/kill/carrier legs staged).
+   `PORT_QUEUE` spawn row e0 on 1201.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
