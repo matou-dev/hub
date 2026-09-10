@@ -655,3 +655,27 @@ missing-WANT class does not repeat.
   pure union 1922 cells, vein wire, spawn passive — the run that
   regenerated the shared 35-line map).
   `PORT_QUEUE` custom entity row live on 1201 (fourth runtime).
+
+- `SideOnly` stub-retention addendum (1710, found live on T4 bytes) :
+  the first dedicated-server run after the custom entity tranche died
+  at mod load (`NoClassDefFoundError: ModelPig`) while every direct
+  client run stayed green — the client classes exist there, so nothing
+  could catch it. The `SideOnly` compile stub lacked
+  `@Retention(RUNTIME)`, javac filed the annotation invisible
+  (`RuntimeInvisibleAnnotations` on `registerBeastRenderer`, measured
+  by `javap -v`), and Forge 1.7.10 strips visible annotations only —
+  the renderer mapping survived on the server. Same bug class as the
+  1201 invisible-`@SubscribeEvent` lesson (stub annotations mirror
+  `RUNTIME` retention), this time loud instead of silent. Fixed in the
+  shared tooling, not the sources : retention (+`TARGET`
+  TYPE/FIELD/METHOD/CONSTRUCTOR) mirroring the pinned universal bytes,
+  and `run-live.sh` locks the visibility on the exact compiled bytes
+  (`javap -v` block check, never the pool ref). Standing rule : every
+  side-stripped annotation stub carries the runtime's retention, and
+  the live pipeline asserts it on the shipped bytes — E0 compiles
+  against stubs and cannot see visibility. Open re-opener : 1122
+  carries the same retention-less stub shape while server-green there
+  (measured stub bytes, unexplained — likely the `invokedynamic`
+  renderer factory defers resolution where 1710's `new` does not) ;
+  the T4 port tranche re-runs the 1122 server proof and either
+  reproduces or retires this question, never inherits it silently.

@@ -847,6 +847,28 @@
   gate-pinned — the 450 alert is answered, not stacked
   (`decisions/SPI_STATE_VOCABULARY.md` structural-pass amendment).
   Bridge-1710 gate green unmodified (no bridge change : identical API).
+- 2026-09-10 : T4 PolicyPack live-proven on Forge 1614 (bridge-1710
+  `608b750` fix on T4 bytes, host OpenJDK 1.8.0_502) : first boot of the
+  policy path anywhere. Server `run-live.sh` 150s structured+owned+vein,
+  bind clean (no `E_EXAMPLE_POLICY:unwired` at `wireLoot` — the fixed
+  `configure()` path serves the seal live), world == pure union (1922
+  cells, ids 1,165). `LOOT=1` / `SPAWN=1` direct client legs on
+  structured ore-wire packs : harvest at worldTick 1000 → carrier at
+  1001 (elapsed 1), beast kill → carrier elapsed 1 ; census 1→4 at
+  worldTicks 2..5, `spawn hp <20.0>`, companion kill at 1000 → diamond
+  at 1001 with replacement landed at 999 (spawn-to-loot chain through
+  the served tables) ; both unions 1274 cells, zero `E_*` refusals.
+  Second trouvaille on the way in : the dedicated server died at mod
+  load (`NoClassDefFoundError: ModelPig`) — the `SideOnly` compile stub
+  lacked `@Retention(RUNTIME)` so javac filed it invisible, Forge 1.7.10
+  strips visible annotations only, and `registerBeastRenderer` survived
+  on the server (same bug class as the 1201 invisible-`@SubscribeEvent`
+  lesson, this time loud). Fix mirrors the pinned universal bytes ;
+  `run-live.sh` locks the visibility on the exact compiled bytes
+  (`javap -v` block check). `PORT_QUEUE` gains the T4 row (1710 live,
+  deferred bridges TODO ; 1122 carries the same retention-less stub
+  shape while server-green there — named re-opener for the port
+  tranche, never silently widened).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

@@ -204,3 +204,18 @@ distinct contracts (`states()` seals counts, `jobs()` / `job()` serve
 jobs) and are gate-locked. Under 450 needs cross-repo API narrowing (a
 user decision), not another internal pass — the 450 alert is answered,
 not stacked.
+
+## T4 live proof (Forge 1614, structured path)
+
+Landed after the amendment above (bridge-1710 `608b750`, host OpenJDK
+1.8.0_502) : the "no live re-proof" rationale did not survive contact
+with the server — the first structured run on T4 bytes died before any
+policy read (`NoClassDefFoundError: ModelPig`, `SideOnly` stub without
+`RUNTIME` retention, fixed + live-locked in the same tranche, see hub
+`STATE.md` and `SPAWN.md`). Green since : 150s server run, bind clean,
+world == pure union (1922 cells, ids 1,165) ; `LOOT=1` / `SPAWN=1`
+direct client legs on structured ore-wire packs (carriers elapsed 1,
+census 1→4, hp 20.0, spawn-to-loot chain through the served tables,
+unions 1274, zero `E_*` refusals). The comparateur claim stands (fixed
+paths serve identical sealed values) — it is now the second lock, not
+the only one.
