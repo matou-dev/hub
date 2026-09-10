@@ -673,6 +673,19 @@
   `PORT_QUEUE` spawn row live on 1201 (fourth runtime), vocabulary
   row live on 1201 (loot live + spawn live, same rationale as the
   1122 flip).
+- 2026-09-10 : custom entity seam E0-landed on bridge-1122
+  (bridge-1122 E0 : `MatouEntity` generic beast (`extends EntityPig`),
+  2860-native `EntityRegistry.registerModEntity` (registry name first —
+  the 1.7.10 call does not port, measured on the pinned universal) +
+  init-time `lookupModSpawn` tripwire + client-only vanilla `RenderPig`
+  mapping through `IRenderFactory` (single `(RenderManager)` ctor —
+  the 1.7.10 3-arg saddle ctor does not exist on 2860, measured on the
+  pinned client jar) + census/veto/reconcile/kill/landing + companion
+  species switch with `required-after:matoubridge` (lead-measured,
+  unproven on 2860 until live) ; etages 1+2 green, 5 new universal pins
+  hold standalone, no new `E_*` code, no new forge file).
+  `PORT_QUEUE` custom entity row e0 on 1122. Live proof TODO
+  (companion census/kill/carrier legs on the registered beast).
 - 2026-09-10 : LOOT live-proven on Forge 36.2.42 (bridge-1165
   `42d48c4` companion + stubs + WANT, host OpenJDK 1.8.0_502) :
   `LOOT=1` direct client run, bind clean, exit 0 after 4600 server
