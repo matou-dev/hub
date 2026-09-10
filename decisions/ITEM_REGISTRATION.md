@@ -75,4 +75,5 @@ on hardcoded vanilla placeholder items.
 - `E_REG_ITEM:no item <name> in <ownedFile>`
 - `E_REG_ITEM:refused <item>`
 - `E_REG_ITEM:unresolved <item>`
+- `E_REG_SHELL:unwired parity shell`
 - `E_LOOT_ITEM:unknown <item>`
