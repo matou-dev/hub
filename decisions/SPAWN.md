@@ -48,8 +48,8 @@ Data constraint: same as loot — V1's 4 genres stay frozen, spawn
 rides `mob` refs plus minimal spawn fields in the V4-delta family
 (cap, count, where). Tranche 1 spawns a vanilla host entity id
 carrying our loot table (zero registration risk); a custom entity
-class follows the `decisions/REGISTRATION.md` path later and gets
-its own addendum. Codes `E_SPAWN_*` tranche-local in the existing
+class follows the `decisions/REGISTRATION.md` path later (landed —
+see the custom entity tranche below) and gets its own addendum. Codes `E_SPAWN_*` tranche-local in the existing
 `MatouBridgeMod.java`; `check-bridges.sh` parity holds 1710-only
 until proven.
 
@@ -119,6 +119,73 @@ dimension filters, despawn policy, pack AI.
   18x18): one fell 60 blocks and died on the grass at tick 49 — which
   proved the death→loot→release→respawn chain live instead of breaking
   the proof.
+- ModClassLoader negative cache + verifier eager loading + file-order
+  construction (measured: the first custom-entity run died `UE
+  matouautoplay + UE matoubridge, UC example1` with a CNFE for a class
+  sitting in its own jar). FML constructs containers file by file
+  (`addFile` then `Class.forName` on a ModClassLoader with a negative
+  cache cleared per container for its own ASM class list only —
+  measured by javap on the provisioned 1614 universal), and the HotSpot
+  verifier loads frame-named classes (`new`/`instanceof`/`checkcast`
+  of `MatouEntity` all over the companion) at `forName` time —
+  literals (`X.class`, example1's only use) never trigger the load.
+  matouautoplay constructs before matoubridge (alpha order), so the
+  beast class missed while its jar was still unsourced, the miss
+  poisoned the negative cache, and the bridge died for it. Fix: the
+  companion declares the real dependency
+  (`required-after:matoubridge`, load-bearing — removing it re-arms
+  the exact crash). Rule for this org: a mod constructed before
+  another mod's jar is sourced must not verifier-reference
+  (frame-name) the other jar's classes; same-jar refs are always safe
+  (`addFile` precedes `forName` in the same `constructMod`).
+- Vanilla ctor shapes are measured, never recalled: the pig renderer
+  takes the saddle pass (`RenderPig(ModelBase, ModelBase, float)` —
+  notch `boo` javaps as `(bhr, bhr, float)` from the ForgeGradle 1614
+  cache; the remembered 2-arg `RenderLiving` shape died loudly with
+  `NoSuchMethodError` at the first tracked spawn). `ModelPig` ctors
+  `()` + `(float)` measured the same way (notch `bhu`).
+
+## Custom entity tranche (live-proven 2026-09-10)
+
+Tranche 1 landed beasts as vanilla pigs (zero registration risk). This
+tranche registers the one generic beast and lands it instead — same
+seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
+`SpawnStore`, `SpawnSeal` untouched; `ExamplePack` untouched):
+
+- `bridge-1710` (`fr.iamacat.bridge.forge`, E0 green,
+  `00a8ee8`): `MatouEntity` (final, extends `EntityPig` — pig shape,
+  AI and sounds reused, no per-content subclass, no shadow field;
+  vanilla pig health kept, the content `hp` rides the spec unapplied
+  until the attribute seam) + `Example1Mod` preInit
+  `EntityRegistry.registerModEntity` (short mob name from the
+  single-mob `SpawnTable`, mod-local id 0, pig-like tracking 64/1/true
+  — constants, never defaults) with an init-time `lookupModSpawn`
+  tripwire plus a `registered-entity` log line + client-only vanilla
+  `RenderPig` mapping (`@SideOnly`, stripped on servers) until the
+  custom-renderer tranche.
+- Census discipline: every `EntityPig` match becomes a `MatouEntity`
+  match (`onJoin` veto, `reconcile` poll, `onKill` release,
+  `landBeast` sink). Vanilla pigs are a different species now:
+  ignored, never vetoed, never counted — the 48 past-cap vetos of the
+  pig run are gone with the species they policed.
+- Companion (`tools/autoplay`, DEV-only): counts/kills `MatouEntity`
+  only (same species rule — a wandering vanilla pig would breach a cap
+  that is not its own or take the scripted kill dishonestly); the loot
+  leg kills the registered beast too (the LOOT.md "until the custom
+  entity lands" expiry is spent — every kill still pays the single
+  entry, per-mob filtering stays a re-opener). Carries
+  `required-after:matoubridge` (load-bearing — see findings).
+- Parity: 1710-only behavior, `E_REG_*`/`E_SPAWN_*` local (no new
+  `E_FORGE_*`); same-basename zero-import `MatouEntity` shells in
+  1122/1165/1201.
+- Live proof (`SPAWN=1` direct client, Forge 1614, host OpenJDK
+  1.8.0_502): 4 landings at ticks 0..3 (census 4 at worldTick 5, cap),
+  natural beast adopted at tick 49, swept + replacement landed at 69,
+  companion kill at worldTick 1000 → diamond carrier at 1001 (elapsed
+  1, immediate — the loot table pays the chain), clean shutdown exit 0
+  after 4600 server ticks ; world == pure union (1274 cells, ids
+  1,165 — legacy ore-wire pack, `NUMERIC_IDS=example1:my_ore=165`
+  from the boot log, block id stable across the entity registration).
 
 ## Gates (will prove the tranche)
 
@@ -132,7 +199,10 @@ dimension filters, despawn policy, pack AI.
 
 ## What would re-open it
 
-- Custom entity class + renderer: registration-path tranche, same
-  seam.
+- Custom entity class: landed (this file — class + registration +
+  pig-renderer mapping). Custom RENDERER (model/animation) still open,
+  same seam.
+- Content `hp`: the attribute seam (apply the spec hp to the beast),
+  addendum here.
 - Filters (biome, light, depth) and despawn: new pure fields +
   gate, addendum here.

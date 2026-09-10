@@ -314,7 +314,23 @@
   fifth living pig — hence the per-tick poll reconcile beside the
   event hooks) ; bridge pigs fall off the union plane (one 60-block
   fall proved death→loot→release→respawn live).
-  (`decisions/SPAWN.md` active.)
+   (`decisions/SPAWN.md` active.)
+- 2026-09-10 : SPAWN custom entity live-proven on Forge 1614 (bridge-1710
+  `00a8ee8` `MatouEntity` + `EntityRegistry` + pig-renderer mapping,
+  companion `required-after`, shells in 1122/1165/1201, host OpenJDK
+  1.8.0_502) : `SPAWN=1` direct client run, bind clean, exit 0 after
+  4600 server ticks — 4 landings at ticks 0..3 (census 4 at worldTick
+  5, cap 4, budget 1), natural beast adopted at tick 49, swept +
+  replacement landed at 69, companion kill at worldTick 1000 →
+  diamond carrier at 1001 (elapsed 1, immediate — the loot table pays
+  the spawn-to-loot chain on the registered beast) ; world == pure
+  union (1274 cells, ids 1,165 — legacy ore-wire pack, block id stable
+  across the entity registration, `NUMERIC_IDS` from the boot log).
+  Two measured findings: ModClassLoader negative-cache CNFE (verifier
+  eager load + file-order construction — fixed by the companion
+  dependency, load-bearing) ; `RenderPig` 3-arg saddle ctor (notch
+  javap from the ForgeGradle cache, never recalled).
+  (`decisions/SPAWN.md` custom entity tranche.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

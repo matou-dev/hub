@@ -104,6 +104,10 @@ with no new codes when it comes).
 
 ## What would re-open it
 
+- Entity registration (mob twin of this block path): landed under hub
+  decisions/SPAWN.md (custom entity tranche — `MatouEntity` +
+  `EntityRegistry` + pig-renderer mapping, same second-@Mod shape,
+  1710-only with shells).
 - A second custom block needing its own class: denied by default —
   parameterize the generic block first.
 - A submod asking for one MC import for registration: STOP + user

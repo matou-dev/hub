@@ -100,8 +100,10 @@ conditional tables (biome, moon phase), experience orbs.
 - Drops are immediate (elapsed 1 tick harvest to carrier both legs):
   the delay knob stays repop's alone.
 - The diamond carrier, the any-kill-pays scope and the kind vocabulary
-  (`ore`/`beast`) all expire with their documented successors (item
-  registration, custom entity, per-mob tables) — see re-openers below.
+  (`ore`/`beast`) expire with their documented successors (item
+  registration, per-mob tables — the custom-entity successor is spent:
+  the loot legs kill the registered beast since the hub
+  decisions/SPAWN.md custom entity tranche; see re-openers below).
 
 ## Gates (will prove the tranche)
 

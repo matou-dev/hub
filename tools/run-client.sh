@@ -622,7 +622,12 @@ EOF
     || { echo "FAIL run-client : autoplay narrow map drift (want $(grep -cv -e '^#' -e '^$' tools/autoplay/want.txt) lines)"; exit 1; }
   echo "ok run-client : companion narrow map pinned ($SRG_AUTO)"
   mkdir -p "$BLD/auto" "$BLD/autoplaymod/META-INF"
-  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi" -d "$BLD/auto" $(find tools/autoplay/src tools/autoplay/stub tools/live/stub -name '*.java')
+  # $BLD/forge on the classpath (compile only, never staged): the 1710
+  # companion matches the registered beast class (hub decisions/SPAWN.md,
+  # custom entity tranche — vanilla pigs are a different species now).
+  # Staging still copies $BLD/auto/fr only, so no forge class ships in
+  # the companion jar (the stub-leak check below keeps proving it).
+  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi:$BLD/forge" -d "$BLD/auto" $(find tools/autoplay/src tools/autoplay/stub tools/live/stub -name '*.java')
   # Companion metadata follows the bridge era, like the bridge jar itself:
   # mods.toml era stamps autoplay-mods.toml, mcmod.info era stamps
   # autoplay-mcmod.info (absent file = bridge without companion metadata,
