@@ -421,6 +421,32 @@
   calls (stub chain mirrors `Impl<Block>`) ; SRG-anchored derive rows
   for descriptor collisions. `PORT_QUEUE` gains the `e0` state
   (E0-green, live TODO).
+- 2026-09-10 : registration block-only live on the deferred bridges
+  (bridge-1165 `99165d7` on Forge 36.2.42, host OpenJDK 1.8.0_502 ;
+  bridge-1201 `2f3c23b` on Forge 47.2.0, docker `matou-live-1201`
+  temurin17) : 150s runs, binds moved to a common-setup listener
+  (constructor parses specs pure, setup binds — the deferred fill
+  lands one loading state earlier), world == pure union both
+  (1274 cells, ore + stone names ; 1165 `getStateId` token reads 0 at
+  setup — presence only, verdict keys on names ; 1201 key token
+  `example1:my_ore`, no numeric ids). Measured on the way (hub
+  `decisions/REGISTRATION.md` live lessons) : modern `getValue`
+  never returns null (registry default air — `containsKey` is the only
+  presence probe, all three resolve sites) ; 1165 needs the
+  hierarchy-aware reobf, 1201 provably does not (no project-owner
+  vanilla refs) ; 1165 SRG-anchored derive (four
+  `hardnessAndResistance` overloads) ; javap wildcard generics break
+  the derive a third time (`?` in the field-type class) ;
+  `FMLCommonSetupEvent` ships in the universal, not fmlcore.
+  `PORT_QUEUE` registration row live x4 (block-only off-lead).
+- 2026-09-10 : vein wire ported off the lead bridge (run-live.sh only
+  everywhere — the vein-capable `ExamplePack` already rides the pinned
+  SPI/example1 bytes) : bridge-1122 `f22a903`, bridge-1165 `f0c1f49`,
+  bridge-1201 `3aaa70c` (packs.cfg `veinFile` + `veinblock` alias,
+  5-slice verdicts) : 150s runs, world == pure union everywhere
+  (1922 cells — 1274 + 648 vein band y=60..61, same count as the 1710
+  vein proof : same content, fourth/fifth/sixth runtime).
+  `PORT_QUEUE` vein row live x4.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

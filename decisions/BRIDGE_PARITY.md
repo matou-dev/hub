@@ -47,8 +47,8 @@ every `../bridge-*/` sibling, and refuses loud on any of them:
    tranche that introduced it, thrown set named there); shells (files
    containing `parity shell`) must cite a `decisions/<FILE>.md` on
    disk. The gate prints the per-bridge gap (`shells=` plus
-   `local-codes=` — today 1710 leads with 24 local codes and 0
-   shells, each sibling owes 3 shells) : the metric shrinks tranche
+   `local-codes=` — today 1710 leads with 18 local codes and 0
+   shells, each sibling owes 1 shell with 1 local code) : the metric shrinks tranche
    by tranche, never silently. An uncited local code or an unpointed
    shell is a forgotten port, not an optimization.
 
@@ -81,9 +81,9 @@ never with the code copy.
 
 | Tranche (decision) | 1710 | 1122 | 1165 | 1201 |
 |---|---|---|---|---|
-| Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | live (block-only) | e0 (block-only) | e0 (block-only) |
+| Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | live (block-only) | live (block-only) | live (block-only) |
 | Custom entity `MatouEntity` (`SPAWN.md`) | live | shell | shell | shell |
-| Vein wire (`VEIN_V4.md`) | live | TODO | TODO | TODO |
+| Vein wire (`VEIN_V4.md`) | live | live | live | live |
 | Loot seam+wire, `E_LOOT_*` (`LOOT.md`) | live | TODO | TODO | TODO |
 | Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | TODO | TODO | TODO |
 | Vocabulary seals, T3 (`SPI_STATE_VOCABULARY.md`) | live | TODO | TODO | TODO |

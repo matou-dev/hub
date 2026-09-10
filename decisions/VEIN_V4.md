@@ -9,7 +9,7 @@ roadmap: -
 # Vein V4 — `vein` genre (SYNTAX-V4) plus pure cluster job
 
 Date: 2026-09-10
-Status: active (first consumer: example1 `VeinPlaceJob` + bridge-1710 live wire, live-proven 2026-09-10)
+Status: active (first consumer: example1 `VeinPlaceJob` + bridge-1710 live wire, live-proven 2026-09-10; ported same day to bridge-1122 `f22a903`, bridge-1165 `f0c1f49`, bridge-1201 `3aaa70c` — run-live.sh only, 5-slice verdicts green everywhere: 1922 cells, ore + stone)
 
 ## Problem
 
