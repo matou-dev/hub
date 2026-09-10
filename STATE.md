@@ -812,8 +812,29 @@
   two narrow-map SAM rows, map 27→35, 1165/1122 exempt by
   construction). Same round : server path re-proven on the fixed bytes
   (150s 47.2.0 run, world == pure union 1922 cells, vein wire, spawn
-  passive). `PORT_QUEUE` custom entity row live on 1201 (fourth
-  runtime).
+   passive). `PORT_QUEUE` custom entity row live on 1201 (fourth
+   runtime).
+- 2026-09-10 : repop hook+seal live on the deferred bridges
+  (bridge-1122 `212d083` E0 + `d90213b` live, bridge-1165 `64efb10`
+  E0 + `bcfcfad` live, bridge-1201 `f82b221` E0 + `5063378` live ;
+  hosts OpenJDK 1.8.0_502 on 1122/1165, Temurin 17.0.20 on 1201) :
+  `SPIKE=1` direct client runs, bind clean, exit 0 — companion mines
+  at (20,10,8) at worldTick 1000 (isolated: loot occupies (8,10,8)
+  and (12,10,8), verdict slices y=63..65 plus vein band y=60..61),
+  bridge records at tick 999, repops 1 cell at 1199 (delay exactly
+  200), companion polls stone back at worldTick 1201, y=10 anvil
+  spot reads stone ; world == pure union everywhere (1274 cells —
+  numeric stone on 1122, names on 1165/1201, same count as every
+  live proof). Zero `E_*` refusals, zero red runs (green first try
+  x3). Measured on the way : 1122 `BreakEvent` ctor is 4-arg
+  `(World,BlockPos,IBlockState,EntityPlayer)` (javap on the pinned
+  2860 universal — the E0 3-arg stub grew to the measured public
+  shape, +1 universal-pin row, want.txt unchanged at 24 rows) ;
+  1165/1201 ctors re-measured against their pinned bytes, stubs
+  already exact from the loot tranche, no map changes (25/24 rows).
+  No server re-proof (tools-only tranches — shipped bytes are the
+  E0 bytes, companion `SPIKE`-gated so unset runs stay
+  byte-for-byte the union). `PORT_QUEUE` repop row live x4.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
