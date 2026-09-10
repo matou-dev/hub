@@ -108,12 +108,60 @@ identical decisions.
 
 ## What would re-open it
 
-- T4 pack-driven spawn/loot: jobs, tables and harvest kinds served
-  through the pack interface so `MatouBridgeMod` drops its four
-  `example1` imports (tables behind plain-data accessors, jobs via
-  the existing `job(id)` registry, kinds from the wire/table — never
-  `LootJob.ORE` literals in the bridge). New pure fields + gate,
-  addendum here.
+- T4 pack-driven spawn/loot: landed (addendum below — the Mod holds
+  zero `example1` imports).
 - New sealed subsystem (third scope): new SPI roles holder +
   pack scope + seal, same shape — never a fifth genre smuggled in
   beside the roles.
+
+## T4 pack-driven addendum (E0 green, no live re-proof)
+
+The forge wire stayed content-aware for tables, job instantiation and
+harvest kinds (`MatouBridgeMod`'s four `example1` imports) — the
+explicit non-goal above. This tranche serves them through the pack
+interface so the Mod drops all four imports:
+
+- `spi` (`PolicyPack extends VocabularyPack`, pure, zero deps): plain
+  data plus fresh jobs — `lootDrops()` (kind to content item ref,
+  insertion-ordered, both served kinds paid), `lootOreKind()` /
+  `lootBeastKind()` (event-classification kinds, always keys of the
+  drops), `lootCount()` (positive), `spawnMob()` (qualified ref),
+  `spawnHp/Cap/Budget/YMin/YMax()` (positive, ordered band),
+  `lootJob()` / `spawnJob()` (fresh equivalents — `MatouJob` carries
+  no id, so the pack serves instances, the moral equivalent of the
+  `job(id)` registry). Content-blind: namespaces, kind names and
+  numbers stay pack-owned, never in core.
+- `example1` (`ExamplePack implements PolicyPack`): the owned file
+  seals both tables at pack wire time (`fromFiles` — the tables' own
+  multi/empty refusals propagate untouched), served beside the counts;
+  count fixtures (int constructors, never wired to a file) serve no
+  policy and refuse loudly under `E_EXAMPLE_POLICY:unwired` instead
+  of guessing numbers. `ExampleCheck` provision battery: served values
+  mirror `content/owned.matou`, drops immutable, unwired accessors
+  refuse on all 15 probes.
+- `bridge-1710` (`MatouBridgeMod`): `wireLoot` / `wireSpawn` read the
+  first wire's pack through a `policy()` helper (`E_LOOT_POLICY` /
+  `E_SPAWN_POLICY` refusals for non-policy packs, same shape as the T3
+  `vocabulary()` helper); the kind-coverage rule moved with the data
+  (`E_LOOT_TABLE:kind` when a served kind goes unpaid — a silent
+  no-drop otherwise). Operator precedence unchanged (`OperatorPolicy`
+  over served numbers, same effective values). The `no-lateral-import`
+  etage-1 gate now covers `forge/src` (the T3 exemption comment named
+  this exact re-opener).
+- 4 bridges re-pinned to the SPI commit (no sibling forge change —
+  lead-only behaviour, parity untouched; siblings keep their T3 gate
+  text until ported).
+
+No live re-proof (scaling-audit precedent): sealed outputs are
+byte-identical by construction — same file parsed (owned), same table
+maps, same counts through the same operator precedence, same job
+classes deciding, same kinds recorded — and every decided path is
+E0-locked (provision battery, seal-vs-job comparateurs, stub-compile
+of the exact live bytes, `no-lateral-import` over `forge/src`).
+
+Measured: `ExamplePack` grew 505 → ~600 lines (twelve delegating
+accessors plus one guard, zero new branches — delegation, not
+decision). The 450-line design alert from T3 now bites: the next
+structural pass (table-driven jobs + policy holders out of the pack,
+same file) is due before the next feature lands here — named, not
+silent.
