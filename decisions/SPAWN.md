@@ -204,8 +204,13 @@ seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
    same seam.
  - Content `hp`: landed (hp tranche below — the attribute seam applies
    the spec hp to the beast, read back tripwired).
- - Filters (biome, light, depth) and despawn: new pure fields +
-   gate, addendum here.
+  - Filters (biome, light, depth) and despawn: new pure fields +
+    gate, addendum here.
+  - State-id vocabulary: landed (hub
+    decisions/SPI_STATE_VOCABULARY.md — seals resolve the pack-served
+    vocabularies through the SPI registry, no bridge-to-content
+    compile edge in the pure seal; the Mod keeps table/job/kind
+    imports — T4 pack-driven re-opener, same file).
 
  ## HP tranche (live-proven 2026-09-10)
 

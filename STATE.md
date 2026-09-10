@@ -370,8 +370,23 @@
   kill at worldTick 1000 → diamond carrier at 1001 (elapsed 1,
   immediate) ; world == pure union (1274 cells, ids 1,165,
   `NUMERIC_IDS=example1:my_ore=165` from the boot log, id 165 again).
-   (`decisions/SPAWN.md` operator-override tranche,
-   `decisions/LOOT.md` ore-scope re-opener spent.)
+    (`decisions/SPAWN.md` operator-override tranche,
+    `decisions/LOOT.md` ore-scope re-opener spent.)
+- 2026-09-10 : T3 SPI registry landed live-unchanged (spi `0ace688`
+  `StateVocabulary` + `SpawnStates`/`LootStates` + `VocabularyPack`,
+  example1 `94e7f9f` namespaces + delegating jobs + pack provision,
+  bridge-1710 `4563380` vocabulary seals + `no-lateral-import` gate,
+  4 bridges re-pinned to `0ace688`, E0 built with javac 21
+  `--release 8`) : E0 green
+  everywhere (`VocabularyCheck` + `ExampleCheck` provision battery +
+  `SpawnCheck`/`LootCheck` comparateurs over the provision path with
+  null/wrong-vocabulary refusals + key-order assertions +
+  stub-compile of the exact live bytes + parity over 4 bridges). No
+  live re-proof (scaling-audit precedent): sealed outputs are
+  byte-identical (same ids, same values, same insertion order), every
+  decided path E0-locked. The Mod keeps its four `example1` imports
+  (tables + jobs + kinds — T4 pack-driven re-opener, same file).
+    (`decisions/SPI_STATE_VOCABULARY.md` active.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

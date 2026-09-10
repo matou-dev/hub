@@ -129,3 +129,7 @@ conditional tables (biome, moon phase), experience orbs.
   — the ore is the packs.cfg wire-block column, the `LOOT_ORE`
   constant is gone, unresolvable wire blocks still refuse under the
   kept `E_LOOT_ORE` code).
+- State-id vocabulary: landed (hub
+  decisions/SPI_STATE_VOCABULARY.md — the seal resolves the
+  pack-served vocabulary through the SPI registry, same T4
+  pack-driven re-opener as spawn).
