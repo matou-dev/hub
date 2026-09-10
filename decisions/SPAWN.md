@@ -197,12 +197,62 @@ seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
   cells, kills pay out through the loot table
   (`decisions/LOOT.md`), world == pure union otherwise.
 
-## What would re-open it
+ ## What would re-open it
 
-- Custom entity class: landed (this file — class + registration +
-  pig-renderer mapping). Custom RENDERER (model/animation) still open,
-  same seam.
-- Content `hp`: the attribute seam (apply the spec hp to the beast),
-  addendum here.
-- Filters (biome, light, depth) and despawn: new pure fields +
-  gate, addendum here.
+ - Custom entity class: landed (this file — class + registration +
+   pig-renderer mapping). Custom RENDERER (model/animation) still open,
+   same seam.
+ - Content `hp`: landed (hp tranche below — the attribute seam applies
+   the spec hp to the beast, read back tripwired).
+ - Filters (biome, light, depth) and despawn: new pure fields +
+   gate, addendum here.
+
+ ## HP tranche (live-proven 2026-09-10)
+
+ The custom entity tranche kept vanilla pig health with the content
+ `hp = 20` riding the spec unapplied. This tranche applies it — same
+ seam, same budget math, no `SpawnJob`/`SpawnStore`/`SpawnSeal` change:
+
+ - `example1` (`SpawnTable`, E0 `ExampleCheck` green): the table seals
+   the mob `hp` beside the ref (`hp()` accessor, positive u32 —
+   missing/non-positive refuses loudly under `E_EXAMPLE_SPAWN`, never
+   defaulted). The missing-hp refusal surfaces through the parser
+   (`unreadable (missing hp)`), still loud either way.
+ - `bridge-1710` (`MatouBridgeMod`, E0 green): `wireSpawn` seals
+   `spawnHp` once beside `spawnMob` (parse-once, never on the tick
+   path); `landBeast` lands it on the beast's max-health attribute
+   before the spawn (`getEntityAttribute(maxHealth).setBaseValue` +
+   `setHealth`, all calls through the declaring stub types per owner
+   discipline) and the read-back is tripwired (`E_SPAWN_HP:diverged`
+   fails the tick — an underpowered beast never roams silently).
+ - Stubs/pins: `EntityLivingBase` gains `getEntityAttribute` /
+   `getMaxHealth` / `setHealth`, plus new `IAttribute` /
+   `IAttributeInstance` / `SharedMonsterAttributes` stubs (all pinned
+   in `run-live.sh` against the 1614 SRG, reobf-verified to
+   `func_110148_a` / `func_110138_aP` / `func_70606_j` /
+   `func_111128_a` / `field_111267_a`, zero MCP names left).
+ - Companion (`tools/autoplay`, DEV-only): polls the first living
+   beast's `getMaxHealth` once against a mirrored `SPAWN_HP` (pinned
+   in `want.txt`, reobf-verified to `func_110138_aP`) — a diverged
+   read-back fails the proof loudly here too. The scripted kill stays
+   simulated (`setDead` + `LivingDropsEvent` post): damage-soak proof
+   is an explicit non-goal, the seam owns the attribute value.
+ - Parity: 1710-only behavior, `E_SPAWN_*` local (no new `E_FORGE_*`,
+   no new `forge/src` file); `MatouEntity` ctor unchanged, sibling
+   shells untouched.
+ - Live proof (`SPAWN=1` direct client, Forge 1614, host OpenJDK
+   1.8.0_502): `spawn wired <example1.content:my_beast> hp <20>`,
+   `spawn hp <20.0>` at worldTick 2, census 4 at worldTick 5, kill at
+   worldTick 1000 → diamond carrier at 1001 (elapsed 1, immediate),
+   clean shutdown exit 0 after 4600 server ticks ; world == pure
+   union (1274 cells, ids 1,165 — `NUMERIC_IDS=example1:my_ore=165`
+   from the boot log).
+
+ ## Measured findings (hp tranche)
+
+ - Stubs must match the runtime kind, not just the name: the first
+   live run died `IncompatibleClassChangeError: Found interface
+   IAttributeInstance, but class was expected` at the first landing —
+   the vanilla attribute instance is an interface, so the stub is an
+   interface and the landing links through `invokeinterface`. The
+   crash named the exact kind mismatch, loudly, never silently.

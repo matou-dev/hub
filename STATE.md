@@ -330,7 +330,20 @@
   eager load + file-order construction — fixed by the companion
   dependency, load-bearing) ; `RenderPig` 3-arg saddle ctor (notch
   javap from the ForgeGradle cache, never recalled).
-  (`decisions/SPAWN.md` custom entity tranche.)
+   (`decisions/SPAWN.md` custom entity tranche.)
+- 2026-09-10 : SPAWN hp tranche live-proven on Forge 1614 (example1
+  `SpawnTable.hp` + refusals, bridge-1710 attribute seam +
+  `E_SPAWN_HP:diverged` tripwire + companion max-health poll, host
+  OpenJDK 1.8.0_502) : `SPAWN=1` direct client run, bind clean, exit 0
+  after 4600 server ticks — `spawn wired <...my_beast> hp <20>`,
+  `spawn hp <20.0>` at worldTick 2, census 4 at worldTick 5, kill at
+  worldTick 1000 → diamond carrier at 1001 (elapsed 1, immediate) ;
+  world == pure union (1274 cells, ids 1,165,
+  `NUMERIC_IDS=example1:my_ore=165` from the boot log). One measured
+  finding: the vanilla attribute instance is an interface —
+  class-stubbed it dies loud `IncompatibleClassChangeError` at the
+  first landing (stub is an interface, `invokeinterface` links).
+   (`decisions/SPAWN.md` hp tranche.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
