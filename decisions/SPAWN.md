@@ -248,11 +248,49 @@ seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
    union (1274 cells, ids 1,165 — `NUMERIC_IDS=example1:my_ore=165`
    from the boot log).
 
- ## Measured findings (hp tranche)
+  ## Measured findings (hp tranche)
 
- - Stubs must match the runtime kind, not just the name: the first
-   live run died `IncompatibleClassChangeError: Found interface
-   IAttributeInstance, but class was expected` at the first landing —
-   the vanilla attribute instance is an interface, so the stub is an
-   interface and the landing links through `invokeinterface`. The
-   crash named the exact kind mismatch, loudly, never silently.
+  - Stubs must match the runtime kind, not just the name: the first
+    live run died `IncompatibleClassChangeError: Found interface
+    IAttributeInstance, but class was expected` at the first landing —
+    the vanilla attribute instance is an interface, so the stub is an
+    interface and the landing links through `invokeinterface`. The
+    crash named the exact kind mismatch, loudly, never silently.
+
+  ## Content-decides tranche (live-proven 2026-09-10)
+
+  The hp tranche left five spawn numbers bridge-owned
+  (`SPAWN_CAP`/`SPAWN_BUDGET`/`SPAWN_YMIN`/`SPAWN_YMAX` constants) plus
+  the loot count (`LOOT_COUNT`) — the bridge named content decisions.
+  This tranche moves them author-side, same seam, same budget math, no
+  `SpawnJob`/`SpawnStore`/`SpawnSeal` change:
+
+  - `example1` (`owned.matou` Mob genre + `SpawnTable`/`LootTable`, E0
+    `ExampleCheck` green): the mob seals `cap` + `budget` + `y_min` /
+    `y_max` + `drop_count` beside `hp`/`drop` (positive u32 each,
+    `0 <= y_min <= y_max` — missing/zero/unordered refuses loudly
+    under `E_EXAMPLE_SPAWN`/`E_EXAMPLE_LOOT`, missing fields surfacing
+    through the parser, still loud). Proof values unchanged (4/1/66..68
+    and count 1 — the companion mirrors stay green by construction).
+  - `bridge-1710` (`MatouBridgeMod`, E0 `SpawnCheck`/`LootCheck`
+    green): `wireSpawn`/`wireLoot` seal the policy from the tables once
+    (parse-once, never on the tick path) into `spawnCap`/`spawnBudget`/
+    `spawnYMin`/`spawnYMax`/`lootCount` fields; the veto, the seal, the
+    slots tripwire and the carrier expansion read the fields. The five
+    constants are gone. Explicitly kept, documented at the constant:
+    `LOOT_ORE` (ore scope rides the operator wire block — T2, not
+    content), `REPOP_*` (the spike is a bridge-owned vanilla harness,
+    no consumer involved), the `SPAWN=1` switch (DEV proof opt-in),
+    the diamond carrier (placeholder with item-registration expiry).
+  - Gates prove the flow, not the literals: `SpawnCheck`/`LootCheck`
+    read the policy from `../example1/content/owned.matou` (seal +
+    comparateur over wired values); store-math checks keep literals
+    (they test the store, source-agnostic — same split as the
+    `SpawnJob` battery).
+  - Live proof (`SPAWN=1` direct client, Forge 1614, host OpenJDK
+    1.8.0_502): `spawn wired <...my_beast> hp <20> cap <4> budget <1>
+    y <66..68>`, `loot wired <{ore,beast}> count <1>`, census 1→4 at
+    worldTicks 2..5, kill at worldTick 1000 → diamond carrier at 1001
+    (elapsed 1, immediate), clean shutdown exit 0 after 4600 server
+    ticks ; world == pure union (1274 cells, ids 1,165 —
+    `NUMERIC_IDS=example1:my_ore=165` from the boot log, id 165 again).

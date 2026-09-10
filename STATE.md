@@ -344,6 +344,19 @@
   class-stubbed it dies loud `IncompatibleClassChangeError` at the
   first landing (stub is an interface, `invokeinterface` links).
    (`decisions/SPAWN.md` hp tranche.)
+- 2026-09-10 : SPAWN content-decides tranche live-proven on Forge
+  1614 (example1 `SpawnTable` cap/budget/y_min/y_max + `LootTable`
+  count from the mob, bridge-1710 wires transport, 5 constants gone,
+  `LOOT_ORE`/`REPOP_*`/`SPAWN` switch/diamond explicitly kept, host
+  OpenJDK 1.8.0_502) : `SPAWN=1` direct client run, bind clean, exit 0
+  after 4600 server ticks — `spawn wired <...my_beast> hp <20> cap
+  <4> budget <1> y <66..68>`, `loot wired <{ore,beast}> count <1>`,
+  census 1→4 at worldTicks 2..5, kill at worldTick 1000 → diamond
+  carrier at 1001 (elapsed 1, immediate) ; world == pure union (1274
+  cells, ids 1,165, `NUMERIC_IDS=example1:my_ore=165` from the boot
+  log, id 165 again).
+   (`decisions/SPAWN.md` content-decides tranche, `decisions/LOOT.md`
+   count re-opener spent.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

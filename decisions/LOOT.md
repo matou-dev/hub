@@ -122,3 +122,6 @@ conditional tables (biome, moon phase), experience orbs.
   seam — addendum here.
 - A loot consumer outside harvest/kill (fishing, chests): new hook
   spec, same `DropStore` shape or a named sibling.
+- Items per harvest: landed (content-decides tranche, hub
+  decisions/SPAWN.md — the mob's `drop_count` seals `LootTable.count`,
+  the bridge transports it, `LOOT_COUNT` constant gone).
