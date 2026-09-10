@@ -219,3 +219,23 @@ census 1→4, hp 20.0, spawn-to-loot chain through the served tables,
 unions 1274, zero `E_*` refusals). The comparateur claim stands (fixed
 paths serve identical sealed values) — it is now the second lock, not
 the only one.
+
+## Policy-holder extraction (E0 green, no live re-proof)
+
+`ExamplePolicy` (example1 `b1f1428`, behaviour-preserving) : the sealed
+loot/spawn tables plus the twelve `PolicyPack` accessors move out of
+`ExamplePack` (637 → 606 lines, new 121-line holder), which delegates ;
+wiring paths carry the holder by reference (same carry rule as the vein
+path — structure/vein files never fund tables), count fixtures hold it
+unwired. Public API, sealed values and `E_*` codes unchanged —
+E0-locked by the provision battery and the policy comparateur over
+every wiring path (legacy / structured / configured-structured /
+veined) ; `ExampleCheck` unmodified, the 4 bridge gates green
+unmodified (no bridge change : identical API, no re-pin, parity
+untouched).
+
+Measured : 606 lines still over the 450 alert — the holder took the
+policy bulk, what remains is the gate-pinned surface (6 `fromFiles`
+overloads, 4 ctors, 12 delegating accessors, docs). Under 450 still
+needs the `fromFiles`-shim plus count-ctor narrowing — named next
+pass, not stacked silently.

@@ -922,8 +922,18 @@
   the served tables) ; both unions 1274 cells, zero `E_*` refusals.
   No stub change in the tranche (no side-stripped annotation stub on
   1.20.1 — nested dist-filtered renderer subscriber, live-proven).
-  `PORT_QUEUE` T4 row live x4 (fourth runtime), vocabulary row
-  already live.
+   `PORT_QUEUE` T4 row live x4 (fourth runtime), vocabulary row
+   already live.
+- 2026-09-11 : ExamplePack policy-holder extraction (example1
+  `b1f1428`, amendment in `decisions/SPI_STATE_VOCABULARY.md`) :
+  sealed loot/spawn tables + twelve `PolicyPack` accessors out of
+  `ExamplePack` (637 → 606 lines, new 121-line `ExamplePolicy`
+  holder, pack delegates, holders carried by reference) ; E0 green
+  everywhere (`ExampleCheck` unmodified, 4 bridge gates green
+  unmodified, parity untouched, no re-pin, no live re-proof —
+  public API, sealed values and `E_*` codes unchanged). Measured :
+  still over the 450 alert — the `fromFiles`-shim plus count-ctor
+  narrowing stays the named next pass.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
