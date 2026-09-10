@@ -673,6 +673,28 @@
   `PORT_QUEUE` spawn row live on 1201 (fourth runtime), vocabulary
   row live on 1201 (loot live + spawn live, same rationale as the
   1122 flip).
+- 2026-09-10 : LOOT live-proven on Forge 36.2.42 (bridge-1165
+  `42d48c4` companion + stubs + WANT, host OpenJDK 1.8.0_502) :
+  `LOOT=1` direct client run, bind clean, exit 0 after 4600 server
+  ticks — companion harvests the registered ore at (8,10,8) at
+  worldTick 1000 and kills a spawned pig at (12,10,8) at 1005, bridge
+  records at ticks 999/1004 and drops one diamond carrier the same
+  tick each, both polled within 1 tick (immediate — same ticks as the
+  1614/2860 proofs) ; world == pure union (1274 cells, ore + stone
+  names — ore-wire legacy pack, no vein file, no numeric ids on
+  1.16.5). Three red runs pre-green, all loud by design :
+  stone-wire packs.cfg registers nothing (companion resolve refuses
+  pre-place — the proof wires `example1:my_ore`) ; `isAir` read
+  through `BlockState` instead of the declaring `AbstractBlockState`
+  (`NoSuchMethodError` at the first harvest — upcast fix, fourth
+  owner-discipline measurement) ; companion `setPositionAndRotation`
+  with no WANT row (`NoSuchMethodError` in the server tick loop at
+  the beast leg, ore leg already green — 1 SRG-anchored row added).
+  Same round : server path re-proven on the fixed bytes (150s 36.2.42
+  run, world == pure union 1922 cells, vein wire, loot passive).
+  `PORT_QUEUE` loot row live on 1165 (fourth runtime), vocabulary row
+  live on 1165 (loot live + spawn live, same rationale as the 1122
+  and 1201 flips).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

@@ -126,9 +126,41 @@ conditional tables (biome, moon phase), experience orbs.
   pins methods only — no vanilla field touched); the dim gate compares
   `dimension().location()` to `"minecraft:overworld"` (no `OVERWORLD`
   field); the echo gate is `isClientSide()` (no `LogicalSide` surface
-  in the companion at all). `IEventBus.post` lives in the eventbus lib,
-  not the universal: unstaged pin, proven live. T1 victim is a vanilla
-  pig until custom-entity registration lands.
+   in the companion at all). `IEventBus.post` lives in the eventbus lib,
+   not the universal: unstaged pin, proven live. T1 victim is a vanilla
+   pig until custom-entity registration lands.
+- 1165 port shapes (measured via joined.tsrg + snapshot 20210309 + javap
+  against the pinned 36.2.42 bytes, live-proven 2026-09-10, bridge-1165
+  `42d48c4`): the ore resolves through `ForgeRegistries.BLOCKS`
+  (presence first — `getValue` returns air for unknown names, never
+  null, same as the bridge wire); the state comes from
+  `Block.getDefaultState`; air probes go through `World.getBlockState`
+  + `BlockStateBase.isAir`; place goes through `World.setBlockState`,
+  clear through `World.removeBlock` (the 1.12 `setBlockToAir` shape
+  does not port); the player comes from `ServerWorld.getPlayers` (no
+  `playerEntities` field ships on 1.16.5); the victim is a
+  `new PigEntity(EntityType.PIG, world)` (the 1.12 no-arg shape does not
+  port); the spawn lands through `ServerWorld.addEntity` (the loot
+  sink); carriers poll through `World.getEntitiesWithinAABB` over one
+  box per spot. T1 victim is a vanilla pig until custom-entity
+  registration lands.
+- Wire-driven registration (first 1165 live run failed loud pre-place,
+  never silent): `Example1Mod` only queues blocks named in the
+  packs.cfg wire column, so the stone-wire default registers nothing
+  and the companion resolve refuses (`unknown <example1:my_ore>`) —
+  the loot proof wires `example1:my_ore` with no vein file (the 1710
+  ore-wire pack shape), the union plane lands as the registered ore.
+- Owner-discipline re-measurement (second 1165 live run crashed loud
+  at the first harvest, the derive green): the companion read `isAir`
+  through `BlockState` while the member lives on the declaring
+  `AbstractBlockState` (`NoSuchMethodError: BlockState.isAir`, never
+  silent) — fixed by an upcast local (same as the 1201 `Level` fix,
+  fourth measurement of the standing rule).
+- Companion-WANT discipline (same run, ore leg green first): the beast
+  leg positioned through `setPositionAndRotation` with no companion
+  WANT row (Reobf left the MCP name — `NoSuchMethodError` in the
+  server tick loop, second 1165 missing-WANT miss after the spawn
+  `getPosX` trio). Fixed by one SRG-anchored M row.
 - Owner-discipline re-measurement (first 1201 live run failed loud at
   the first harvest post, the derive green): `onHarvest` read
   `isClientSide`/`dimension` through the narrowed `ServerLevel`
