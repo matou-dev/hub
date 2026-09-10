@@ -1,6 +1,8 @@
 ---
 type: ruling
 status: active
+maturity: unrated
+scope: hub
 roadmap: -
 ---
 
@@ -39,8 +41,8 @@ requires a decision file per tranche.
    `*.md` and comments — a doc naming what just moved now lies.
 4. `tools/check-decisions.sh` guard (wired into `tools/check.sh`): every
    `decisions/*.md` token across `*.md` must name a file on disk — loud
-   FAIL with `file:line`, never a silent skip. Front-matter type/status
-   must stay in the closed sets of `DECISIONS_INDEX_AND_STATUS.md`.
+   FAIL with `file:line`, never a silent skip. Front-matter type/status/
+   maturity/scope must stay in the closed sets of `DECISIONS_INDEX_AND_STATUS.md`.
 
 ## Gates
 

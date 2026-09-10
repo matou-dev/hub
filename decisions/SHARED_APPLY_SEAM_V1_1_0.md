@@ -1,6 +1,8 @@
 ---
 type: spec
 status: active
+maturity: standard
+scope: shared
 roadmap: -
 ---
 

@@ -1,6 +1,8 @@
 ---
 type: ruling
 status: active
+maturity: unrated
+scope: bridge
 roadmap: -
 ---
 

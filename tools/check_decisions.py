@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Gate decisions-parity: every decisions/*.md carries closed front-matter
-(type/status/roadmap) and is listed once in the GENERATED block of
-decisions/DECISIONS_INDEX_AND_STATUS.md (SSOT = front-matter). Every
-decisions/*.md token across *.md must name a file on disk (dead links fail
-loudly). Plain run compares (any drift fails loudly); --fix regenerates the
-block. No Minecraft imports.
+(type/status/maturity/scope/roadmap, canonical order) and is listed once in
+the GENERATED block of decisions/DECISIONS_INDEX_AND_STATUS.md (SSOT =
+front-matter). Every decisions/*.md token across *.md must name a file on
+disk (dead links fail loudly). Plain run compares (any drift fails loudly);
+--fix regenerates the block. No Minecraft imports.
 """
 import os
 import re
@@ -16,8 +16,10 @@ BEGIN = ("<!-- GENERATED:decisions front-matter -> index | do not hand-edit "
 END = "<!-- END GENERATED:decisions -->"
 TYPES = ("ruling", "spec", "direction", "note")
 STATUSES = ("done", "active", "direction", "parked", "superseded")
+MATURITIES = ("prototype", "standard", "production", "unrated")
+SCOPES = ("spi", "bridge", "content", "client", "hub", "shared", "unrated")
 FM = re.compile(
-    r"\A---\ntype: (\S+)\nstatus: (\S+)\nroadmap: (\S+)\n---\n")
+    r"\A---\ntype: (\S+)\nstatus: (\S+)\nmaturity: (\S+)\nscope: (\S+)\nroadmap: (\S+)\n---\n")
 LINK = re.compile(r"decisions/([A-Za-z0-9_.\-]+\.md)")
 
 
@@ -31,27 +33,33 @@ def read_front_matter(path):
         head = fh.read(512)
     m = FM.match(head)
     if not m:
-        return None, "bad front-matter in <%s> (want ---/type/status/roadmap/--- first)" % path
-    typ, status, roadmap = m.groups()
+        return None, ("bad front-matter in <%s> "
+                      "(want ---/type/status/maturity/scope/roadmap/--- first, "
+                      "canonical order)" % path)
+    typ, status, maturity, scope, roadmap = m.groups()
     if typ not in TYPES:
         return None, "bad type <%s> in <%s> (want one of %s)" % (typ, path, "|".join(TYPES))
     if status not in STATUSES:
         return None, "bad status <%s> in <%s> (want one of %s)" % (status, path, "|".join(STATUSES))
+    if maturity not in MATURITIES:
+        return None, "bad maturity <%s> in <%s> (want one of %s)" % (maturity, path, "|".join(MATURITIES))
+    if scope not in SCOPES:
+        return None, "bad scope <%s> in <%s> (want one of %s)" % (scope, path, "|".join(SCOPES))
     if not roadmap:
         return None, "empty roadmap in <%s> (want phase id or -)" % path
-    return (typ, status, roadmap), ""
+    return (typ, status, maturity, scope, roadmap), ""
 
 
 def want_block(entries):
     lines = []
     for typ in TYPES:
-        rows = sorted(f for f, (t, _s, _r) in entries.items() if t == typ)
+        rows = sorted(f for f, (t, _s, _m, _c, _r) in entries.items() if t == typ)
         if not rows:
             continue
         lines.append("### %s" % typ)
         for f in rows:
-            _t, s, r = entries[f]
-            lines.append("- %s : %s (roadmap %s)" % (f, s, r))
+            _t, s, m, c, r = entries[f]
+            lines.append("- %s : %s (maturity %s, scope %s, roadmap %s)" % (f, s, m, c, r))
     return lines
 
 

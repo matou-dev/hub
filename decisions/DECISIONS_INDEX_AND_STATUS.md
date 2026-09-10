@@ -1,6 +1,8 @@
 ---
 type: ruling
 status: active
+maturity: unrated
+scope: hub
 roadmap: -
 ---
 
@@ -24,18 +26,35 @@ recreates the exact drift it is supposed to fix.
 1. Closed types: `ruling` (permanent transverse rule), `spec` (contract
    before code), `direction` (target not yet coded), `note` (present-state
    note, no code change). No fifth type without a ruling amending this
-   file.
+   file. Deliberate divergence from CatzEngineNext (which gained `phase`
+   plus `note-present` on 2026-09-10): our phases are `ROADMAP.md` rows,
+   never files, and renaming `note` buys nothing — only the tracking
+   columns below are adopted, not their type renames.
 2. Closed statuses: `done` (landed and frozen), `active` (live, carried
    by current code), `direction` (not yet coded), `parked` (explicitly
    waiting), `superseded` (replaced, successor named in the file).
    A landed-then-demolished decision is `parked`, never `done`.
 3. Every `decisions/*.md` file carries a YAML front-matter block as its
-   first lines: `type` plus `status` plus `roadmap`, where `roadmap` is a
-   ROADMAP phase id or `-` when no ROADMAP row exists. Rulings, specs and
-   directions never gain ROADMAP rows; the index tracks them.
+   first lines, canonical order `type`, `status`, `maturity`, `scope`,
+   `roadmap`, where `roadmap` is a ROADMAP phase id or `-` when no
+   ROADMAP row exists. Rulings, specs and directions never gain ROADMAP
+   rows; the index tracks them.
+   Closed maturity (quality of the carried live system, never the
+   decision lifecycle — a `done` prototype stays a prototype):
+   `prototype` (lead-bridge proof or partial coverage; never cited as a
+   multi-bridge precedent) | `standard` (ported consumers, gates green
+   on 2+ runtimes, known limits with named reopeners) | `production`
+   (declared scope fully served, no known exception, admitted as
+   precedent) | `unrated` (carries no live system of its own:
+   transverse ruling, process, plan, note; never cited as precedent).
+   Closed scope (primary home of the carried live system; rulings take
+   the governed area): `spi` | `bridge` | `content` (example1 proofs) |
+   `client` (minimap plus client-proof tooling) | `hub` (doctrine,
+   gates, hub-owned tools) | `shared` (live system spanning several
+   repos) | `unrated` (not yet evaluated).
 4. The GENERATED block below is derived by `tools/check.sh --fix` from
    the front-matter (one section per type in closed type order, one row
-   per file: file, status, roadmap), hand-off. Flat names keep every
+   per file: file, status, maturity, scope, roadmap), hand-off. Flat names keep every
    `decisions/` pointer stable, no subfolders.
 5. Landing rule: the tranche that lands the first consumer of a
    `direction` flips its status to `active` in the same feat commit; the
@@ -44,37 +63,56 @@ recreates the exact drift it is supposed to fix.
 6. To-write queue (hand-kept, below the GENERATED block): decisions
    identified as missing but not yet written. A queue entry is closed by
    landing the file, never by deleting the line.
+7. Landing rule for the tracking columns (extends rule 5): the tranche
+   landing a system's first consumer rates it at minimum `prototype`
+   with its real scope in the same feat commit — never `standard` or
+   `production` by default. Promotion (`prototype` → `standard` →
+   `production`) is its own tranche with the gates that prove the grade,
+   never silent; skipping a grade is refused. `unrated` or `prototype`
+   never justifies a new production-shaped system.
+
+## Addendum — maturity plus scope columns (2026-09-10)
+
+Adopted from CatzEngineNext (`DECISIONS_INDEX_AND_STATUS.md` addendum
+2026-09-10, grades SSOT `SYSTEM_MATURITY_TRACKING.md` there): same two
+closed keys, same canonical order, same landing rule — pointed here,
+never copied. What is NOT adopted: their `phase`/`note-present` types
+(see rule 1) and their scope values (`shell`/`game`/`shared` describe a
+single engine repo; ours name the org repos, rule 3). Unlike Catz (211
+of 218 files still `unrated` at adoption), every file below is rated in
+the same commit that lands the columns — an adopted-but-unfilled column
+is the same lie class as the Problem above.
 
 <!-- GENERATED:decisions front-matter -> index | do not hand-edit | tools/check.sh --fix -->
 ### ruling
-- BRIDGE_PARITY.md : active (roadmap -)
-- BRIDGE_SCAFFOLD.md : active (roadmap -)
-- CHALLENGE_THEN_PROPOSE.md : active (roadmap -)
-- CI_SIBLING_REF_MAIN.md : active (roadmap -)
-- DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
-- DEV_CLIENT_SSOT.md : active (roadmap -)
-- DEV_LOOP.md : active (roadmap -)
-- DIRECT_CLIENT_PROOF.md : active (roadmap -)
-- DOCS_DEFINITION_OF_DONE.md : active (roadmap -)
-- FOUNDATION_QF1_QH1.md : active (roadmap -)
-- HEADLESS_XVFB_QT_XCB.md : active (roadmap -)
-- LAYER_Q1_Q11.md : active (roadmap -)
-- LIVE_PROOF_MODEL.md : active (roadmap -)
-- NAMING_QN1_QN3.md : active (roadmap -)
-- RELEASE_ENG.md : active (roadmap -)
+- BRIDGE_PARITY.md : active (maturity unrated, scope bridge, roadmap -)
+- BRIDGE_SCAFFOLD.md : active (maturity unrated, scope bridge, roadmap -)
+- CHALLENGE_THEN_PROPOSE.md : active (maturity unrated, scope hub, roadmap -)
+- CI_SIBLING_REF_MAIN.md : active (maturity unrated, scope hub, roadmap -)
+- DECISIONS_INDEX_AND_STATUS.md : active (maturity unrated, scope hub, roadmap -)
+- DEV_CLIENT_SSOT.md : active (maturity unrated, scope client, roadmap -)
+- DEV_LOOP.md : active (maturity unrated, scope hub, roadmap -)
+- DIRECT_CLIENT_PROOF.md : active (maturity unrated, scope client, roadmap -)
+- DOCS_DEFINITION_OF_DONE.md : active (maturity unrated, scope hub, roadmap -)
+- FOUNDATION_QF1_QH1.md : active (maturity unrated, scope hub, roadmap -)
+- HEADLESS_XVFB_QT_XCB.md : active (maturity unrated, scope client, roadmap -)
+- LAYER_Q1_Q11.md : active (maturity unrated, scope shared, roadmap -)
+- LIVE_PROOF_MODEL.md : active (maturity unrated, scope shared, roadmap -)
+- NAMING_QN1_QN3.md : active (maturity unrated, scope shared, roadmap -)
+- RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
 ### spec
-- LOOT.md : active (roadmap -)
-- REGISTRATION.md : active (roadmap -)
-- SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
-- SPAWN.md : active (roadmap -)
-- SPI_STATE_VOCABULARY.md : active (roadmap -)
-- STRUCTURES_CROSS_FILE.md : active (roadmap -)
-- SYNTAX_V1_V2_V3.md : active (roadmap -)
-- VEIN_V4.md : active (roadmap -)
+- LOOT.md : active (maturity prototype, scope shared, roadmap -)
+- REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
+- SHARED_APPLY_SEAM_V1_1_0.md : active (maturity standard, scope shared, roadmap -)
+- SPAWN.md : active (maturity prototype, scope shared, roadmap -)
+- SPI_STATE_VOCABULARY.md : active (maturity prototype, scope shared, roadmap -)
+- STRUCTURES_CROSS_FILE.md : active (maturity prototype, scope shared, roadmap -)
+- SYNTAX_V1_V2_V3.md : active (maturity standard, scope shared, roadmap -)
+- VEIN_V4.md : active (maturity prototype, scope shared, roadmap -)
 ### direction
-- REPOP_SPIKE.md : done (roadmap -)
+- REPOP_SPIKE.md : done (maturity prototype, scope bridge, roadmap -)
 ### note
-- SCALING_AUDIT_STRUCTURAL_FIX.md : active (roadmap -)
+- SCALING_AUDIT_STRUCTURAL_FIX.md : active (maturity unrated, scope shared, roadmap -)
 <!-- END GENERATED:decisions -->
 
 ## To-write queue
