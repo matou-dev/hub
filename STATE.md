@@ -762,9 +762,32 @@
   `LivingEntity` ctor NPEs — `EntityAttributeCreationEvent` reuses the
   pig map wholesale, narrow map 33→34) ; third run died un-reobfed
   through the stale shared map (staging never re-derives — the 150s
-  server re-proof on the fixed bytes regenerated it and re-proved
-  1922 cells). `PORT_QUEUE` custom entity row live on 1165 (second
-  runtime).
+   server re-proof on the fixed bytes regenerated it and re-proved
+   1922 cells). `PORT_QUEUE` custom entity row live on 1165 (second
+   runtime).
+- 2026-09-10 : custom entity live-proven on Forge 2860 (bridge-1122
+  `a3cab40` E0 bytes, zero fix — green first try, host OpenJDK
+  1.8.0_502) : `SPAWN=1` direct client run, bind clean, exit 0 after
+  4000 server ticks — `spawn wired <example1.content:my_beast> hp
+  <20> cap <4> budget <1> y <66..68>`, `registered-entity
+  <example1.content:my_beast>`, 4 landings at ticks 0..3 (census 4 at
+  worldTick 5, cap), `spawn hp <20.0>` at worldTick 2, silent natural
+  join adopted at tick 49 (fallen off-plane, event-bypass re-measured
+  on the registered beast) with its death paid through loot the same
+  tick, sweep + replacement at 69, companion kill at worldTick 1000 →
+  bridge tick 999, diamond carrier the same tick, polled at 1001
+  (elapsed 1, immediate), replacement landed at 999 ; world == pure
+  union (1274 cells, ids 1,253 — `NUMERIC_IDS=example1:my_ore=253`
+  from the boot log, id 253 same as every 2860 proof). Zero `E_*`
+  refusals ; the client tracked the registered beast on the vanilla
+  `RenderPig` mapping with no renderer complaint. Both 1165 lessons
+  N/A by construction : full-ref registry name (no modid shortening)
+  with a class-keyed tripwire, pig attributes inherited through
+  `EntityPig` (no attribute event on the old `EntityRegistry` path),
+  E0 universal pins only (narrow map unchanged at 30 lines). Same
+  round : server path re-proven on the same bytes (C3 run, world ==
+  pure union 1922 cells, vein wire, spawn passive). `PORT_QUEUE`
+  custom entity row live on 1122 (third runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

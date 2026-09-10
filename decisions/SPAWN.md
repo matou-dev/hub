@@ -430,6 +430,39 @@ vanilla, always sourced).
    world == pure union 1922 cells, vein wire, spawn passive).
    `PORT_QUEUE` spawn row live on 1122 (second runtime).
 
+- Custom entity live addendum, same bridge (bridge-1122 `a3cab40` E0
+  bytes, zero fix — green first try) : the T1 pig retires, landings use
+  `new MatouEntity(world)` on the registered `example1:my_beast`. Both
+  1165 lessons are N/A here by construction, not by luck : the beast
+  registers under the full SPI mob ref verbatim (`new
+  ResourceLocation(mob)` — no modid shortening, so no registry-id
+  tripwire skew) and the setup tripwire stays class-keyed
+  (`lookupModSpawn(MatouEntity.class, true)`, the 1.7.10 shape) ; fresh
+  types need no attribute event on the old `EntityRegistry` path (pig
+  attributes inherit through `EntityPig` — the spawn seam already lands
+  vanilla pigs through the same ctor, live-proven). E0 added universal
+  pins only (5 Forge-presence pins, never a narrow row), so no
+  stale-map class either — narrow map unchanged at 30 lines.
+- Custom entity live proof (`SPAWN=1` direct client, Forge 2860,
+  host OpenJDK 1.8.0_502, ore-wire legacy pack) : `spawn wired
+  <example1.content:my_beast> hp <20> cap <4> budget <1> y <66..68>`,
+  `registered-entity <example1.content:my_beast>`, 4 landings at ticks
+  0..3 (census 4 at worldTick 5, cap), `spawn hp <20.0>` at worldTick
+  2, silent natural join adopted at tick 49 (`<3,4,0>`, fallen
+  off-plane) with its death paid through loot the same tick, sweep +
+  replacement landed at 69, companion kill at worldTick 1000 → bridge
+  tick 999, diamond carrier the same tick, polled at 1001 (elapsed 1,
+  immediate), replacement landed at 999, clean shutdown exit 0 ;
+  world == pure union (1274 cells over 4000 ticks, ids 1,253 —
+  `NUMERIC_IDS=example1:my_ore=253` from the boot log, id 253 same as
+  every 2860 proof). Zero `E_*` refusals. The client tracked the
+  registered beast on the vanilla `RenderPig` mapping with no renderer
+  complaint (the `IRenderFactory` single-`(RenderManager)`-ctor path
+  measured green, not assumed). Same round : server path re-proven on
+  the same bytes (C3 run, world == pure union 1922 cells, vein wire,
+  spawn passive). `PORT_QUEUE` custom entity row live on 1122 (third
+  runtime).
+
 ## 1165 port tranche (live-proven 2026-09-10)
 
 T1 vanilla scope on Forge 36.2.42 (bridge-1165 `a848669` E0 +
