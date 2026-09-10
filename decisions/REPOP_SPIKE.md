@@ -65,7 +65,10 @@ Event-sourcing, spike-scoped to vanilla stone (zero registration):
 - `E_SPIKE_*` codes stay spike-local (never in the `E_FORGE_*`
   parity catalog); the forge file-set is unchanged (hook lives in
   the existing `MatouBridgeMod.java`), so `check-bridges.sh` parity
-  holds over all 4 bridges unchanged.
+  holds over all 4 bridges unchanged. Thrown set
+  (PORT_QUEUE-declared, `decisions/BRIDGE_PARITY.md`):
+  `E_SPIKE_SEAL:diverged` (tripwire), `E_SPIKE_STONE:unknown`
+  (non-stone break), `E_SPIKE_MINED` (`MinedStore` args/range).
 - Proof companion (`bridge-1710/tools/autoplay/`, DEV ONLY, never ships,
   `SPIKE=1` arms it — unset = byte-for-byte the proven union run):
   server `WorldTickEvent` dim-0 mine at (8,10,8) (isolated coords outside

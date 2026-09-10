@@ -51,8 +51,12 @@ existing `item`/`mob.drop` refs plus the `vein` block (fields land in
 the V4-delta family, never a fifth genre smuggled in with the job).
 Codes `E_LOOT_*` stay tranche-local in the existing
 `MatouBridgeMod.java` (spike precedent), so `check-bridges.sh`
-parity (basenames + `E_FORGE_*` only) holds with behaviour
-1710-only until proven.
+parity holds with behaviour 1710-only until proven. Thrown set
+(PORT_QUEUE-declared, `decisions/BRIDGE_PARITY.md`): `E_LOOT_GEM`
+(unknown carrier), `E_LOOT_ORE` (scope), `E_LOOT_SEAL:diverged`
+(tripwire), `E_LOOT_SPAWN` (refused spawn), `E_LOOT_TABLE:multi`
+(single-table scope), `E_LOOT_STORE` (`DropStore` args/range),
+`E_LOOT_WIRE` (operator count/ore transport).
 
 Explicit non-goals for tranche 1: fortune/silk-touch modifiers,
 conditional tables (biome, moon phase), experience orbs.

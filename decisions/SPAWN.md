@@ -103,7 +103,12 @@ dimension filters, despawn policy, pack AI.
   E0: `ExampleCheck` spawn battery green, `SpawnCheck`
   store-vs-job comparateur green, stub compile + SRG/universal pins +
   companion derive green on both sides, no SPI change (no re-pin),
-  parity holds over 4 bridges (no new forge file, `E_SPAWN_*` local).
+   parity holds over 4 bridges (no new forge file, `E_SPAWN_*` local).
+   Thrown set (PORT_QUEUE-declared, `decisions/BRIDGE_PARITY.md`):
+   `E_SPAWN_SEAL:diverged` (tripwire), `E_SPAWN_HP:diverged` (attribute
+   read-back), `E_SPAWN_SPAWN:refused` (vetoed landing),
+   `E_SPAWN_STORE` (`SpawnStore` args/range), `E_SPAWN_WIRE` (operator
+   cap/budget/y transport).
 
 ## Measured findings
 

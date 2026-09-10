@@ -26,19 +26,22 @@ ever proven.
 `--sink modern|legacy`, `--mapping derive|srg`, `--ref` sibling,
 `--spi-pin`, `--phase`, `--dry-run/--no-check`) and renders a new
 `../bridge-<sfx>/` from `tools/bridge-template/` (`@TOKENS@` via
-`:112-137`, leftover-token check `:185-189`, auto `check.sh`
-`:194-199`):
+`:112-137`, leftover-token check `:192-196`, auto `check.sh`
+`:201-206`):
 
 - Rendered per version: `MatouBridgeMod.java`, `PackWire.java`,
   `WorldCellSink-<sink>.java` (modern `setBlockState` vs legacy
-  `setBlock`), `tools/check.sh`, `tools/run-live.sh`,
+  `setBlock`), plus the post-B3 parity shells (`Example1Mod.java`,
+  `MatouBlock.java`, `MatouEntity.java` — zero-import, declared gap
+  pointing at hub `decisions/`, see `BRIDGE_PARITY.md` PORT_QUEUE),
+  `tools/check.sh`, `tools/run-live.sh`,
   `tools/live/Dockerfile`, `README.md`, `CHANGELOG.md`, `check.yml`,
   `live-proof.yml`, `SPI_PIN`.
 - Copied verbatim: `AGENTS.md`, `.gitignore`, `LICENSE`,
   `ForgeContentCheck.java`, `anvil.py`, `CellUnion.java`,
   `Reobf.java`, `stub/`, `run-client.sh`, `verify-client-save.sh`.
 - Dev-client wrappers come along as thin copies from `--ref`
-  (`scaffold-bridge.sh:142,167-168,183`); the shared logic stays in
+  (`scaffold-bridge.sh:141,174-175,189`); the shared logic stays in
   `hub/tools/client-common.sh:1-12` (see `DEV_CLIENT_SSOT.md`,
   to-write queue).
 
@@ -59,7 +62,8 @@ TODO — both TODOs were then proven live, same 1274-cell verdict.
 - Fresh scaffold: `tools/check.sh` green at scaffold (etages 1+2),
   live placeholder red under `LIVE=1`.
 - `tools/check-bridges.sh` accepts the newcomer from day one (same
-  `SPI_PIN`, same file-set, same `E_FORGE_*` catalog).
+  `SPI_PIN`, same file-set, same `E_FORGE_*` catalog, shells pointed
+  at hub decisions, no uncited local code).
 
 ## What would re-open it
 

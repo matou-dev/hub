@@ -138,7 +138,7 @@ render() {
 
 if [ "$DRY" = "1" ]; then
   echo "plan bridge-$SFX (mc $MC, forge $FORGE_LONG, sink $SINK, mapping $MAPPING, ref $REF, pin $SPI_PIN)"
-  echo "  render: MatouBridgeMod.java PackWire.java WorldCellSink-$SINK.java check.sh run-live.sh Dockerfile README.md CHANGELOG.md check.yml live-proof.yml"
+  echo "  render: MatouBridgeMod.java PackWire.java WorldCellSink-$SINK.java Example1Mod-shell MatouBlock-shell MatouEntity-shell check.sh run-live.sh Dockerfile README.md CHANGELOG.md check.yml live-proof.yml"
   echo "  copy: AGENTS.md .gitignore LICENSE ForgeContentCheck.java anvil.py CellUnion.java Reobf.java stub/ run-client.sh verify-client-save.sh (hub wrappers)"
   echo "  out: $OUT"
   exit 0
@@ -151,6 +151,13 @@ mkdir -p "$FSRC" "$OUT/java/test/fr/iamacat/bridge" "$OUT/tools/live" \
 render "$TPL/MatouBridgeMod.java.tpl" > "$FSRC/MatouBridgeMod.java"
 render "$TPL/PackWire.java.tpl" > "$FSRC/PackWire.java"
 render "$TPL/WorldCellSink-$SINK.java.tpl" > "$FSRC/WorldCellSink.java"
+# Post-B3 tranches are 1710-only: the newcomer gets the same-basename
+# zero-import shells (declared gap, PORT_QUEUE in hub
+# decisions/BRIDGE_PARITY.md) — its own tranches rewrite them
+# version-native. Static files, no @TOKENS@ inside.
+render "$TPL/Example1Mod.java.tpl" > "$FSRC/Example1Mod.java"
+render "$TPL/MatouBlock.java.tpl" > "$FSRC/MatouBlock.java"
+render "$TPL/MatouEntity.java.tpl" > "$FSRC/MatouEntity.java"
 render "$TPL/check.sh.tpl" > "$OUT/tools/check.sh"
 render "$TPL/run-live-placeholder.sh.tpl" > "$OUT/tools/run-live.sh"
 render "$TPL/Dockerfile.tpl" > "$OUT/tools/live/Dockerfile"

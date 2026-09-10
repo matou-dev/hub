@@ -21,11 +21,12 @@ disguised as four green gates.
 
 ## Decision
 
-`hub/tools/check-bridges.sh:5-46` enforces three parity dimensions over
+`hub/tools/check-bridges.sh` (dims 1-3 `:34-66`, dim 4 `:67-123`)
+enforces four parity dimensions over
 every `../bridge-*/` sibling, and refuses loud on any of them:
 
 1. `SPI_PIN` — all bridges pin the same validated SPI
-   (today `00934e1fc84317725cf478fea3d5380c8075e76b`). The laggard
+   (today `0ace6885b450ae4807ba14b3a79c6fce68ae031d`). The laggard
    re-validates, then bumps its pin. No bridge ever floats.
 2. Forge file-set — `find forge/src -name '*.java' | sed 's|.*/||' |
    sort` must be byte-identical everywhere (today exactly
@@ -40,6 +41,16 @@ every `../bridge-*/` sibling, and refuses loud on any of them:
    `WorldCellSink.java:44 E_FORGE_Y:range`,
    `MatouBridgeMod.java:46 E_FORGE_PACKS:unreadable`). A noisy path
    added on one side must exist on all sides.
+4. Declared gap only (PORT_QUEUE below): the full `E_*` catalog over
+   `forge/src` + `java/src` (shipped code, never `tools/`) — a code
+   missing in any bridge must be cited in hub `decisions/*.md` (the
+   tranche that introduced it, thrown set named there); shells (files
+   containing `parity shell`) must cite a `decisions/<FILE>.md` on
+   disk. The gate prints the per-bridge gap (`shells=` plus
+   `local-codes=` — today 1710 leads with 24 local codes and 0
+   shells, each sibling owes 3 shells) : the metric shrinks tranche
+   by tranche, never silently. An uncited local code or an unpointed
+   shell is a forgotten port, not an optimization.
 
 What parity deliberately tolerates: same behaviour through native APIs.
 `1710/MatouBridgeMod.java:60` checks `provider.dimensionId!=0` where
@@ -58,15 +69,38 @@ reobfs members only (`bridge-1201/README.md:49-50,57`); 1165 locks the
 MCP snapshot name (`mcp_snapshot-20210309`;
 `bridge-1165/README.md:50-51`). No mapping file in the repos can rot.
 
+## PORT_QUEUE (hand-kept — a port tranche flips its cells live in the same commit)
+
+`live` = version-native code live-proven on that bridge ; `shell` =
+same-basename zero-import shell pointing at the decision ; `TODO` =
+not ported (no shell stands in — the files match by basename only).
+A cell flips to `live` with the version-native live proof alone,
+never with the code copy.
+
+| Tranche (decision) | 1710 | 1122 | 1165 | 1201 |
+|---|---|---|---|---|
+| Registration block+beast, `E_REG_*` (`REGISTRATION.md`) | live | shell | shell | shell |
+| Custom entity `MatouEntity` (`SPAWN.md`) | live | shell | shell | shell |
+| Vein wire (`VEIN_V4.md`) | live | TODO | TODO | TODO |
+| Loot seam+wire, `E_LOOT_*` (`LOOT.md`) | live | TODO | TODO | TODO |
+| Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | TODO | TODO | TODO |
+| Vocabulary seals, T3 (`SPI_STATE_VOCABULARY.md`) | live | TODO | TODO | TODO |
+| Repop hook+seal, `E_SPIKE_*` (`REPOP_SPIKE.md`) | live | TODO | TODO | TODO |
+
 ## Gates
 
 - `tools/check-bridges.sh` green: pin + file-set + error catalog over
-  all bridges (no sibling = loud skip, never silent red).
-- Parity holds over 4 bridges (`STATE.md:84-85`); every live proof
-  reports the same 1274-cell world == pure union count.
+  all bridges (no sibling = loud skip, never silent red) ; full `E_*`
+  catalog declared in hub decisions, all shells pointed, gap printed.
+- Lead-bridge advance is bounded by the queue above : every live proof
+  on the lead bridge names the unported siblings, and the next port
+  tranche starts from the queue row, never from a diff rediscovery.
 
 ## What would re-open it
 
-- A fifth bridge: same three dimensions from its scaffold commit.
+- A fifth bridge: same four dimensions from its scaffold commit
+  (the scaffolder renders the shells, the queue gains its column).
 - A sixth `E_FORGE_*` code: land it in all four bridges in one round,
   or the gate says which one forgot.
+- A new tranche-local code cited nowhere: the gate names it before
+  the tranche lands, never after.

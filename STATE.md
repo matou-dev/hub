@@ -372,7 +372,27 @@
   `NUMERIC_IDS=example1:my_ore=165` from the boot log, id 165 again).
     (`decisions/SPAWN.md` operator-override tranche,
     `decisions/LOOT.md` ore-scope re-opener spent.)
-- 2026-09-10 : T3 SPI registry landed live-unchanged (spi `0ace688`
+- 2026-09-10 : decisions tracking columns adopted from CatzEngineNext
+  (2026-09-10 addendum) : front-matter gains closed `maturity`
+  (prototype/standard/production/unrated) +
+  `scope` (spi/bridge/content/client/hub/shared/unrated), canonical
+  order type/status/maturity/scope/roadmap, gate refuses loud on drift
+  ; all 25 files rated in the landing commit (specs live-proven on the
+  lead bridge only = prototype, seam + syntax = standard, rulings +
+  note = unrated) ; Catz `phase`/`note-present` types and
+  shell/game/shared scopes deliberately not adopted
+  (`decisions/DECISIONS_INDEX_AND_STATUS.md` addendum).
+- 2026-09-10 : bridge parity goes gap-aware (1710 led by ~1000 forge
+  lines with dims 1-3 still green : same basenames via shells, same
+  `E_FORGE_*`) : `check-bridges.sh` gains dim 4 (full `E_*` catalog
+  over forge+java cited in hub decisions + shells pointed at a
+  decision + per-bridge gap printed — today 1710 24 local codes 0
+  shells, each sibling 3 shells) ; 5 seal codes the gate caught on its
+  first run now declared (`E_LOOT_STORE/WIRE`, `E_SPAWN_STORE/WIRE`,
+  `E_SPIKE_MINED`) ; hand-kept PORT_QUEUE
+  (`decisions/BRIDGE_PARITY.md`, 7 tranches x 4 bridges, stale pin
+  fixed) ; scaffolder renders the 3 shells so a fifth bridge is
+  parity-green at scaffold.
   `StateVocabulary` + `SpawnStates`/`LootStates` + `VocabularyPack`,
   example1 `94e7f9f` namespaces + delegating jobs + pack provision,
   bridge-1710 `4563380` vocabulary seals + `no-lateral-import` gate,

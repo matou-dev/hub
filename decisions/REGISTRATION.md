@@ -54,11 +54,16 @@ from the spec — never hardcoded per content).
   `block.<ref>=example1:my_ore`. No second resolve path.
 - Parity: 1710-only first, codes `E_REG_*` local in the new
   `Example1Mod.java` (+ `MatouBlock.java`, same package) only (spike
-  precedent: `E_SPIKE_*` in the mod file). `tools/check-bridges.sh:28-29`
+  precedent: `E_SPIKE_*` in the mod file).   `tools/check-bridges.sh:39-40`
   diffs only forge basenames and the `E_FORGE_*` catalog, so sibling
   bridges carry same-basename zero-import shells (`MatouBlock.java`,
   `Example1Mod.java` — unwired, documented) and parity holds unchanged;
-  other bridges keep compiling as before.
+  other bridges keep compiling as before. Thrown set
+  (PORT_QUEUE-declared, `decisions/BRIDGE_PARITY.md`): `E_REG_PACKS` /
+  `E_REG_UNRESOLVED` (pack read), `E_REG_BEAST` (beast spec),
+  `E_REG_DUP` / `E_REG_SPEC` / `E_REG_NOSPEC` / `E_REG_BLOCK` /
+  `E_REG_TABLE` (spec shape); sibling shells throw
+  `E_REG_SHELL:unwired` and point here.
 - Stubs/pins: `tools/live/stub/net/minecraft/block/Block.java:16`
   today pins `getBlockFromName` plus the registration surface
   (`run-live.sh:84-94`); the tranche adds stub members plus pins for
