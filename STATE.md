@@ -287,7 +287,34 @@
   died loud `NoSuchFieldError: posX`, never silent) ; `ExamplePack`
   untouched (table wires beside it, next cell job still goes
   table-driven).
-  (`decisions/LOOT.md` active.)
+   (`decisions/LOOT.md` active.)
+- 2026-09-10 : SPAWN live-proven on Forge 1614 (example1 `9fa57e1`
+  pure `SpawnJob` + single-mob `SpawnTable`, bridge-1710 `ea384e9`
+  seam + live wire, host OpenJDK 1.8.0_502) : `SPAWN=1` direct client
+  run, bind clean, exit 0 after 4600 server ticks — 4 landings at
+  ticks 0..3 (census 4 at worldTick 5, cap 4, budget 1), natural pig
+  adopted at tick 49, fallen pig swept + replacement landed at 69, 48
+  natural joins vetoed past cap, companion kill at worldTick 1000 →
+  diamond carrier at 1001 (elapsed 1, immediate — the loot table pays
+  the spawn-to-loot chain, replacement landed at 999 after the kill
+  release) ; world == pure union (1274 cells, ids 1,165 — legacy
+  ore-wire pack, beasts are entities, verdict takes
+  `NUMERIC_IDS=example1:my_ore=165`).
+  E0: `ExampleCheck` spawn battery green, `SpawnCheck`
+  store-vs-job comparateur (slots == decision size, budgets 1..2)
+  green, stub compile + SRG/universal pins + companion derive green on
+  both sides, no SPI change (no re-pin), parity holds over 4 bridges
+  (no new forge file, `E_SPAWN_*` local). Landing + veto passive
+  unless `SPAWN=1`, so union and loot runs stay spawn-free by
+  construction (no live re-proof of those runs: flag-gated passivity).
+  Three measured notes: dead beasts linger in the loaded list
+  (companion counts living only, `isDead` searge-pinned — first live
+  run failed loud on a corpse past cap) ; natural spawns bypass
+  `EntityJoinWorldEvent` on 1614 (second live run failed loud on a
+  fifth living pig — hence the per-tick poll reconcile beside the
+  event hooks) ; bridge pigs fall off the union plane (one 60-block
+  fall proved death→loot→release→respawn live).
+  (`decisions/SPAWN.md` active.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

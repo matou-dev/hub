@@ -1,13 +1,13 @@
 ---
 type: spec
-status: direction
+status: active
 roadmap: -
 ---
 
 # Spawn — event-sourced mob placement on the repop seam
 
 Date: 2026-09-10
-Status: direction (contract frozen, code TODO)
+Status: active (first consumer: example1 `SpawnJob`/`SpawnTable` + bridge-1710 live wire, live-proven 2026-09-10)
 
 ## Problem
 
@@ -55,6 +55,70 @@ until proven.
 
 Explicit non-goals for tranche 1: custom entity rendering, biome /
 dimension filters, despawn policy, pack AI.
+
+## Landed shape (tranche 1, live-proven 2026-09-10)
+
+- `example1` (`SpawnJob` + `SpawnTable`, E0 `ExampleCheck` green):
+  `SpawnJob` is stateless like `LootJob` and reads
+  `example1.spawn:census` (entity-id to spawn cell) + `:table` (content
+  mob ref) + `:cap` (Counts-style trio under `E_SPAWN_CAP`) +
+  `:budget` (Counts-style trio under `E_SPAWN_BUDGET`) + `:y`
+  (`[yMin, yMax]` longs under `E_SPAWN_Y`) from the snapshot, emitting
+  `min(budget, max(cap - census, 0))` spawn cells with the content mob
+  ref at seeded pads (GRID x/z, sealed y band). `SpawnTable.fromFile`
+  seals the single mob ref (`namespace:name`) — 0/N mobs refuse loudly
+  (single-table scope). `ExamplePack` untouched (no new job branch, the
+  seal wires beside it like loot).
+- `bridge-1710` (`fr.iamacat.bridge.spawn`, E0 `SpawnCheck` green):
+  `SpawnStore` (record/release/slotsDue, entity-id census, unknown
+  release is false) + `SpawnSeal.seal(store, mob, cap, budget, yMin,
+  yMax)` beside the first wire's pack states (SPI untouched, no re-pin)
+  + comparateur (budgeted slots equal the job decision size, budgets
+  1..2).
+- Forge wire (`MatouBridgeMod`, `E_SPAWN_*` local, parity holds):
+  `SPAWN_CAP=4` + `SPAWN_BUDGET=1` + `SPAWN_YMIN=66`/`SPAWN_YMAX=68`
+  policy constants (spike `REPOP_DELAY` shape), `wireSpawn` from the
+  same owned file as loot, `spawnTick` with the `E_SPAWN_SEAL:diverged`
+  tripwire on slots-vs-decided, pig landing sink beside vanilla
+  behaviour. Landing plus veto stay passive unless `SPAWN=1` (same
+  opt-in as the companion proofs — always-on landing would veto the
+  loot proof's own pig once the census fills).
+- Census discipline (amended live, second red run): the join event only
+  is not the census. `onJoin` records every let-through join and vetoes
+  past cap, `onKill` releases pig ids, but a per-tick `reconcile` polls
+  the loaded pigs and adopts/sweeps the difference before sealing — the
+  sealed census is the polled living reality, never the event trail
+  alone. Tranche-1 scope: pigs outside the loaded set sweep (the proof
+  world keeps them loaded; a rejoin re-adopts next tick).
+- Live proof (`SPAWN=1` direct client, Forge 1614, host OpenJDK
+  1.8.0_502): 4 landings at ticks 0..3 (census 4 at worldTick 5, cap),
+  natural pig adopted at tick 49, fallen pig swept + replacement landed
+  at 69, 48 natural joins vetoed past cap, companion kill at worldTick
+  1000 → diamond carrier at 1001 (elapsed 1, immediate — the loot table
+  pays the chain), replacement landed at 999 after the kill release.
+  Clean shutdown exit 0 after 4600 server ticks, world == pure union
+  (1274 cells, ids 1,165 — legacy ore-wire pack, beasts are entities).
+  E0: `ExampleCheck` spawn battery green, `SpawnCheck`
+  store-vs-job comparateur green, stub compile + SRG/universal pins +
+  companion derive green on both sides, no SPI change (no re-pin),
+  parity holds over 4 bridges (no new forge file, `E_SPAWN_*` local).
+
+## Measured findings
+
+- Dead beasts linger in the loaded list: the first live run counted a
+  corpse past cap at worldTick 51 and failed loud (`E_SPAWN_PROOF`,
+  never silent). The companion census counts living pigs only
+  (`isDead`, searge-pinned like every vanilla member).
+- Natural spawns bypass `EntityJoinWorldEvent` on Forge 1614 (measured:
+  a grass spawn joined with no event while the census was full — no
+  veto line, second live run failed loud on the fifth living pig). The
+  event stays as fast path + veto, but only the per-tick poll adopts
+  every path — events alone undercount reality. The veto itself is
+  proven (48 natural joins refused past cap in the green run).
+- Bridge pigs fall off the union plane (pads y 66..68, plane only
+  18x18): one fell 60 blocks and died on the grass at tick 49 — which
+  proved the death→loot→release→respawn chain live instead of breaking
+  the proof.
 
 ## Gates (will prove the tranche)
 

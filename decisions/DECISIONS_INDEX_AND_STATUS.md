@@ -66,7 +66,7 @@ recreates the exact drift it is supposed to fix.
 - LOOT.md : active (roadmap -)
 - REGISTRATION.md : active (roadmap -)
 - SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
-- SPAWN.md : direction (roadmap -)
+- SPAWN.md : active (roadmap -)
 - STRUCTURES_CROSS_FILE.md : active (roadmap -)
 - SYNTAX_V1_V2_V3.md : active (roadmap -)
 - VEIN_V4.md : active (roadmap -)
