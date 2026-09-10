@@ -250,6 +250,23 @@
   repopped 1199, delay exactly 200, client union still 1274 stone).
   (`decisions/REGISTRATION.md` active, `LIVE_PROOF_MODEL.md` amended
   to per-name IDs, client verifier gains `$NUMERIC_IDS`.)
+- 2026-09-10 : VEIN_V4 live-proven on Forge 1614 (spi `67863cd`
+  SYNTAX-V4 + 20 goldens, example1 `fdd9704` pure `VeinPlaceJob` +
+  vein pack wiring, bridge-1710 `0e947e2` live wire, host OpenJDK
+  1.8.0_502) : 150s 1614 run, bind clean, world == pure union
+  (1922 cells, ids 1,165 — 256 plane my_ore at y=63, 1018 stone
+  structures at y=64..65, 648 vein my_ore clusters saturating the
+  BASE_Y=60 band y=60..61 ; my_ore id 165 dynamic from the boot log,
+  zero warnings). E0: `check_goldens.py` 20/20 py+java,
+  `ExampleCheck` seal-vs-wire comparateur 40 ticks green, legacy
+  packs vein-free and behaviour-identical (`ForgeContentCheck` green
+  on all 4 bridges, re-pinned to `67863cd`, no live re-proof:
+  decided bytes identical for syntax <= 3). Two measured notes:
+  `ExamplePack` at 477 lines (alias-loop mirror factored into
+  `prefixedArgs`, next job goes table-driven — no third in-place
+  branch); vein band saturates 18x18x2 over 4000 ticks as predicted
+  (seeded origins over GRID 16 plus 3x3 footprint).
+  (`decisions/VEIN_V4.md` active.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

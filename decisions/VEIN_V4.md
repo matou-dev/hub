@@ -1,13 +1,13 @@
 ---
 type: spec
-status: direction
+status: active
 roadmap: -
 ---
 
 # Vein V4 — `vein` genre (SYNTAX-V4) plus pure cluster job
 
 Date: 2026-09-10
-Status: direction (contract frozen, code TODO)
+Status: active (first consumer: example1 `VeinPlaceJob` + bridge-1710 live wire, live-proven 2026-09-10)
 
 ## Problem
 

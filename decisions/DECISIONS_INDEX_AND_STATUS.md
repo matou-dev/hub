@@ -69,7 +69,7 @@ recreates the exact drift it is supposed to fix.
 - SPAWN.md : direction (roadmap -)
 - STRUCTURES_CROSS_FILE.md : active (roadmap -)
 - SYNTAX_V1_V2_V3.md : active (roadmap -)
-- VEIN_V4.md : direction (roadmap -)
+- VEIN_V4.md : active (roadmap -)
 ### direction
 - REPOP_SPIKE.md : done (roadmap -)
 ### note
