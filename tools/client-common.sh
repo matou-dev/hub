@@ -92,6 +92,10 @@ CLIENT_DIR="${CLIENT_DIR:-$(printf '%s' "$LIVE_DIR" | sed 's/-live$/-client/')}"
 INST="matou-$SFX-dev"
 PRISM_DIR="${PRISM_DIR:-${TMPDIR:-/tmp}/matou-$(printf '%s' "$LIVE_TAG" | tr 'A-Z' 'a-z')-prism}"
 if [ "$JAVA_MAJOR" = "17" ]; then
+  # JDK17 is machine-local: export JAVA17_HOME in the shell rc of every
+  # box that stages this version (this repo is public — never commit a
+  # machine path here, only the variable name). Unset falls back to the
+  # distro default below and fails loud at `$JB/java` when absent.
   JAVA_HOME="${JAVA17_HOME:-/usr/lib/jvm/java-17-openjdk}"
   JFLAGS="--release 8"
 else

@@ -451,8 +451,13 @@ esac
 rc=0
 printf '%s\n' "$LAUNCH_LINE" | timeout "$GAME_TIMEOUT" xvfb-run -a xargs -d '\n' "$JB/java" >"$UP/game.log" 2>&1 || rc=$?
 if [ "$rc" = "124" ]; then
-  echo "FAIL run-direct : game timed out after ${GAME_TIMEOUT}s (tail of $UP/game.log):"
-  tail -n 40 "$UP/game.log" || true
+  echo "FAIL run-direct : game timed out after ${GAME_TIMEOUT}s (verdict lines + byte-bounded tail of $UP/game.log):"
+  # Verdict-first, then a byte-bounded tail: the log can carry single
+  # giant lines (full launch classpath, Narrator lib rows) that a plain
+  # `tail -n` would dump whole — drowning the failure. Same refusal
+  # vocabulary as the bridge run-live.sh bind check, never widened here.
+  grep -a -m20 -e "NoSuchMethodError" -e "NoSuchFieldError" -e "E_FORGE" -e "E_BRIDGE" -e "E_EXAMPLE" -e "E_REG" -e "E_LOOT" -e "E_SPAWN" -e "Encountered an unexpected exception" -e "Caused by" "$UP/game.log" | cut -c1-300 || true
+  tail -c 4000 "$UP/game.log" || true
   exit 1
 fi
 echo "note run-direct : game exited ($rc), full log at $UP/game.log"
