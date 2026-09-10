@@ -526,21 +526,47 @@
   stub-compile green, `no-stub-const` + `no-lateral-import` gates
   ported ; run-live.sh stages java/src into the bridge jar, narrow map
   8→19 rows, `E_LOOT` refusal grep).
-  1165-native spelling (measured at write time against the pinned
-  36.2.42 bytes — provisioned + sha1-verified, proven at live time) :
-  no `HarvestDropsEvent` on 1.16.5 (absent from the universal — breaks
-  arrive through `BlockEvent.BreakEvent`, whose `getWorld` returns
-  `IWorld`, narrowed before reading) ; the carrier sink is the public
-  `ServerWorld.addEntity` (its same-SRG sibling `addEntity0`, the 1.12
-  `World.spawnEntity`, is private on 1.16.5 — calling it would die
-  linking) ; coords through declaring `Vector3i` (no `Vec3i` on 1.16.5),
-  the ore match through declaring `AbstractBlockState` (owns
-  `getBlock`), kills through `LivingEvent.getEntityLiving()` as
-  `LivingEntity`, carriers as `ItemEntity` ; `Items.DIAMOND` is
-  uppercase (same SRG as the 1.12 lowercase `diamond` — the case moved
-  between snapshots). T1 any-break-pays (no species filter until beast
+   1165-native spelling (measured at write time against the pinned
+   36.2.42 bytes — provisioned + sha1-verified, proven at live time) :
+   no `HarvestDropsEvent` on 1.16.5 (absent from the universal — breaks
+   arrive through `BlockEvent.BreakEvent`, whose `getWorld` returns
+   `IWorld`, narrowed before reading) ; the carrier sink is the public
+   `ServerWorld.addEntity` (its same-SRG sibling `addEntity0`, the 1.12
+   `World.spawnEntity`, is private on 1.16.5 — calling it would die
+   linking) ; coords through declaring `Vector3i` (no `Vec3i` on 1.16.5),
+   the ore match through declaring `AbstractBlockState` (owns
+   `getBlock`), kills through `LivingEvent.getEntityLiving()` as
+   `LivingEntity`, carriers as `ItemEntity` ; `Items.DIAMOND` is
+   uppercase (same SRG as the 1.12 lowercase `diamond` — the case moved
+   between snapshots). T1 any-break-pays (no species filter until beast
+   registration). Live proof TODO (companion harvest/kill/poll legs).
+   `PORT_QUEUE` loot + vocabulary rows e0 on 1165 (T3 seals ride the
+   loot tranche, no separate port).
+- 2026-09-10 : loot seam E0-landed on bridge-1201 (bridge-1201
+  `e8b8369` : `DropStore`/`LootSeal`/`OperatorPolicy` byte-identical
+  copies, `LootCheck` battery + comparateur + overrides green,
+  1201-native hooks `onHarvest`/`onKill`/`lootTick`/`dropCarrier`
+  stub-compile green, `no-stub-const` + `no-lateral-import` gates
+  ported ; run-live.sh stages java/src into the bridge jar, narrow map
+  6→17 rows, `E_LOOT` refusal grep).
+  1201-native spelling (measured at write time against the pinned
+  47.2.0 bytes — provisioned + sha1-verified, the 17-line derive run
+  standalone green, live boot TODO) : the break signal lives in the
+  `level` event package (no `world` package on 1.20.1) and carries the
+  level as a `LevelAccessor` (narrowed to `ServerLevel` before reading) ;
+  the client echo gate is the `isClientSide()` method (no `isRemote`
+  field) ; kills arrive through inherited `LivingEvent.getEntity()` as
+  `LivingEntity` (no `getEntityLiving`), whose level reads through the
+  `level()` method (no public `world` field) and whose coords read
+  through `getX/getY/getZ` (no `posX` fields) ; the carrier sink is the
+  public `ServerLevel.addFreshEntity` (neither 1.12 nor 1.16.5 shape
+  ports) ; coords through declaring `Vec3i` (`net.minecraft.core`),
+  the ore match through declaring `BlockBehaviour.BlockStateBase`
+  (owns `getBlock`), the carrier ctor through `(ItemLike,int)`
+  (the 1.16.5 `(Item,int)` shape does not port — `Item implements
+  ItemLike`). T1 any-break-pays (no species filter until beast
   registration). Live proof TODO (companion harvest/kill/poll legs).
-  `PORT_QUEUE` loot + vocabulary rows e0 on 1165 (T3 seals ride the
+  `PORT_QUEUE` loot + vocabulary rows e0 on 1201 (T3 seals ride the
   loot tranche, no separate port).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
