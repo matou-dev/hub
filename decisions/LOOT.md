@@ -1,13 +1,13 @@
 ---
 type: spec
-status: direction
+status: active
 roadmap: -
 ---
 
 # Loot — event-sourced drops on the repop seam
 
 Date: 2026-09-10
-Status: direction (contract frozen, code TODO)
+Status: active (first consumer: example1 `LootJob`/`LootTable` + bridge-1710 live wire, live-proven 2026-09-10)
 
 ## Problem
 
@@ -54,6 +54,54 @@ parity (basenames + `E_FORGE_*` only) holds with behaviour
 
 Explicit non-goals for tranche 1: fortune/silk-touch modifiers,
 conditional tables (biome, moon phase), experience orbs.
+
+## Landed shape (tranche 1, live-proven 2026-09-10)
+
+- `example1` (`LootJob` + `LootTable`, E0 `ExampleCheck` green):
+  `LootJob` is stateless like `OwnedVeinJob` and reads
+  `example1.loot:harvested` (map) + `:table` (kind to content item
+  ref) + `:count` (Counts-style trio under `E_LOOT_COUNT`) from the
+  snapshot, emitting volume drop cells with the content item ref.
+  `LootTable.fromFile(owned)` seals `{ore, beast}` to the single mob
+  drop — zero or several mobs refuse loudly (single-table scope).
+  `ExamplePack` untouched (no new job branch, no new states).
+- `bridge-1710` (`fr.iamacat.bridge.loot`, E0 `LootCheck` green):
+  `DropStore` (record/claimDue/sealed, immediate — due at harvest
+  tick) + `LootSeal.seal(store, table, count)` beside the first wire's
+  pack states (SPI untouched, no re-pin) + comparateur (claim expanded
+  by the table equals the decision, counts 1..2).
+- Forge wire (`MatouBridgeMod`, `E_LOOT_*` local, parity holds):
+  `LOOT_ORE` scope constant + `LOOT_COUNT=1` policy constant (spike
+  `REPOP_DELAY` shape), `wireLoot` from the packs' `ownedFile`
+  (passive without, multi refuses), `lootTick` with the
+  `E_LOOT_SEAL:diverged` tripwire on the expanded claim, diamond
+  carrier sink beside vanilla drops.
+- Live proof (`LOOT=1` direct client, Forge 1614, host OpenJDK
+  1.8.0_502): companion harvests the registered ore at (8,10,8) at
+  worldTick 1000 and kills a spawned pig at (12,10,8) at 1005 —
+  recorded bridge ticks 999/1004, one diamond carrier dropped the same
+  tick each, both polled within 1 tick (immediate, no repop delay).
+  Clean shutdown exit 0 after 4600 server ticks, world == pure union
+  (1274 cells, ids 1,165 — ore-wire legacy pack, drops are entities).
+  Client packs.cfg for the proof wires `example1:my_ore` with no vein
+  file; the union verdict takes `NUMERIC_IDS=example1:my_ore=165`
+  (dynamic id from the game log, per-name-IDs model).
+
+## Measured findings
+
+- Stub-owner discipline: reobf only walks in-jar superclass chains and
+  stub supertypes never ship, so `EntityItem.posX`,
+  `EntityLivingBase.worldObj` and pig calls kept their MCP names into
+  the first live run and died linking (`NoSuchFieldError: posX` in the
+  carrier poll — loud crash, rc=255, never a silent pass). Inherited
+  vanilla members are read through the declaring stub type
+  (`Entity`), in forge and companion alike — the crash class the
+  `no-stub-const` gate cannot see.
+- Drops are immediate (elapsed 1 tick harvest to carrier both legs):
+  the delay knob stays repop's alone.
+- The diamond carrier, the any-kill-pays scope and the kind vocabulary
+  (`ore`/`beast`) all expire with their documented successors (item
+  registration, custom entity, per-mob tables) — see re-openers below.
 
 ## Gates (will prove the tranche)
 

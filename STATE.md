@@ -266,7 +266,28 @@
   `prefixedArgs`, next job goes table-driven — no third in-place
   branch); vein band saturates 18x18x2 over 4000 ticks as predicted
   (seeded origins over GRID 16 plus 3x3 footprint).
-  (`decisions/VEIN_V4.md` active.)
+   (`decisions/VEIN_V4.md` active.)
+- 2026-09-10 : LOOT live-proven on Forge 1614 (example1 `5d5963c`
+  pure `LootJob` + single-mob `LootTable`, bridge-1710 `9c74d05`/
+  `3c2ea06` seam + live wire, host OpenJDK 1.8.0_502) : `LOOT=1`
+  direct client run, bind clean, exit 0 after 4600 server ticks —
+  companion harvests registered ore at (8,10,8) at worldTick 1000 and
+  kills a spawned pig at (12,10,8) at 1005, bridge records at ticks
+  999/1004 and drops one diamond carrier the same tick each, both
+  polled within 1 tick (immediate, no repop delay) ; world == pure
+  union (1274 cells, ids 1,165 — ore-wire legacy pack, drops are
+  entities, verdict takes `NUMERIC_IDS=example1:my_ore=165`).
+  E0: `ExampleCheck` loot battery green, `LootCheck`
+  store-vs-job comparateur (table expansion, counts 1..2) green,
+  stub compile + SRG/universal pins + companion derive green on both
+  sides, no SPI change (no re-pin), parity holds over 4 bridges (no
+  new forge file, `E_LOOT_*` local). Two measured notes:
+  stub-owner discipline (reobf walks in-jar supers only — inherited
+  vanilla members go through the declaring stub type ; first live run
+  died loud `NoSuchFieldError: posX`, never silent) ; `ExamplePack`
+  untouched (table wires beside it, next cell job still goes
+  table-driven).
+  (`decisions/LOOT.md` active.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

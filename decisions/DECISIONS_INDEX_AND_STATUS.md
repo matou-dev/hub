@@ -63,7 +63,7 @@ recreates the exact drift it is supposed to fix.
 - NAMING_QN1_QN3.md : active (roadmap -)
 - RELEASE_ENG.md : active (roadmap -)
 ### spec
-- LOOT.md : direction (roadmap -)
+- LOOT.md : active (roadmap -)
 - REGISTRATION.md : active (roadmap -)
 - SHARED_APPLY_SEAM_V1_1_0.md : active (roadmap -)
 - SPAWN.md : direction (roadmap -)
