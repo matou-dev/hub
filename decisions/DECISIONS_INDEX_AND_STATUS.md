@@ -110,6 +110,7 @@ is the same lie class as the Problem above.
 - SYNTAX_V1_V2_V3.md : active (maturity standard, scope shared, roadmap -)
 - VEIN_V4.md : active (maturity prototype, scope shared, roadmap -)
 ### direction
+- GPU_INSTANCING.md : active (maturity prototype, scope spi, roadmap -)
 - REPOP_SPIKE.md : done (maturity prototype, scope bridge, roadmap -)
 ### note
 - SCALING_AUDIT_STRUCTURAL_FIX.md : active (maturity unrated, scope shared, roadmap -)

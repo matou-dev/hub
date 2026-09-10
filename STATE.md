@@ -511,7 +511,14 @@
   `getEntityId` is `func_145782_y` (the E0 draft said `func_82145_z`
   from memory — notch `Z()` returns constant 1, caught live,
   anchor measured via `javap -c`). Live proof TODO (companion
-  census/kill/carrier legs). `PORT_QUEUE` spawn row e0 on 1122.
+   census/kill/carrier legs). `PORT_QUEUE` spawn row e0 on 1122.
+- 2026-09-10 : GPU instancing pure spike in SPI (spi `2e3f0bd`
+  `fr.iamacat.spi.render` : `Frustum` classic-depth Gribb-Hartmann +
+  `InstanceBucket` (model,texture) buckets GPU-order, `RenderPlanCheck`
+  580 checks green, 4 bridges re-pinned E0-green no live re-proof) :
+  no snapshot/vocab touch, no GL/MC imports, no live ; the order
+  comparateur caught a real fork red first (sets agree, order stays
+  first-seen-over-all). (`decisions/GPU_INSTANCING.md` direction active.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
