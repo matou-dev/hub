@@ -744,6 +744,27 @@
   (companion census/kill/carrier legs on the registered beast, client
   link — what the client runtime wants the renderer named is measured
   at live time, like the 1122 load path).
+- 2026-09-10 : custom entity live-proven on Forge 36.2.42 (bridge-1165
+  `0b86c2d` E0 + `f6e98e5`/`a86e3a7` live fixes, host OpenJDK
+  1.8.0_502) : `SPAWN=1` direct client run, bind clean, exit 0 after
+  4000 server ticks — `registered-entity <example1:my_beast>`, 4
+  landings at ticks 0..3 (census 4 at worldTick 4, cap), `spawn hp
+  <20.0>` at worldTick 1, natural adopted with death paid through loot
+  at tick 49, sweep + replacement at 69, companion kill at worldTick
+  1000 → diamond carrier the same tick, polled at 1001 (elapsed 1,
+  immediate), replacement landed at 1000 ; world == pure union (1274
+  cells over 4000 ticks, ore + stone names — no numeric ids on
+  1.16.5). Zero `E_*` refusals ; the client tracked the registered
+  beast on the vanilla `PigRenderer` mapping with no renderer
+  complaint. Three red runs pre-green, all loud by design :
+  registry-id tripwire (SPI mob ref vs registry id — the 1.7.10
+  tripwire is class-keyed) and the missing attribute map (vanilla
+  `LivingEntity` ctor NPEs — `EntityAttributeCreationEvent` reuses the
+  pig map wholesale, narrow map 33→34) ; third run died un-reobfed
+  through the stale shared map (staging never re-derives — the 150s
+  server re-proof on the fixed bytes regenerated it and re-proved
+  1922 cells). `PORT_QUEUE` custom entity row live on 1165 (second
+  runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

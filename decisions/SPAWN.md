@@ -491,8 +491,46 @@ not move) ; the companion counts / hp-polls / kills pigs.
   numeric ids on 1.16.5). Zero `E_*` refusals, zero past-cap vetos
   this seed (the veto path stays T1/1122-proven). Same round :
   server path re-proven on the fixed bytes (150s 36.2.42 run, world
-  == pure union 1922 cells, vein wire, spawn passive).
-  `PORT_QUEUE` spawn row live on 1165 (third runtime).
+   == pure union 1922 cells, vein wire, spawn passive).
+   `PORT_QUEUE` spawn row live on 1165 (third runtime).
+
+- Custom entity live addendum, same bridge (bridge-1165 `0b86c2d` E0
+  + `f6e98e5`/`a86e3a7` live fixes) : the T1 pig retires, landings use
+  `new MatouEntity(Example1Mod.beastType(), world)` on the registered
+  `example1:my_beast`. Three red runs, all loud by design. First
+  (bridge) : the setup tripwire looked up the SPI mob ref
+  (`example1.content:my_beast`) while the `DeferredRegister` builds the
+  entry id from its own modid (`example1:my_beast`) — the 1.7.10
+  tripwire is class-keyed (`lookupModSpawn`) and never reads the
+  string, so the verbatim copy only worked there. Fixed by
+  `registeredEntity = MODID + ":" + shortName`. Second (bridge) : the
+  first landing NPEd inside the vanilla `LivingEntity` ctor — fresh
+  types carry no attribute map. Fixed by a mod-bus
+  `EntityAttributeCreationEvent` listener reusing the vanilla pig map
+  wholesale (`PigEntity.func_234215_eI_().create()`, pig-identical,
+  never hand-copied values ; the builder ships with no MCP name in
+  snapshot 20210309 so it stays SRG-direct, passthrough, while the
+  finishing `create` rides the narrow map 33→34, triple-locked).
+  Third (pipeline, not code) : the new call died un-reobfed — the
+  direct-client staging never re-derives, it reuses the live
+  `srg-narrow.srg` (stale 33 lines). Fixed by the 150s server re-proof
+  on the fixed bytes (world == pure union 1922 cells, map regenerated
+  to 34), then re-stage + re-run. Standing rule : a narrow-map row
+  added E0-side is dead until a live-side derive regenerates the
+  shared map — the server proof is that derive.
+- Custom entity live proof (`SPAWN=1` direct client, Forge 36.2.42,
+  host OpenJDK 1.8.0_502, ore-wire legacy pack) : `registered-entity
+  <example1:my_beast>`, 4 landings at ticks 0..3 (census 4 at
+  worldTick 4, cap), `spawn hp <20.0>` at worldTick 1, natural adopted
+  with death paid through loot at tick 49, sweep + replacement at 69,
+  companion kill at worldTick 1000 → diamond carrier the same tick,
+  polled at 1001 (elapsed 1, immediate), replacement landed at 1000,
+  clean shutdown exit 0 ; world == pure union (1274 cells over 4000
+  ticks, ore + stone names — no numeric ids on 1.16.5). Zero `E_*`
+  refusals. The client tracked the registered beast on the vanilla
+  `PigRenderer` mapping with no renderer complaint (client link
+  measured green, not assumed). `PORT_QUEUE` custom entity row live
+  on 1165 (second runtime).
 
 ## 1201 port tranche (live-proven 2026-09-10)
 
