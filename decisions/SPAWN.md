@@ -679,3 +679,12 @@ missing-WANT class does not repeat.
   renderer factory defers resolution where 1710's `new` does not) ;
   the T4 port tranche re-runs the 1122 server proof and either
   reproduces or retires this question, never inherits it silently.
+  RETIRED 2026-09-11 by the T4 1122 port (bridge-1122 E0 `326dc1d`) :
+  the stub now mirrors the pinned 2860 bytes (RUNTIME +
+  TYPE/FIELD/METHOD/CONSTRUCTOR, javap-measured on the provisioned
+  Forge server jar — same retention as the 1710 universal) with the
+  same `javap -v` block lock in `run-live.sh`, and the server re-proof
+  on the fixed bytes stays green (150s 2860 run, world == pure union
+  1922 cells, ids 1,253). The pre-fix greenness cause is unreproduced
+  and needs no reproduction : the standing rule holds the retention,
+  the lock holds the bytes.

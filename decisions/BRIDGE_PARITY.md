@@ -88,7 +88,7 @@ never with the code copy.
 | Spawn seam+wire+hp+override, `E_SPAWN_*` (`SPAWN.md`) | live | live | live | live |
 | Vocabulary seals, T3 (`SPI_STATE_VOCABULARY.md`) | live | live | live | live |
 | Repop hook+seal, `E_SPIKE_*` (`REPOP_SPIKE.md`) | live | live | live | live |
-| Pack-driven loot/spawn policy, T4 (`SPI_STATE_VOCABULARY.md`) | live | TODO | TODO | TODO |
+| Pack-driven loot/spawn policy, T4 (`SPI_STATE_VOCABULARY.md`) | live | live | TODO | TODO |
 
 ## Gates
 

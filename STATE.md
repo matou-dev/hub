@@ -869,6 +869,25 @@
   deferred bridges TODO ; 1122 carries the same retention-less stub
   shape while server-green there — named re-opener for the port
   tranche, never silently widened).
+- 2026-09-11 : T4 PolicyPack live-proven on Forge 2860 (bridge-1122
+  `326dc1d` E0, zero fix — green first try, host OpenJDK 1.8.0_502) :
+  second boot of the policy path. Server `run-live.sh` 150s
+  structured+owned+vein, bind clean (no `E_EXAMPLE_POLICY:unwired`
+  at `wireLoot`), world == pure union (1922 cells, ids 1,253 — same
+  count as the 1614 proof : same content, second runtime).
+  `LOOT=1` / `SPAWN=1` direct client legs on structured ore-wire
+  packs : harvest at worldTick 1000 → bridge tick 999 → carrier the
+  same tick → polled at 1001 (elapsed 1), beast kill at 1005 →
+  carrier elapsed 1 ; census 1→4 at worldTicks 2..5, `spawn hp
+  <20.0>`, natural adopted with sweep + replacement at 69, companion
+  kill at worldTick 1000 → bridge tick 999, diamond carrier the same
+  tick, polled at 1001 (elapsed 1, immediate), replacement landed at
+  999 (spawn-to-loot chain through the served tables) ; both unions
+  1274 cells, zero `E_*` refusals. Same tranche retires the SPAWN.md
+  `SideOnly` re-opener (stub now mirrors the pinned 2860 bytes,
+  RUNTIME + TYPE/FIELD/METHOD/CONSTRUCTOR javap-measured, same
+  `javap -v` block lock in `run-live.sh` — green in this proof).
+  `PORT_QUEUE` T4 row live on 1122 (second runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
