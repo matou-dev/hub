@@ -49,6 +49,7 @@ recreates the exact drift it is supposed to fix.
 ### ruling
 - BRIDGE_PARITY.md : active (roadmap -)
 - BRIDGE_SCAFFOLD.md : active (roadmap -)
+- CHALLENGE_THEN_PROPOSE.md : active (roadmap -)
 - CI_SIBLING_REF_MAIN.md : active (roadmap -)
 - DECISIONS_INDEX_AND_STATUS.md : active (roadmap -)
 - DEV_CLIENT_SSOT.md : active (roadmap -)

@@ -66,7 +66,8 @@ toute parité rompue (pins, file-set forge, catalogue `E_FORGE_*`).
 Docs/comments en anglais, chat en français. Commits `type(scope): what`.
 Un gate non lancé ne passe pas. Questions user avec trade-off architectural :
 option long-terme en premier + `(Recommended)`, workaround nommé avec sa
-dette — jamais de workaround recommandé.
+dette — jamais de workaround recommandé. Posture challenge-then-propose :
+voir `decisions/CHALLENGE_THEN_PROPOSE.md`.
 
 ## 6. Audits — pas pour rien
 
