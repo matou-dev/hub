@@ -568,6 +568,18 @@ except IOError:
     pass
 def obf_desc(d):
     return re.sub(r"L([^;]+);", lambda m: "L" + srg2obf.get(m.group(1), m.group(1)) + ";", d)
+# javap spells primitive field types by name (double, boolean, ...), never
+# by descriptor char — same PRIM table as the live derive in each bridge
+# run-live.sh. Object types keep the obf_desc path, normalized to the
+# dots javap prints (the notch client jar spells java.util.List with
+# dots, the obf class with no separator at all — one replace covers
+# both, obf names never contain a slash-or-dot).
+PRIM = {"Z": "boolean", "B": "byte", "C": "char", "D": "double",
+        "F": "float", "I": "int", "J": "long", "S": "short"}
+def obf_ftype(d):
+    if d in PRIM:
+        return PRIM[d]
+    return obf_desc(d)[1:-1].replace("/", ".")
 def javap_flags(cls):
     out = subprocess.check_output([javap, "-p", "-s", "-cp", client, cls]).decode()
     res, name, static = {}, None, False
@@ -612,8 +624,23 @@ for raw in open(wantf):
         # LEFT slot is SRG, not obf: Reobf maps MCP->LEFT, same shape as
         # the live srg-narrow.srg (MCP sources run against an SRG runtime).
         lines.append("MD: %s/%s %s %s/%s %s" % (owner, srg_name, desc, owner, mcp, desc))
+    elif kind == "F":
+        # Field rows (first consumer: the 1122 loot companion, which polls
+        # entity positions and the player/entity lists): SRG-anchored like
+        # the live field derive — descriptor alone cannot pick the List
+        # fields — then javap shape-checked (type + static) against the
+        # pinned client jar, snapshot-locked where snapshots exist.
+        found = [mm for mm in members if len(mm) == 2 and mm[1] == srg_want]
+        assert len(found) == 1, "E_AUTO_DERIVE:no tsrg field <%s %s>" % (owner, srg_want)
+        ftype = obf_ftype(desc)
+        flags = javap_flags(obf_owner)
+        assert flags.get((found[0][0], "F:" + ftype)) == want_static, \
+            "E_AUTO_DERIVE:field shape <%s %s>" % (owner, srg_want)
+        if snap_f:
+            assert snap_f.get(srg_want) == mcp, "E_AUTO_DERIVE:snapshot lock <%s> is <%s>, want <%s>" % (srg_want, snap_f.get(srg_want), mcp)
+        lines.append("FD: %s/%s %s/%s" % (owner, srg_want, owner, mcp))
     else:
-        raise SystemExit("E_AUTO_DERIVE:only M lines supported (got <%s>)" % raw)
+        raise SystemExit("E_AUTO_DERIVE:only M/F lines supported (got <%s>)" % raw)
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok autoplay-derive : narrow SRG derived (%d lines)" % len(lines))
 EOF

@@ -95,6 +95,20 @@ conditional tables (biome, moon phase), experience orbs.
 
 ## Measured findings
 
+- 1122 port shapes (measured via javap against the pinned 2860 bytes,
+  live-proven 2026-09-10, bridge-1122 `5f09424`): `BlockEvent`
+  world/pos/state hide behind `getWorld()/getPos()/getState()` (the
+  1.7.10 public-field shape does not port — field reads die linking);
+  `LivingDropsEvent` ctor is 5-arg (no `specialDropValue`);
+  `EntityItem.getItem` returns `ItemStack` (not `Item`); `posY/posZ`
+  are `field_70163_u`/`field_70161_v` (not the `70165` sequence);
+  `setBlockToAir` is `func_175698_g`, `isAirBlock` is `func_175623_d`
+  (the `(BlockPos;)Z` overload family is wide — MCP names
+  cross-checked against `mcp_stable-39`); the autoplay derive (hub
+  `tools/run-client.sh`) handles `F` rows on the MCP path since this
+  tranche (first field-needing companion). T1 victim is a vanilla pig
+  until custom-entity registration lands.
+
 - Stub-owner discipline: reobf only walks in-jar superclass chains and
   stub supertypes never ship, so `EntityItem.posX`,
   `EntityLivingBase.worldObj` and pig calls kept their MCP names into

@@ -462,6 +462,21 @@
   registration). Live proof TODO (companion harvest/kill/poll legs).
   `PORT_QUEUE` loot + vocabulary rows e0 on 1122 (T3 seals ride the
   loot tranche, no separate port).
+- 2026-09-10 : LOOT live-proven on Forge 2860 (bridge-1122 `5f09424`
+  companion + E0 fixes, hub F-row autoplay derive, host OpenJDK
+  1.8.0_502) : `LOOT=1` direct client run, bind clean, exit 0 after
+  4600 server ticks — companion harvests registered ore at (8,10,8) at
+  worldTick 1000 and kills a spawned pig at (12,10,8) at 1005, bridge
+  records at ticks 999/1004 and drops one diamond carrier the same
+  tick each, both polled within 1 tick (immediate — same ticks as the
+  1614 proof) ; world == pure union (1274 cells, ids 1,253 — ore-wire
+  legacy pack, `NUMERIC_IDS=example1:my_ore=253` from the boot log).
+  First run caught three E0 guesses loud pre-boot (the derive refused,
+  as designed) : `EntityItem.getItem` returns `ItemStack`, posY/posZ
+  anchors, `BlockEvent` getters (field reads would have died linking),
+  plus a missing build dir. Same round : server path re-proven on the
+  fixed bytes (150s 2860 run, world == pure union 1922 cells, vein
+  wire). `PORT_QUEUE` loot row live on 1122 (second runtime).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
