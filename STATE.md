@@ -931,9 +931,14 @@
   holder, pack delegates, holders carried by reference) ; E0 green
   everywhere (`ExampleCheck` unmodified, 4 bridge gates green
   unmodified, parity untouched, no re-pin, no live re-proof —
-  public API, sealed values and `E_*` codes unchanged). Measured :
-  still over the 450 alert — the `fromFiles`-shim plus count-ctor
-  narrowing stays the named next pass.
+- 2026-09-11 : ExamplePack 450-line alert closed (example1
+  `dc26617`, amendment in `decisions/SPI_STATE_VOCABULARY.md`) :
+  `ExamplePack` narrowed 606 → 341 lines (canonical constructor
+  delegation, compact `fromFiles` overloads, inline `PolicyPack` accessors) ;
+  E0 green everywhere (`ExampleCheck` unmodified, 4 bridge gates green
+  unmodified, parity untouched, no re-pin, no live re-proof — public
+  API, sealed values and `E_*` codes unchanged). The 450-line design alert
+  is closed.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

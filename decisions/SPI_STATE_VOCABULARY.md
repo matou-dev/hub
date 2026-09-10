@@ -239,3 +239,7 @@ policy bulk, what remains is the gate-pinned surface (6 `fromFiles`
 overloads, 4 ctors, 12 delegating accessors, docs). Under 450 still
 needs the `fromFiles`-shim plus count-ctor narrowing — named next
 pass, not stacked silently.
+RETIRED 2026-09-11 (example1 `dc26617`) : canonical constructor
+delegation, compact `fromFiles` overloads, and inline `PolicyPack`
+accessors narrow `ExamplePack` 606 → 341 lines with zero API or error code
+breakage. The 450-line design alert is closed.
