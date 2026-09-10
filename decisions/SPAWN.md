@@ -294,3 +294,68 @@ seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
     (elapsed 1, immediate), clean shutdown exit 0 after 4600 server
     ticks ; world == pure union (1274 cells, ids 1,165 —
     `NUMERIC_IDS=example1:my_ore=165` from the boot log, id 165 again).
+
+  ## Operator-override tranche (live-proven 2026-09-10)
+
+  The content-decides tranche left one question open: the author names
+  the policy, but the operator runs the server. This tranche wires the
+  operator answer — same seam, same budget math, no
+  `SpawnJob`/`SpawnStore`/`SpawnSeal`/`LootJob`/`DropStore`/`LootSeal`
+  change, no SPI change (no re-pin), no new `forge/src` file and no new
+  `E_FORGE_*` (parity holds over 4 bridges, behaviour 1710-only until
+  proven):
+
+  - Vocabulary (`bridge-1710`
+    `java/src/fr/iamacat/bridge/wire/OperatorPolicy.java`, pure, zero
+    MC — the shared base below the `spawn`/`loot` leaves, so neither
+    leaf imports the other): per wire line `spawn.cap` /
+    `spawn.budget` / `spawn.y_min` / `spawn.y_max` / `loot.count`.
+    Operator present wins, else content. Unknown `spawn.*`/`loot.*`
+    keys refuse loudly (a typo is never a silent default); the same key
+    with different values across wire lines refuses loudly (silent
+    picks are defaults). Numbers validate at consumption: positive u32
+    for cap/budget/count, u32 `>= 0` for the band, merged
+    `0 <= y_min <= y_max` re-checked (independent overrides can invert
+    a healthy content band). `hp` stays spec-only (no operator key —
+    damage balance is content, a re-opener, never a quiet knob).
+  - Loot scope rides no key: the ore is the packs.cfg wire-block column
+    (`OperatorPolicy.wireBlocks`, ordered distinct names, the forge
+    side resolves each — unresolvable refuses under the kept
+    `E_LOOT_ORE` code). The `LOOT_ORE` constant is gone. Design note
+    (code-read, not live-measured): wiring the dev stone default now
+    pays stone harvests — content decides what each kind pays, the
+    operator decides what through the wire column, as with plane cells.
+    Every live proof wires the registered ore, so no proof moves.
+  - `MatouBridgeMod` transports the effective policy (parse-once at
+    wire time, never on the tick path): `wireLoot`/`wireSpawn` take the
+    parsed specs once (the double `parseLines` is gone), the veto, the
+    seals, the slots tripwire and the carrier expansion read the
+    fields, `onHarvest` matches the resolved wire-block set. Default
+    runs log byte-identical lines to the content-decides tranche;
+    overridden runs append `overridden <keys>` (spawn) and always name
+    `ore <[blocks]>` (loot).
+  - Companion (`tools/autoplay`, DEV-only): `SPAWN_CAP` turns into the
+    effective-cap want (`SPAWN_CAP` env wins, default 4 is the content
+    cap, garbage refuses under `E_AUTOPLAY_SPAWN_CAP`). Override proofs
+    set the env to the packs.cfg override — both sides name the same
+    bound, or the breach check is blind.
+  - Gates prove the flow, not the literals: `SpawnCheck`/`LootCheck`
+    drive the shipped `OperatorPolicy` over synthetic specs (absent =
+    content, full win, seal-and-decide at the overridden values,
+    zero/negative/non-numeric/multi/unknown/inverted/bare-wire/null
+    refusals, wire-block order + dedupe).
+  - Live proof (`SPAWN=1` + `SPAWN_CAP=2` direct client, Forge 1614,
+    host OpenJDK 1.8.0_502, packs.cfg = the T1 wire plus
+    `spawn.cap=2`): `spawn wired <...my_beast> hp <20> cap <2> budget
+    <1> y <66..68> overridden <cap>`, `loot wired <{ore,beast}> count
+    <1> ore <[example1:my_ore]>`, census 1→2 at worldTicks 2..3 (same
+    RNG pads as the T1 run, which landed 0..3 — landings stop at ticks
+    0,1 here, the decisive precedence signal), kill at worldTick 1000
+    → diamond carrier at 1001 (elapsed 1, immediate), clean shutdown
+    exit 0 after 4600 server ticks ; world == pure union (1274 cells,
+    ids 1,165, `NUMERIC_IDS=example1:my_ore=165` from the boot log, id
+    165 again). Zero `E_*` refusals. Coverage split, stated: live
+    proves the cap override plus the wire-block ore scope ;
+    count/y overrides ride the same validator family and are proven at
+    E0 ; the 48-veto path is T1-proven on the same hook, not re-run
+    (no natural joins this seed).

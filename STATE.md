@@ -357,6 +357,21 @@
   log, id 165 again).
    (`decisions/SPAWN.md` content-decides tranche, `decisions/LOOT.md`
    count re-opener spent.)
+- 2026-09-10 : SPAWN operator-override tranche live-proven on Forge
+  1614 (bridge-1710 `OperatorPolicy` pure + wire transport, companion
+  `SPAWN_CAP` env mirror, no SPI change, no new forge file, host
+  OpenJDK 1.8.0_502) : `SPAWN=1` + `SPAWN_CAP=2` direct client run
+  (packs.cfg = T1 wire plus `spawn.cap=2`), bind clean, exit 0 after
+  4600 server ticks — `spawn wired <...my_beast> hp <20> cap <2>
+  budget <1> y <66..68> overridden <cap>`, `loot wired <{ore,beast}>
+  count <1> ore <[example1:my_ore]>` (`LOOT_ORE` constant gone, scope
+  from the wire-block column), census 1→2 at worldTicks 2..3
+  (landings stop at ticks 0,1 — same RNG pads as the cap-4 run),
+  kill at worldTick 1000 → diamond carrier at 1001 (elapsed 1,
+  immediate) ; world == pure union (1274 cells, ids 1,165,
+  `NUMERIC_IDS=example1:my_ore=165` from the boot log, id 165 again).
+   (`decisions/SPAWN.md` operator-override tranche,
+   `decisions/LOOT.md` ore-scope re-opener spent.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

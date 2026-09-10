@@ -125,3 +125,7 @@ conditional tables (biome, moon phase), experience orbs.
 - Items per harvest: landed (content-decides tranche, hub
   decisions/SPAWN.md — the mob's `drop_count` seals `LootTable.count`,
   the bridge transports it, `LOOT_COUNT` constant gone).
+- Ore scope: landed (operator-override tranche, hub decisions/SPAWN.md
+  — the ore is the packs.cfg wire-block column, the `LOOT_ORE`
+  constant is gone, unresolvable wire blocks still refuse under the
+  kept `E_LOOT_ORE` code).
