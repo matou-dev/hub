@@ -227,8 +227,29 @@
   filter), BreakEvent ctor reads the player (null NPEs), stub final-int
   folds into prod bytes (hook read 0,0,0, caught live —
   `no-stub-const` gate). Hub searge derive gains F (field) lines.
-  (`decisions/REPOP_SPIKE.md` done, registration/veins/loot/spawn open
-  as spec tranches.)
+   (`decisions/REPOP_SPIKE.md` done, registration/veins/loot/spawn open
+   as spec tranches.)
+- 2026-09-10 : registration tranche live-proven on Forge 1614
+  (example1 `c57919f` BlockSpec pure + refusals, bridge-1710
+  `fe7e9f7`/`08b77ff`/`91909e5`/`4ce48cb`/`31a9119`, shells in
+  1122/1165/1201, host OpenJDK 1.8.0_502) : second @Mod `example1`
+  (frozen modid) preInit-registers `example1:my_ore` from owned.matou
+  physics into the generic `MatouBlock`, init binds resolve it through
+  the unchanged `PackWire`/`WorldCellSink` path ; 150s 1614 run, bind
+  clean, world == pure union (1274 cells, ids 1,165 — my_ore id 165
+  dynamic from the boot log, zero Illegal-prefix warnings). Three
+  measured findings on the way: stub-inherited refs need hierarchy-aware
+  reobf (`NoSuchMethodError MatouBlock.setBlockName` — `Reobf.java`
+  walks the in-jar superclass chain, declarations included) ; subclass
+  fields hide same-named vanilla slots (`opaque` is SRG field_149787_q
+  — physics lands in the vanilla slot, never a shadow) ; 1.7.10 FML
+  re-prefixes GameRegistry names with the active container
+  (`matoubridge:example1:my_ore` + warning — hence the second @Mod and
+  short-name registration). Same day : repop seam re-proven
+  (`SPIKE=1` direct client on the new bytes — mined tick 1000,
+  repopped 1199, delay exactly 200, client union still 1274 stone).
+  (`decisions/REGISTRATION.md` active, `LIVE_PROOF_MODEL.md` amended
+  to per-name IDs, client verifier gains `$NUMERIC_IDS`.)
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

@@ -61,6 +61,7 @@ for spec in "r.0.0.mca 0 0" "r.0.0.mca 1 0" "r.0.0.mca 0 1" \
   done
 done
 python3 - "$CLIENT_DIR/union.txt" "$CLIENT_DIR/world.txt" "$PACKS" <<'EOF'
+import os
 import sys
 # Expected blocks come from packs.cfg itself (wire block + block.* alias
 # bindings), never hardcoded: the proof binds every alias to
@@ -76,8 +77,21 @@ import sys
 # translates the packs.cfg names through the tiny frozen table below when
 # the world values are numeric — same contract, other representation. A
 # name without a frozen row fails loudly (extend the table explicitly,
-# never guess an ID).
+# never guess an ID). Custom blocks get a dynamic runtime numeric ID, so
+# they cannot be frozen: the caller passes them via $NUMERIC_IDS
+# ("name=id,name=id", resolved from the game log registration line by
+# whoever ran the game). Unset = stone-era proofs, behaviour unchanged.
 NUMERIC_FROZEN = {"minecraft:stone": "1"}
+table = dict(NUMERIC_FROZEN)
+extra = os.environ.get("NUMERIC_IDS", "")
+if extra:
+    try:
+        for pair in extra.split(","):
+            name, num = pair.split("=", 1)
+            table[name.strip()] = num.strip()
+    except ValueError:
+        print("FAIL verify-client : bad NUMERIC_IDS <%s> (want name=id,...)" % extra)
+        sys.exit(1)
 wire_y, wire_block, expected = None, None, set()
 for line in open(sys.argv[3]):
     line = line.strip()
@@ -109,10 +123,10 @@ if not w:
 if all(v.isdigit() for v in w.values()):
     through = set()
     for name in sorted(expected):
-        if name not in NUMERIC_FROZEN:
-            print("FAIL verify-client : no frozen numeric ID for <%s> (extend NUMERIC_FROZEN explicitly)" % name)
+        if name not in table:
+            print("FAIL verify-client : no numeric ID for <%s> (extend NUMERIC_FROZEN or pass NUMERIC_IDS)" % name)
             sys.exit(1)
-        through.add(NUMERIC_FROZEN[name])
+        through.add(table[name])
     expected = through
 if set(w.values()) != expected:
     print("FAIL verify-client : foreign blocks %s (want %s)"
