@@ -477,6 +477,25 @@
   plus a missing build dir. Same round : server path re-proven on the
   fixed bytes (150s 2860 run, world == pure union 1922 cells, vein
   wire). `PORT_QUEUE` loot row live on 1122 (second runtime).
+- 2026-09-10 : SPAWN live-proven on Forge 2860 (bridge-1122 `c53cc23`
+  E0 + `c030d4b` live, hub 1122 addendum, host OpenJDK 1.8.0_502) :
+  `SPAWN=1` direct client run, bind clean, exit 0 after 4600 server
+  ticks — 4 landings at ticks 0..3 (census 4 at worldTick 5, cap),
+  `spawn hp <20.0>` at worldTick 2, silent natural join adopted at
+  tick 49 (event-bypass re-measured on 2860) with its death paid
+  through loot the same tick, sweep + replacement at 69, 1 past-cap
+  veto at tick 400, companion kill at worldTick 1000 → bridge tick
+  999, diamond carrier the same tick, polled at 1001 (elapsed 1,
+  immediate), replacement landed at 999 ; world == pure union (1274
+  cells, ids 1,253 — `NUMERIC_IDS=example1:my_ore=253`, same id as
+  every 2860 proof). Two red runs pre-green, both loud by design :
+  stale 21-line map (`NoSuchFieldError: loadedEntityList` — re-run
+  etage 3 before staging after any WANT change) and the
+  `func_82145_z` memory anchor (census-blind, breach `<5 > 4>` at
+  worldTick 6 — anchors measured via `javap -c`, never recalled).
+  Same round : server path re-proven on the fixed bytes (150s 2860
+  run, world == pure union 1922 cells, vein wire, spawn passive).
+  `PORT_QUEUE` spawn row live on 1122 (second runtime).
 - 2026-09-10 : SPAWN E0 on Forge 2860 (bridge-1122 `c53cc23`) :
   `SpawnStore`/`SpawnSeal`/`SpawnCheck` byte-identical copies,
   1122-native hooks `onJoin`/`spawnTick`/`reconcile`/`landBeast`/`onKill`
@@ -489,8 +508,9 @@
   fields), census/poll/landing on vanilla `EntityPig` (T1, zero
   registration risk), `@Cancelable` join veto, hp through
   `getEntityAttribute`/`setBaseValue`/`setHealth`/`getMaxHealth`,
-  `getEntityId` is `func_82145_z` (the 1710 `func_70077_b` does not
-  exist on 2860 — anchor picks it). Live proof TODO (companion
+  `getEntityId` is `func_145782_y` (the E0 draft said `func_82145_z`
+  from memory — notch `Z()` returns constant 1, caught live,
+  anchor measured via `javap -c`). Live proof TODO (companion
   census/kill/carrier legs). `PORT_QUEUE` spawn row e0 on 1122.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09

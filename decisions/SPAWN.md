@@ -368,6 +368,64 @@ seam, same budget math, no pure change (`SpawnJob`, `SpawnTable`,
     ids 1,165, `NUMERIC_IDS=example1:my_ore=165` from the boot log, id
     165 again). Zero `E_*` refusals. Coverage split, stated: live
     proves the cap override plus the wire-block ore scope ;
-    count/y overrides ride the same validator family and are proven at
-    E0 ; the 48-veto path is T1-proven on the same hook, not re-run
-    (no natural joins this seed).
+   count/y overrides ride the same validator family and are proven at
+   E0 ; the 48-veto path is T1-proven on the same hook, not re-run
+   (no natural joins this seed).
+
+## 1122 port tranche (live-proven 2026-09-10)
+
+T1 vanilla scope on Forge 2860 (bridge-1122 `c53cc23` E0 + `c030d4b`
+live): the full 1710 behavior minus the custom entity — census, seal,
+content-decided hp/cap/budget/band, operator overrides, T3 vocabulary —
+landing vanilla pigs (zero registration risk, same species as the loot
+victim until registration lands). `SpawnStore`/`SpawnSeal`/`SpawnCheck`
+are byte-identical copies ; `MatouEntity` stays a shell (the
+`PORT_QUEUE` custom-entity row does not move) ; the companion counts /
+hp-polls / kills pigs (no `required-after` — pig frame refs are
+vanilla, always sourced).
+
+- 2860 shapes (measured via javap + joined.tsrg against the pinned
+  bytes, live-proven) : join entity/world behind
+  `getEntity()`/`getWorld()` (the 1.7.10 public-field shape does not
+  port — field reads would die linking, same lesson as the loot
+  `BlockEvent`) ; the join event is `@Cancelable` (the veto cancels
+  through it) ; hp through `getEntityAttribute` / `setBaseValue` /
+  `setHealth` / `getMaxHealth` (same stable SRG names as 1710) ;
+  narrow map 21→30 rows ; `E_SPAWN` joins the run-live refusal grep.
+- Two red runs, both loud by design. First: the E0 run staged against
+  the stale 21-line map (the map re-derives at run-live start, staging
+  reuses it) and died `NoSuchFieldError: loadedEntityList` on the
+  first reconcile — the fix is discipline, not code: re-run etage 3
+  (re-derive + re-proof) before staging after any WANT change. Second:
+  the census id was anchored `func_82145_z` from memory — notch `Z()`
+  returns constant 1 (measured via `javap -c`), so every landing
+  recorded under one id, the veto went blind, and the companion
+  breached `<5 > 4>` at worldTick 6. The id getter is the method
+  returning the ctor-counter field `equals`/`hashCode` use (measured
+  via `javap -c`: obf `S`), i.e. `func_145782_y`. Rule for the next
+  ports: the derive pins SRG↔notch, but nothing pins the MCP name↔SRG
+  link except the stable CSV cross-check plus live behavior — an
+  anchor sourced from memory is a guess until the census holds live.
+- Dots-normalize derive fix (bridge-1122 `run-live.sh`, one line,
+  same replace as hub `tools/run-client.sh`): unobfuscated
+  `java.util.List` keeps its dots in javap while SRG descriptors use
+  slashes, so the anchored-field check failed for
+  `World/loadedEntityList` — the hub autoplay derive already carried
+  the replace (the loot companion pins the same field), the live
+  derive did not.
+- Live proof (`SPAWN=1` direct client, Forge 2860, host OpenJDK
+  1.8.0_502, ore-wire legacy pack): `spawn wired
+  <example1.content:my_beast> hp <20> cap <4> budget <1> y <66..68>`,
+  4 landings at ticks 0..3 (census 4 at worldTick 5, cap), `spawn hp
+  <20.0>` at worldTick 2, a silent natural join adopted at tick 49
+  (the 1710 event-bypass lesson re-measured on 2860) plus its death
+  paid through the loot table the same tick, sweep + replacement at
+  69, 1 past-cap veto at tick 400, companion kill at worldTick 1000 →
+  bridge tick 999, diamond carrier the same tick, polled at 1001
+  (elapsed 1, immediate), replacement landed at 999, clean shutdown
+  exit 0 after 4600 server ticks ; world == pure union (1274 cells,
+  ids 1,253 — `NUMERIC_IDS=example1:my_ore=253` passed to the
+  verifier, same id as every 2860 proof). Zero `E_*` refusals. Same
+  round : server path re-proven on the fixed bytes (150s 2860 run,
+  world == pure union 1922 cells, vein wire, spawn passive).
+  `PORT_QUEUE` spawn row live on 1122 (second runtime).
