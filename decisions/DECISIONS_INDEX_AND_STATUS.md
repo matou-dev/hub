@@ -99,6 +99,7 @@ is the same lie class as the Problem above.
 - HEADLESS_XVFB_QT_XCB.md : active (maturity unrated, scope client, roadmap -)
 - LAYER_Q1_Q11.md : active (maturity unrated, scope shared, roadmap -)
 - LIVE_PROOF_MODEL.md : active (maturity unrated, scope shared, roadmap -)
+- MINECRAFT_BACKEND_REPRODUCIBILITY.md : active (maturity unrated, scope shared, roadmap -)
 - NAMING_QN1_QN3.md : active (maturity unrated, scope shared, roadmap -)
 - RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
 ### spec
@@ -111,6 +112,7 @@ is the same lie class as the Problem above.
 - STRUCTURES_CROSS_FILE.md : active (maturity prototype, scope shared, roadmap -)
 - SYNTAX_V1_V2_V3.md : active (maturity standard, scope shared, roadmap -)
 - VEIN_V4.md : active (maturity prototype, scope shared, roadmap -)
+- VIRTUAL_HITBOXES.md : active (maturity prototype, scope spi, roadmap -)
 ### direction
 - GPU_INSTANCING.md : active (maturity prototype, scope spi, roadmap -)
 - REPOP_SPIKE.md : done (maturity prototype, scope bridge, roadmap -)
