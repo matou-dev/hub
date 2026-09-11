@@ -981,6 +981,47 @@ run (Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502 for the server leg)
 - Named follow-ups staying open (not silent): per-mob operator override
   keys; distinct per-mob loot drops; qualified `PolicyPack` mob view.
 
+## Addendum — second beast port live, bridge-1710 (2026-09-11)
+
+`bridge-1710` `19378d4` (zero live fixes) proves the 2-mob tranche live
+on Forge 1614 (150 s server + launcher-free headless direct-client
+`SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502):
+the exact-2.0 + exact-3.0 proof now reads through per-mob seals on the
+second runtime — same tranche shape as the 1122 lead, 1614-native
+throughout (no narrow-map file: 1710 is full-map era, 5 `pin_method`
+rows against the sha1-pinned `srg-mcp.srg`).
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,165) with `registered-entity
+  <example1.content:my_beast,example1.content:my_brute>`, `spawn wired
+  <{my_beast hp <20> cap <4> budget <1> y <66..68>},{my_brute hp <30>
+  cap <4> budget <1> y <66..68>}>`, `combat wired
+  <{my_beast={head=2.0}},{my_brute={head=3.0}}> reach
+  <{my_beast=4.0},{my_brute=5.0}>` (byte-identical on the client leg).
+- Client: census 2→4→6→8 at worldTicks 2..5 (`beast=brute` balanced),
+  `spawn hp <my_beast 20.0>` + `spawn hp <my_brute 30.0>` at worldTick
+  2, `combat resolved <bone=head mult=2.0 dmg=1.0->2.0>` + `combat
+  struck <my_beast head hp=20.0>` at 500 → `combat resolved <my_beast
+  drop=2.0 hp=18.0>` at 501 (elapsed 1, exact-2.0), `mult=3.0` +
+  `struck <my_brute head hp=22.0>` at 600 → `resolved <my_brute
+  drop=3.0 hp=19.0>` at 601 (elapsed 1, exact-3.0 — the 8 hp is
+  vanilla-environmental before the strike, max-hp spec held 30.0 at
+  tick 2, only 2 bridge combat lines exist); kill at 1000 → carrier
+  polled 1001 (elapsed 1, chain intact); save pure union 1274 cells;
+  zero `E_*` / linkage (sole `Caused by` is the known-benign offline
+  Forge Version Check, same as every 1710 proof); zero `beast adopted`
+  lines (NBT identity on every beast).
+- Trouvaille (version-native access): 1614 `EntityPig` declares the
+  persist helpers `public` (javap-measured on the pinned bytes), while
+  the lead spelled them `protected` — the override widens accordingly
+  (same owner-discipline class, one visibility grade shifted). Pure
+  `java/src` files port byte-identical from the lead (verified by
+  `cmp`, zero version-specific strings).
+- `PORT_QUEUE` rows `Second beast class` + `Second beast registration`
+  flip to `live | live | TODO | TODO` (two ports live, two TODO — the
+  `E_SPAWN_MOB` dim-4 gap names the remaining two; 1165/1201 code green
+  behind the shared derive-assert unblock, live next).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

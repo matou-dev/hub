@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Second beast port live on bridge-1710 (bridge-1710
+  `19378d4`, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md` port
+  addendum, `PORT_QUEUE` `live | live | TODO | TODO` both rows) : 150 s
+  Forge 1614 server green (world == pure union 1922, per-mob wire
+  lines, zero `E_*`) ; headless direct-client `SPAWN=1 COMBAT=1`
+  (exit 0) — census 8 balanced, hp 20.0 + 30.0, exact-2.0 at 500→501
+  then exact-3.0 at 600→601 (elapsed 1 each, chain intact, save pure
+  union 1274, zero `E_*` / linkage). Trouvaille: 1614 `EntityPig`
+  declares persist helpers `public` (lead `protected` — override widens,
+  same owner class). 1165/1201 code green, live unblocked by the shared
+  derive 54→59 bump (next).
+
 - 2026-09-11 : Second beast live, lead bridge-1122 (bridge-1122
   `eab8e0e` NBT helpers + per-mob autoplay + 53-line narrow map, hub
   `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
