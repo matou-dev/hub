@@ -223,6 +223,50 @@ OpenJDK 1.8.0_502):
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
   `live | live | TODO | TODO` (0 `e0` remaining).
 
+## Addendum — port E0, bridge-1165 (2026-09-11)
+
+`bridge-1165` `531799c` ports the hook version-native, E0-green
+(stages 1-2, live proof TODO — same bar as the 1122 lead E0): the
+same 11-file shape (hook + autoplay `COMBAT=` leg + stubs + narrow
+map + pins + verdict).
+
+- 36.2.42-native shapes (snapshot 20210309 + joined.tsrg + javap
+  measured, never ported blind): the hurt entity behind
+  `LivingEvent.getEntityLiving()` as `LivingEntity`, the source behind
+  `LivingHurtEvent.getSource()`, the true attacker behind
+  `DamageSource.getTrueSource` (`func_76346_g ()->Entity`, obf
+  `apk/k` — the same-descriptor `func_76364_f` sibling is not the
+  true source, hence the SRG anchor); eye/look through the declaring
+  `Entity` (`getLookVec` `func_70040_Z ()->Vector3d`, obf `aqa/bh`;
+  `getEyeHeight` `func_70047_e ()F`, obf `aqa/ce`); the origin
+  through the already-pinned `getPosX/Y/Z` (1.16.5 keeps no `posX`
+  fields — the 1.12 field shape does not port, and the declaring-`Entity`
+  read rides the 1122 owner-discipline fix by construction); the look
+  components on the declaring `Vector3d` (`field_72450_a/b/c = x/y/z`,
+  obf `dcn/b/c/d` — the 1.12 `Vec3d` owner does not port); the dim
+  gate stays the `OVERWORLD` key; `LivingHurtEvent(LivingEntity,
+  DamageSource, float)` + `getSource`/`getAmount`/`setAmount`
+  presence-pinned against the 36.2.42 universal (Forge-added, never
+  obfuscated).
+- Narrow map 48 -> 54 rows (combat tranche, hub `tools/live-derive.sh`
+  era-1.16 assert bumped in the same tranche): the 6 new rows derive
+  clean against the pinned bytes with the first 48 byte-identical
+  (append-only, no reorder); `E_MAP_COVER` covers the new refs
+  automatically; the server refusal grep rides `E_HIT`.
+- Autoplay `COMBAT=` leg mirrors the lead (teleport 2.2 east, head aim
+  from the pure-parsed geo, genuine `attackTargetEntityWithCurrentItem`,
+  exact-2.0 poll): 1.16.5-native player list (`ServerWorld.getPlayers`
+  — no `playerEntities` field ships) and coords (`getPosX/Y/Z`);
+  the strike through `PlayerEntity.attackTargetEntityWithCurrentItem`
+  (`func_71059_n (Entity)V`, obf `bfw/f` — declared on
+  `PlayerEntity`, not the same-named `ServerPlayerEntity` row), the
+  wound poll through `LivingEntity.getHealth` (`func_110143_aJ ()F` —
+  not the same-descriptor max-health sibling), the aim eye through
+  `Entity.getEyeHeight` (all three SRG-anchored in autoplay
+  `want.txt`).
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `live | live | e0 | TODO`.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

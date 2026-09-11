@@ -1,5 +1,15 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat weakspot hook E0 on bridge-1165
+  (bridge-1165 `531799c`, hub `decisions/VIRTUAL_HITBOXES.md` E0
+  addendum + era-1.16 derive 48→54, `PORT_QUEUE`
+  `live | live | e0 | TODO`) : stages 1-2 green (forge-stub +
+  autoplay-compile), live proof TODO — same 11-file shape as the 1122
+  lead E0, 36.2.42-native throughout (declaring-`Entity` eye/look/pos,
+  `Vector3d` components, `OVERWORLD` dim gate, `PlayerEntity` strike +
+  `LivingEntity` health poll in the autoplay leg) ; the 6 new narrow-map
+  rows derive clean with the first 48 byte-identical. 1201 port stays
+  the last TODO cell, never silent.
 - 2026-09-11 : VIRTUAL_HITBOXES promoted prototype → standard (hub
   `decisions/VIRTUAL_HITBOXES.md` : front-matter flip, 1710 live
   addendum, `PORT_QUEUE` `live | live | TODO | TODO`) : server
