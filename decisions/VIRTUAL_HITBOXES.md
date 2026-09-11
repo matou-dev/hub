@@ -735,6 +735,76 @@ proof TODO — same bar as every lead E0.
 - `PORT_QUEUE` row `Combat per-mob tables` (`BRIDGE_PARITY.md`):
   `TODO | e0 | TODO | TODO`.
 
+## Addendum — combat per-mob tables live, lead bridge-1122 (2026-09-11)
+
+`bridge-1122` `50af816` (E0, zero live fixes) proves the per-mob
+seal live on Forge 2860 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host
+OpenJDK 1.8.0_502): the exact-2.0 proof now reads through the
+per-mob seal, one mob sealed.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — hook present but dormant, zero `E_HIT`, zero
+  combat lines on the playerless dedicated server) with
+  `combat wired <{head=2.0}> reach <4.0>` sealed per-mob at wire
+  time (no suffix — byte-identical to the pre-per-mob shape).
+- Client: same wired line, census 1→4 at worldTicks 2..5,
+  `spawn hp <20.0>`, then `[MatouBridge] combat resolved
+  <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — bare-hand 1.0 x sealed head 2x, no crit, no
+  fallback), kill 1000 → carrier at tick 999 → polled at 1001
+  (elapsed 1, chain intact) ; `verify-client-save.sh` world == pure
+  union (1274 cells) ; zero `E_*` / linkage lines in `game.log`
+  (two benign client model-bake `Caused by` for the registered gem
+  item, same signature as the policy proof).
+- Trouvaille (live ops, no code impact): the staged instance kept
+  the previous tranche's `combat.reach=5.0` in its `packs.cfg`
+  (keep-then-stage pattern), so the first client run logged the
+  override leg — exact-2.0 held there too, then a documented reset
+  (drop the staged `packs.cfg`, re-stage) re-ran the clean default
+  leg above. Staged knobs survive tranches; the reset path is the
+  fix, never a code change.
+- `PORT_QUEUE` row `Combat per-mob tables` flips to
+  `TODO | live | TODO | TODO` (lead live, three ports TODO).
+
+## Addendum — combat per-mob tables ports, 1710/1165/1201 (2026-09-11)
+
+Three parallel port proofs, all live-green first try, zero live
+fixes — the per-mob seal confirmed era-blind on each (siblings
+carry only the mechanical SPI re-pin, no code change; no
+narrow-map delta, no new `forge/src` file, no new `E_FORGE_*`):
+
+- `bridge-1710` `2540e98` (Forge 1614, Java 8 host, `B3_OFFLINE=1`) :
+  150 s server green (`combat wired <{head=2.0}> reach <4.0>`, world
+  == pure union 1922 cells, ids 1,165, zero `E_*`/linkage) ;
+  client default leg exact-2.0 (500→501, elapsed 1, kill 1000 →
+  carrier 999 → polled 1001) ; save pure union 1274 cells. Single
+  benign `Caused by` (offline Version Check) plus the known benign
+  gem-icon texture error. Same staged-`packs.cfg` override-leg
+  incident as the lead (reset via the documented path, no code
+  impact).
+- `bridge-1165` `bd61ba2` (Forge 36.2.42, `E3_OFFLINE=1`) : 150 s
+  server green (`reach <4.0>`, 1922 cells ore + stone, zero
+  `E_*`/linkage, two 25565 bind-races retried green) ; default leg
+  exact-2.0 with census 1→4 at ticks 1..4, kill 1000 → carrier
+  same tick → polled 1001 ; save 1274 cells, zero `E_*`/linkage/
+  `Caused by` (one benign `ModelBakery` gem WARN plus one benign
+  vanilla Narrator `fliteWrapper` ERROR, both non-fatal).
+- `bridge-1201` `b2328a3` (Forge 47.2.0, Temurin 17 host,
+  `D3_OFFLINE=1`) : 150 s server green (`reach <4.0>`, 1922 cells,
+  54-line map, zero `E_*`/linkage, two 25565 bind-races retried
+  green) ; default leg exact-2.0 with census 1→4 at ticks 2..5,
+  kill 1000 → carrier 999 → polled 1001 ; save 1274 cells, zero
+  `E_*`/linkage (single benign vanilla flite-narrator `Caused
+  by`). `run-live.sh` untouched at 447 eSLOC (3 under the
+  ceiling).
+- `PORT_QUEUE` row `Combat per-mob tables` flips to
+  `live | live | live | live` (four ports live, 0 `TODO`
+  remaining — per-mob sealed on 4/4 runtimes with one mob; the
+  second beast class stays the named follow-up).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -754,9 +824,9 @@ state and stay inside the declared set.
 - Client prediction + attack packet with server re-ray-test and
   tolerance check (the §3 lifecycle as specified above).
 - Combat policy follow-ups (not silent): policy live x4 and reach
-  override live x4 (rows above, both closed); per-mob tables E0 on
-  the lead (row above — single mob sealed, live proof TODO, three
-  ports TODO); second beast class, per-mob operator override and
+  override live x4 (rows above, both closed); per-mob tables live
+  x4 (rows above — one mob sealed on 4/4 runtimes, zero behaviour
+  change); second beast class, per-mob operator override and
   loot/spawn per-mob stay named follow-ups (single-table scope
   holds there); MC-`AttributeInstance` reach stays
   refused — the content `reach` field IS the attribute-driven

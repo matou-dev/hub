@@ -100,7 +100,7 @@ never with the code copy.
 | Combat weakspot hook, `E_HIT_*` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Combat policy weakspots+reach (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Combat reach override, `E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
-| Combat per-mob tables, `E_COMBAT_POLICY` (`VIRTUAL_HITBOXES.md`) | TODO | e0 | TODO | TODO |
+| Combat per-mob tables, `E_COMBAT_POLICY` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 
 ## Gates
 
