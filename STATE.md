@@ -1,5 +1,25 @@
 # STATE.md — présent
 
+- 2026-09-11 : Distinct per-mob drops ports live, bridge-1165 +
+  bridge-1201 (bridge-1165 `447ad10` + bridge-1201 `cab4981` per-mob
+  loot wire + autoplay, SPI pin untouched, hub `decisions/LOOT.md`
+  ports addendum, `PORT_QUEUE` `live | live | live | live`) : servers
+  150 s green each (world == pure union 1922, loot wired per-mob with
+  counts `{ore=1, beast.my_beast=1, beast.my_brute=2}`, both gems
+  registered each, zero `E_*`) ; `LOOT=1` direct-client legs (exit 0
+  each) — ore 1000→gem 1001, beast 1005→gem 1006, brute
+  1010→brute-gem x2 at 1011 (elapsed 1 each), union 1274 (native
+  names, no `NUMERIC_IDS` on these flattening eras) ;
+  `SPAWN=1 COMBAT=1` regression legs (exit 0 each) — census 2→8
+  balanced, hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0 at
+  600→601, spawn kill pins `my_beast` → gem elapsed 1, union 1274
+  (1201 single benign `Caused by` = vanilla flite narrator, same as
+  every 1201 proof). Trouvailles: per-mob wire pays ambient dim-0
+  falls too (1201 tick-73 falls paid per-mob, entities only) ; 1201
+  host has no Java 17 (machine-local Temurin + docker cache copy,
+  never committed). Only the qualified mob view stays a named
+  follow-up.
+
 - 2026-09-11 : Distinct per-mob drops port live, bridge-1710
   (bridge-1710 `f85eb70` per-mob loot wire + autoplay, SPI pin
   untouched, hub `decisions/LOOT.md` port addendum, `PORT_QUEUE`

@@ -344,3 +344,42 @@ both gems, 6-arg `LivingDropsEvent` kept native).
 - `PORT_QUEUE` flips the row to `live | live | TODO | TODO`.
 - Staying open (not silent): two dispatch ports (1165, 1201),
   qualified `PolicyPack` mob view.
+
+## Addendum — distinct per-mob drops, 1165 + 1201 ports live (2026-09-11)
+
+Last two dispatch ports (bridge-1165 `447ad10`, bridge-1201 `cab4981`,
+SPI pin untouched — `f48d37e` already serves the per-mob views, zero
+forge file-set change, zero WANT change — `setMob` is bridge-owned,
+`ForgeRegistries.ITEMS` reused for both gems, native kill/carrier
+spelling kept per era).
+
+- Server 150 s green each (bind clean, ticks clean, world == pure
+  union 1922, zero `E_*`): `loot wired <{ore=gem,
+  beast.my_beast=gem, beast.my_brute=brute_gem}> count <{ore=1,
+  beast.my_beast=1, beast.my_brute=2}> ore <[example1:my_ore]>`,
+  both items registered (1165 `my_gem` 976 + `my_brute_gem` 977 ;
+  1201 docker run, both gems registered from the boot log).
+- `LOOT=1` direct-client leg each (exit 0, structured ore-wire packs
+  with no vein file, union 1274): ore harvested 1000 → gem 1001,
+  `my_beast` killed 1005 → gem 1006, `my_brute` killed 1010 →
+  `my_brute_gem` x2 at 1011 (elapsed 1 each, same triple as the
+  etage-1 gate). Explicit mob identities on the kills, brute poll
+  counts two carriers.
+- `SPAWN=1 COMBAT=1` regression leg each (exit 0, same packs, union
+  1274): census 2→8 balanced (beast=brute), hp 20.0 + 30.0,
+  exact-2.0 at 500→501 then exact-3.0 at 600→601 (elapsed 1 each),
+  spawn kill pins the first `my_beast` → gem 1001 elapsed 1. The
+  single benign `Caused by` on 1201 is the known vanilla flite
+  narrator `UnsatisfiedLinkError`, same as every 1201 proof.
+- `PORT_QUEUE` flips the row to `live | live | live | live` (0 `TODO`
+  remaining on the row, never silent).
+- Trouvailles: `NUMERIC_IDS` is pre-flattening only (1710/1122) —
+  1165/1201 verdicts compare native names (`example1:my_ore`,
+  `minecraft:stone`), no numeric ids on those eras ; 1201 host has no
+  Java 17 (`/usr/lib/jvm` holds 8/21/26 only — legs ran on machine-local
+  Temurin 17.0.20 plus the `matou-d3` docker cache copy, never
+  committed) ; the per-mob wire also pays ambient dim-0 falls (1201
+  tick-73 beast/brute falls paid 1 gem / 2 brute-gems — dispatch
+  covers every kill, not just scripted ones, entities only, union
+  intact).
+- Staying open (not silent): qualified `PolicyPack` mob view.
