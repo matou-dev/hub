@@ -654,7 +654,14 @@ EOF
   # custom entity tranche — vanilla pigs are a different species now).
   # Staging still copies $BLD/auto/fr only, so no forge class ships in
   # the companion jar (the stub-leak check below keeps proving it).
-  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi:$BLD/forge" -d "$BLD/auto" $(find tools/autoplay/src tools/autoplay/stub tools/live/stub -name '*.java')
+  # tools/autoplay/stub is optional per bridge (1122 merged its vanilla
+  # shapes into tools/live/stub — one Minecraft class only, duplicate
+  # stubs never compile): absent dir is skipped, a build with no source
+  # left still fails loudly at javac. Controlled tree, no spaces in
+  # paths: word-splitting of $AUTO_SRC is intended.
+  AUTO_SRC="tools/autoplay/src tools/live/stub"
+  [ -d tools/autoplay/stub ] && AUTO_SRC="$AUTO_SRC tools/autoplay/stub"
+  "$JB/javac" $JFLAGS -nowarn -cp "$BLD/spi:$BLD/forge" -d "$BLD/auto" $(find $AUTO_SRC -name '*.java')
   # Companion metadata follows the bridge era, like the bridge jar itself:
   # mods.toml era stamps autoplay-mods.toml, mcmod.info era stamps
   # autoplay-mcmod.info (absent file = bridge without companion metadata,
