@@ -99,7 +99,7 @@ never with the code copy.
 | Beast model mesh+hitboxes (`MATOU_MODEL.md`) | live | live | live | live |
 | Combat weakspot hook, `E_HIT_*` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Combat policy weakspots+reach (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
-| Combat reach override, `E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | TODO | e0 | TODO | TODO |
+| Combat reach override, `E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

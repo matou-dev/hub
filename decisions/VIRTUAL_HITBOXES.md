@@ -615,6 +615,39 @@ every lead E0.
 - `PORT_QUEUE` row `Combat reach override` (`BRIDGE_PARITY.md`):
   `TODO | e0 | TODO | TODO`.
 
+## Addendum — combat reach override live, lead bridge-1122 (2026-09-11)
+
+`bridge-1122` `81ccc46` (E0, zero live fixes) proves the override live
+on Forge 2860 (150 s server + two launcher-free headless direct-client
+`SPAWN=1 COMBAT=1` legs, Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502):
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — hook present but dormant, zero `E_HIT`, zero
+  combat lines on the playerless dedicated server) with `combat wired
+  <{head=2.0}> reach <4.0>` sealed from the owned file (no suffix —
+  the default leg pins the un-overridden line byte-shape).
+- Client default leg: `combat wired <{head=2.0}> reach <4.0>`, then
+  `[MatouBridge] combat resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x sealed head
+  2x, no crit, no fallback).
+- Client override leg (operator act: `combat.reach=5.0` appended to the
+  staged `packs.cfg` wire line, same single line, no script edit):
+  `combat wired <{head=2.0}> reach <5.0> overridden <combat.reach>`
+  (the operator win lands on the hook cutoff and names itself),
+  identical exact-2.0 (`struck <head hp=20.0>` at 500, `resolved
+  <drop=2.0 hp=18.0>` at 501, elapsed 1 — the wider cutoff changes
+  nothing at 2.2 blocks, as designed).
+- Both client legs: `verify-client-save.sh` world == pure union (1274
+  cells) ; zero `E_*` / linkage lines in `game.log` (the same two
+  benign client model-bake `Caused by` for the registered gem item as
+  the policy live proof — missing `models/item/my_gem.json`,
+  non-fatal).
+- `PORT_QUEUE` row `Combat reach override` flips to
+  `TODO | live | TODO | TODO` (lead live, three ports TODO, the
+  `E_COMBAT_WIRE` local-code gap names them).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
