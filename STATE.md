@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Render plan adapter live, lead bridge-1122
+  (`4119639` E0, zero live fixes, hub `decisions/GPU_INSTANCING.md`
+  live addendum, `PORT_QUEUE` `TODO | live | TODO | TODO`) : 150 s
+  server green (world == pure union 1922, zero `E_*`) ;
+  headless direct-client `NUMERIC_IDS=example1:my_ore=253 SPAWN=1
+  COMBAT=1` (exit 0) — `ready mesh=72` + `drew instances=1 buckets=1`
+  through the seal (GL accepted, `E_GL_DRAW` silent), census 2→8
+  balanced, hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0 at
+  600→601 (elapsed 1 each), kill 1000 → gem 1001 (elapsed 1) with
+  same-tick replacement, save pure union 1274, zero `E_*` (benign
+  gem-model `Caused by` only, same as every 1122 proof). Three
+  dispatch ports TODO — last open item on the row.
 - 2026-09-11 : Render plan adapter E0, lead bridge-1122 (spi
   `89406af` `RenderStates` + `ViewProjection` + gate batteries,
   bridge-1122 `4119639` `RenderJob` + `RenderSeal` + `RenderWireCheck`

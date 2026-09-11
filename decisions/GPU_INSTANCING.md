@@ -153,4 +153,41 @@ proof TODO — same bar as every lead E0.
   (renderer is client-only — regression only) + headless
   direct-client `SPAWN=1 COMBAT=1` legs proving the wired draw
   (`drew instances=` with buckets, census 2→8, exact-2.0 + exact-3.0
-  intact, saves pure union, zero `E_*`).
+  intact, saves pure union, zero `E_*`). CLOSED 2026-09-11 below
+  (zero live fixes — the bridge stays `4119639` + `1b7dc7e`).
+
+## Addendum — render plan adapter live, lead bridge-1122 (2026-09-11)
+
+`bridge-1122` `4119639` (E0) + `1b7dc7e` (pin) proves the planned
+draw live on Forge 2860 (150 s server + launcher-free headless
+direct-client `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  zero `E_*`).
+- Client: `ready mesh=72 verts stride=8` (the SPI bake, `program=12`)
+  then `drew instances=1 mesh=72 verts buckets=1` — the first planned
+  draw through the seal (one mob-addressed bucket over the shared
+  mesh, GL accepted, `E_GL_DRAW` silent; a single visible beast on the
+  first drawn frame, the culled rest cost nothing — cull sets stay
+  gate-proven, the wire stays replay-identical); census 2→8 balanced
+  (`beast=brute`, cap 8) at worldTicks 2..5, `spawn hp <my_beast
+  20.0>` + `spawn hp <my_brute 30.0>`, exact-2.0 at 500→501 then
+  exact-3.0 at 600→601 (elapsed 1 each, full-health brute baseline
+  30.0 → 27.0 this run), spawn kill at 1000 → carrier tick 999 → gem
+  polled at 1001 (elapsed 1) with the replacement joining the same
+  tick, clean shutdown ; `verify-client-save.sh` world == pure union
+  (1274 cells, `1,253` via `NUMERIC_IDS`) ; zero `E_*` / linkage (the
+  only `Caused by` lines are the known benign gem-model bakes —
+  missing `models/item/my_gem.json` + `my_brute_gem.json`, same
+  signature as every 1122 proof since item registration).
+- Trouvaille (live ops, no code impact): the first drawn frame kept a
+  single beast — pig-AI wander plus a fixed camera means the visible
+  set varies frame to frame by design (the `drawLogged` line fires
+  once, so later fuller frames stay quiet). Per-frame plan/drop
+  logging would trade log spam for a count nobody asserts (pixel
+  proof stays refused) — not added.
+- `PORT_QUEUE` row `Render plan adapter` flips to
+  `TODO | live | TODO | TODO` (lead live, three dispatch ports TODO —
+  the `E_RENDER_JOB` / `E_RENDER_SEAL` dim-4 gap names them).

@@ -106,7 +106,7 @@ never with the code copy.
 | Per-mob operator override, `E_SPAWN_WIRE`/`E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Distinct per-mob drops (`LOOT.md`) | live | live | live | live |
 | Qualified PolicyPack mob view, `E_SPAWN_MOB` (`SPAWN.md`) | live | live | live | live |
-| Render plan adapter, per-bucket draw (`GPU_INSTANCING.md`) | TODO | e0 | TODO | TODO |
+| Render plan adapter, per-bucket draw (`GPU_INSTANCING.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 
