@@ -549,6 +549,44 @@ spelling, the policy wire is era-blind).
   `live | live | live | TODO` (three ports live, one TODO — 1201
   remains, the `E_COMBAT_POLICY` local-code gap names it).
 
+## Addendum — combat policy port, bridge-1201 (2026-09-11)
+
+`bridge-1201` `3712673` (E0, zero live fixes) proves the sealed policy
+live on Forge 47.2.0 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb, exit 0, host Temurin
+17.0.20): the exact-2.0 proof now reads through content, not
+constants — same 4-file shape as the 1122 lead E0, 47.2.0-native
+throughout (no narrow-map delta: the hook already rides the
+`getEntity` / `getEntity` / declaring-`Entity` / `Vec3` direct
+spelling, the policy wire is era-blind).
+
+- Stages 1-2 green on the port (`tools/check.sh` 186 ok:
+  `ModelWireCheck` sealed 2x, forge-stub + autoplay-compile) ; SPI
+  already pinned at `0e1305b` (mechanical re-pin landed ahead,
+  additive).
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ore + stone names — hook present but dormant, zero `E_HIT`,
+  zero combat lines on the playerless dedicated server) with `combat
+  wired <{head=2.0}> reach <4.0>` sealed from the owned file at wire
+  time.
+- Client: `combat wired <{head=2.0}> reach <4.0>`, census 1→4 at
+  worldTicks 2..5, `spawn hp <20.0>`, then `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x sealed head
+  2x, no crit, no fallback), spawn kill at 1000 → gem carrier the
+  same bridge tick → polled at 1001 (elapsed 1, chain intact), clean
+  shutdown (exit 0) ; `verify-client-save.sh` world == pure union
+  (1274 cells, stone) ; zero `E_*` / linkage lines in `game.log`
+  (the single `Caused by` is the known vanilla flite narrator
+  `UnsatisfiedLinkError`, non-fatal — same signature as the 1201
+  renderer proof and the hook live proof, game runs to clean
+  shutdown and the verdict stays green).
+- `PORT_QUEUE` row `Combat policy weakspots+reach` flips to
+  `live | live | live | live` (four ports live, 0 `TODO` remaining —
+  the `E_COMBAT_POLICY` local-code gap is closed).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

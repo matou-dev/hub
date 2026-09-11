@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat policy live on bridge-1201 (bridge-1201
+  `3712673` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
+  port addendum, `PORT_QUEUE` `live | live | live | live`) : 150 s
+  Forge 47.2.0 server green (`combat wired <{head=2.0}> reach
+  <4.0>`, bind clean, world == pure union 1922, hook dormant, zero
+  `E_HIT`) ; headless direct-client `SPAWN=1 COMBAT=1` (exit 0) —
+  combat resolved head 2.0 at worldTick 500, exact-2.0 wound (18.0,
+  elapsed 1), kill 1000 → carrier same tick → polled 1001 (elapsed
+  1, chain intact), clean shutdown, client save world == pure union
+  (1274 cells), zero `E_*` / linkage (the single `Caused by` is the
+  known vanilla flite narrator `UnsatisfiedLinkError`, non-fatal).
+  Four ports live, 0 `TODO` remaining, never silent.
 - 2026-09-11 : Combat policy live on bridge-1165 (bridge-1165
   `17d41a8` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
   port addendum, `PORT_QUEUE` `live | live | live | TODO`) : 150 s
