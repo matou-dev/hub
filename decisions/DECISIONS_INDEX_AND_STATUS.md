@@ -99,6 +99,7 @@ is the same lie class as the Problem above.
 - HEADLESS_XVFB_QT_XCB.md : active (maturity unrated, scope client, roadmap -)
 - LAYER_Q1_Q11.md : active (maturity unrated, scope shared, roadmap -)
 - LIVE_PROOF_MODEL.md : active (maturity unrated, scope shared, roadmap -)
+- LIVE_SHELL_COMMON.md : active (maturity unrated, scope shared, roadmap -)
 - MINECRAFT_BACKEND_REPRODUCIBILITY.md : active (maturity unrated, scope shared, roadmap -)
 - NAMING_QN1_QN3.md : active (maturity unrated, scope shared, roadmap -)
 - RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
