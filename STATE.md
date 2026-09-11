@@ -4,6 +4,18 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Shell eSLOC ceiling hardened advisory → gate failure
+  (hub `tools/check_sloc.py` + `tools/check.sh`, addenda in
+  `decisions/LIVE_SHELL_COMMON.md` + `decisions/EFFECTIVE_SLOC.md`,
+  `AGENTS.md` §3 amended) : full scan exits 1 with
+  `FAIL (sloc-ceiling ...)` on any `*.sh` >= 450 eSLOC (was `alert`,
+  exit 0) ; `check.sh` runs verdict-only `--check-ceiling` after
+  `--self-test`, so hub CI refuses an over-ceiling shell anywhere in
+  the org. Java `*` flags stay advisory (5 files over today —
+  hardening those is its own named re-opener, not smuggled in).
+  Margins at hardening: 0 over, nearest `bridge-1201/tools/run-live.sh`
+  442 (8 under). `check.sh` green.
+
 - 2026-09-11 : Decision maturity promotion to standard (hub `decisions/`) :
   - 2 decisions promoted from `prototype` to `standard`:
     `MATOU_MODEL.md` and `GL_INSTANCING_ADAPTER.md`.

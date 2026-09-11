@@ -38,7 +38,10 @@ Avant struct, fonction de conversion ou fixture : grep workspace si le concept
 existe déjà sous un autre nom (un audit sans grep est invalide). Type partagé
 = base commune, jamais d'import latéral. Fichier vers 450 lignes effectives
 (eSLOC, hors commentaires et lignes vides — `tools/check_sloc.py`) = alerte de
-conception (table-driven, fusion, suppression — jamais split satellite).
+conception (table-driven, fusion, suppression — jamais split satellite) ;
+pour les scripts shell l'alerte est un gate dur (`tools/check.sh` refuse
+tout `*.sh` >= 450 eSLOC — voir `decisions/EFFECTIVE_SLOC.md`), pour Java
+elle reste une alerte.
 Si du code existant — ou ce qu'on s'apprête à écrire — contredit le layering
 Q1-Q11 : STOP + signaler avec preuve `file:line`, jamais d'extension
 silencieuse.

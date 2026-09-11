@@ -166,8 +166,32 @@ stand-in caveat dies with it (flow-proof superseded by a
 real-toolchain boot — dist bytes stay toolchain-sensitive, still
 never compared cross-toolchain).
 
+## Addendum — shell ceiling hardened from advisory to gate failure (2026-09-11)
+
+The re-opener named in the derive-cut addendum lands here, as its own
+decision: `tools/check_sloc.py` full scan exits 1 with
+`FAIL (sloc-ceiling ...)` on any shell script >= 450 eSLOC (was
+`alert ...`, exit 0), and `hub/tools/check.sh` runs the verdict-only
+`--check-ceiling` mode after `--self-test` — so hub CI (which checks
+out every sibling at `ref: main` and runs the shared check) refuses an
+over-ceiling shell anywhere in the org. Java `*` flags stay advisory
+prints by design (`AGENTS.md` §3 design alert ; 5 files currently over
+— 4 `MatouBridgeMod` at 503-566 plus `MatouParse` at 505 — so failing
+on Java would turn every gate red today ; Java hardening is NOT
+smuggled in here).
+
+Margins at hardening (green, 0 over): nearest file
+`bridge-1201/tools/run-live.sh` at 442 eSLOC (8 under), then
+`hub/tools/live-derive.sh` at 432 and
+`bridge-1165/tools/run-live.sh` at 416. A wrapper regrowing past the
+ceiling gets table-driven treatment, era-split extraction, or deletion
+— never split satellites (`AGENTS.md` §3).
+
 ## What would re-open it
 
+- Java ceiling hardening: its own decision once the 5 over-ceiling
+  sources are refactored under (same shape as this cut — fail loud,
+  never smuggled).
 - A fifth bridge: scaffold a thin wrapper from day one (pins + derive),
   never a fifth copy of the shared steps (`tools/scaffold-bridge.sh`
   placeholder should point here).

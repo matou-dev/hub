@@ -8,6 +8,10 @@ quotes (escapes honored).
 
 Pattern: CatzEngineNext gate_support::effective_sloc + sloc_cases.rs.
 Doctrine: hub/decisions/EFFECTIVE_SLOC.md + AGENTS.md §3.
+
+Exit codes: 0 when green. Full scan and --check-ceiling exit 1 on any
+shell script >= CEILING (hard gate). Java over-ceiling never fails —
+printed `*` design alert only (several files are over today).
 """
 import os
 import sys
@@ -169,6 +173,11 @@ def scan_shell(root_dir: str):
     return results
 
 
+def shell_ceiling_failures(sh_results):
+    """Shell scripts at or over the ceiling: [(rel, sloc)] worst first."""
+    return [(rel, sloc) for sloc, _raw, rel in sh_results if sloc >= CEILING]
+
+
 def main():
     run_self_tests()
     if "--self-test" in sys.argv:
@@ -177,8 +186,20 @@ def main():
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     org_root = os.path.abspath(os.path.join(script_dir, "../.."))
-    results = scan_sources(org_root)
     sh_results = scan_shell(org_root)
+
+    if "--check-ceiling" in sys.argv:
+        bad = shell_ceiling_failures(sh_results)
+        if bad:
+            print(f"FAIL (sloc-ceiling : {len(bad)} shell script(s) >= {CEILING} eSLOC)")
+            for rel, sloc in bad:
+                print(f"FAIL (sloc-ceiling : {rel} {sloc} eSLOC)")
+            return 1
+        top_rel, top_sloc = sh_results[0][2], sh_results[0][0] if sh_results else ("-", 0)
+        print(f"ok (sloc-ceiling : {len(sh_results)} shell scripts < {CEILING} eSLOC, max {top_rel} {top_sloc})")
+        return 0
+
+    results = scan_sources(org_root)
 
     print("ok (sloc-self-test : 10 cases passed)")
     print(f"ok (sloc-scan : {len(results)} Java source files covered)")
@@ -202,8 +223,10 @@ def main():
             over += 1
         print("%-60s | %-6d | %-6d%s" % (rel, sloc, raw, flag))
     if over:
-        print(f"alert (sloc-ceiling : {over} shell script(s) >= {CEILING} eSLOC)")
+        print(f"FAIL (sloc-ceiling : {over} shell script(s) >= {CEILING} eSLOC)")
+        return 1
 
+    print(f"ok (sloc-ceiling : all shell scripts < {CEILING} eSLOC)")
     return 0
 
 
