@@ -2,14 +2,17 @@
 """Effective SLOC counter and ceiling checker (CatzEngineNext pattern).
 
 Blank lines and full-line comments never count, trailing prose never zeroes
-its code line. // splits outside string literals (escapes honored), /* */
-rides a small state machine.
+its code line. C-like: // splits outside string literals (escapes honored),
+/* */ rides a small state machine. Shell: # splits outside single/double
+quotes (escapes honored).
 
 Pattern: CatzEngineNext gate_support::effective_sloc + sloc_cases.rs.
 Doctrine: hub/decisions/EFFECTIVE_SLOC.md + AGENTS.md §3.
 """
 import os
 import sys
+
+CEILING = 450
 
 
 def code_part(line: str) -> str:
@@ -58,6 +61,41 @@ def effective_sloc(content: str) -> int:
     return count
 
 
+def sh_code_part(line: str) -> str:
+    """Strip a # comment that starts outside single/double quotes."""
+    chars = list(line)
+    n = len(chars)
+    idx = 0
+    quote = None
+    while idx < n:
+        c = chars[idx]
+        if quote is not None:
+            if c == "\\":
+                idx += 2
+                continue
+            if c == quote:
+                quote = None
+            idx += 1
+            continue
+        if c in ("'", '"'):
+            quote = c
+            idx += 1
+            continue
+        if c == "#":
+            return line[:idx]
+        idx += 1
+    return line
+
+
+def effective_sh_sloc(content: str) -> int:
+    """Effective SLOC of one shell text: blanks and #-comments never count."""
+    count = 0
+    for line in content.splitlines():
+        if sh_code_part(line).strip():
+            count += 1
+    return count
+
+
 def run_self_tests():
     """Exact test cases from CatzEngineNext/tools/catzc-next/tests/sloc_cases.rs."""
     # 1. blank_and_full_line_comments_never_count
@@ -79,6 +117,17 @@ def run_self_tests():
 
     # 6. escaped quotes in string
     assert effective_sloc('String s = "hello \\" // not comment";\n') == 1
+
+    # 7. shell: full-line hash comments and blanks never count
+    src7 = "#!/bin/sh\n# doc\n\necho hi\n"
+    assert effective_sh_sloc(src7) == 1, f"Case 7 failed: got {effective_sh_sloc(src7)}"
+
+    # 8. shell: trailing comment keeps its code line
+    assert effective_sh_sloc("set -eu # strict\n") == 1
+
+    # 9. shell: hashes inside quotes stay code
+    assert effective_sh_sloc('echo "a#b"\n') == 1
+    assert effective_sh_sloc("echo 'a#b'\n") == 1
 
 
 def scan_sources(root_dir: str):
@@ -102,25 +151,58 @@ def scan_sources(root_dir: str):
     return results
 
 
+def scan_shell(root_dir: str):
+    """Scan all shell scripts (*.sh) in the org (tools/ included)."""
+    results = []
+    for root, dirs, fnames in os.walk(root_dir):
+        dirs[:] = [d for d in dirs if d not in (".git", "build", "target")]
+        for fn in fnames:
+            if fn.endswith(".sh"):
+                p = os.path.join(root, fn)
+                with open(p, "r", encoding="utf-8") as fh:
+                    content = fh.read()
+                sloc = effective_sh_sloc(content)
+                raw = len(content.splitlines())
+                rel = os.path.relpath(p, root_dir)
+                results.append((sloc, raw, rel))
+    results.sort(key=lambda x: x[0], reverse=True)
+    return results
+
+
 def main():
     run_self_tests()
     if "--self-test" in sys.argv:
-        print("ok (sloc-self-test : 6 cases passed)")
+        print("ok (sloc-self-test : 10 cases passed)")
         return 0
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     org_root = os.path.abspath(os.path.join(script_dir, "../.."))
     results = scan_sources(org_root)
+    sh_results = scan_shell(org_root)
 
-    print("ok (sloc-self-test : 6 cases passed)")
+    print("ok (sloc-self-test : 10 cases passed)")
     print(f"ok (sloc-scan : {len(results)} Java source files covered)")
+    print(f"ok (sloc-scan-sh : {len(sh_results)} shell scripts covered)")
 
     print("\nTop files by effective SLOC (threshold: ~450 eSLOC):")
     print("%-60s | %-6s | %-6s" % ("File", "eSLOC", "Raw"))
     print("-" * 76)
     for sloc, raw, rel in results[:15]:
-        flag = " *" if sloc >= 450 else ""
+        flag = " *" if sloc >= CEILING else ""
         print("%-60s | %-6d | %-6d%s" % (rel, sloc, raw, flag))
+
+    print("\nTop shell scripts by effective SLOC (threshold: ~450 eSLOC):")
+    print("%-60s | %-6s | %-6s" % ("File", "eSLOC", "Raw"))
+    print("-" * 76)
+    over = 0
+    for sloc, raw, rel in sh_results[:15]:
+        flag = ""
+        if sloc >= CEILING:
+            flag = " *"
+            over += 1
+        print("%-60s | %-6d | %-6d%s" % (rel, sloc, raw, flag))
+    if over:
+        print(f"alert (sloc-ceiling : {over} shell script(s) >= {CEILING} eSLOC)")
 
     return 0
 
