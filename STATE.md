@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Shell ceiling defused on bridge-1201 (bridge-1201
+  `2ceec2f` table-driven pin groups, zero logic change —
+  `tools/run-live.sh` 449→431 eSLOC, 19 under the 450 hard ceiling,
+  same margin as the 1165 wrapper) : 7 loop hunks over homogeneous
+  pin groups (Entity/Vec3i getX/Y/Z, Entity xo/yo/zo/yRotO/xRotO,
+  registry pairs, BlockEvent triple, RenderLevelStageEvent quad,
+  Level game-pin triple — names stay literal and grep-able), 112 pin
+  calls expand identical before/after (stub-expansion proof, zero
+  divergence) ; bridge `tools/check.sh` green, hub `tools/check.sh`
+  green (parity pin `f48d37e`, sloc-ceiling ok). Closes the 449/450
+  fragile flag (older bullets stay dated records).
+
 - 2026-09-11 : Distinct per-mob drops ports live, bridge-1165 +
   bridge-1201 (bridge-1165 `447ad10` + bridge-1201 `cab4981` per-mob
   loot wire + autoplay, SPI pin untouched, hub `decisions/LOOT.md`
