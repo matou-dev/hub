@@ -103,6 +103,7 @@ is the same lie class as the Problem above.
 - NAMING_QN1_QN3.md : active (maturity unrated, scope shared, roadmap -)
 - RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
 ### spec
+- GL_INSTANCING_ADAPTER.md : active (maturity prototype, scope shared, roadmap -)
 - ITEM_REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
 - LOOT.md : active (maturity prototype, scope shared, roadmap -)
 - REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
