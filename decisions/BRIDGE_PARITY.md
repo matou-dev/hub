@@ -60,7 +60,12 @@ checks `provider.getDimension()!=0`; 1710 registers on
 `MinecraftForge.EVENT_BUS` (`1165/MatouBridgeMod.java:37`); the 1710
 sink calls `setBlock(x,y,z,block)` where 1201 builds a `BlockState`
 (`1201/WorldCellSink.java:10,58-59`). Same verdicts, version-native
-spelling — the E2E proves it, not the diff.
+spelling — the E2E proves it, not the diff. The GL backend file is the
+one era-native basename: `Lwjgl2Backend.java` on LWJGL2 bridges
+(1710/1122), `Lwjgl3Backend.java` on LWJGL3 bridges (1165/1201) — same
+`GlBackend` contract, era-native bindings (`GL_INSTANCING_ADAPTER.md`);
+`tools/check-bridges.sh` normalizes exactly that alternation (any third
+spelling, add or remove still fails).
 
 Mapping inputs are derived live, never pinned: 1122 derives a narrow
 MCP→SRG map in-run (`joined.tsrg`+`javap`, no `srg-mcp.srg`;

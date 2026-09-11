@@ -5,7 +5,9 @@
 #  1. SPI_PIN : tous les bridges epinglent le meme SPI (sinon l'un est en
 #     avance/retard — re-valider le retardataire, puis bumper son pin).
 #  2. forge file-set : memes fichiers partout (un fichier ajoute d'un seul
-#     cote = report oublie).
+#     cote = report oublie ; seule exception : Lwjgl2Backend.java <->
+#     Lwjgl3Backend.java, l'alternance exacte du backend d'ere — hub
+#     decisions/GL_INSTANCING_ADAPTER.md).
 #  3. catalogue E_FORGE_* : memes codes d'erreur (un chemin bruyant ajoute
 #     d'un cote doit exister partout).
 #  4. declared gap only (PORT_QUEUE, decisions/BRIDGE_PARITY.md) :
@@ -36,7 +38,12 @@ for b in "$@"; do
   [ -f "$b/SPI_PIN" ] || { echo "FAIL bridge-parity : $b/SPI_PIN absent"; exit 1; }
   pin=$(tr -d '[:space:]' < "$b/SPI_PIN")
   [ -n "$pin" ] || { echo "FAIL bridge-parity : empty $b/SPI_PIN"; exit 1; }
-  (cd "$b" && find forge/src -name '*.java' | sed 's|.*/||' | sort) > "$tmp/files-$n"
+  # Era-native backend basename (hub decisions/GL_INSTANCING_ADAPTER.md):
+  # LWJGL2 bridges carry Lwjgl2Backend.java, LWJGL3 bridges carry
+  # Lwjgl3Backend.java — same contract, era-native bindings. Normalize
+  # the exact alternation before comparing, so the file-set still
+  # refuses any other add/remove. Any third spelling fails here.
+  (cd "$b" && find forge/src -name '*.java' | sed 's|.*/||' | sed 's/^Lwjgl[23]Backend\.java$/LwjglBackend.java/' | sort) > "$tmp/files-$n"
   (cd "$b" && rg -o --no-filename 'E_FORGE_[A-Z_]+' forge/src | sort -u) > "$tmp/err-$n"
   (cd "$b" && rg -o --no-filename -N 'E_[A-Z0-9]+_[A-Z0-9_]+' forge/src java/src 2>/dev/null | sort -u || true) > "$tmp/all-$n"
   (cd "$b" && rg -l --no-messages 'parity shell' forge/src 2>/dev/null || true) > "$tmp/shells-$n"
