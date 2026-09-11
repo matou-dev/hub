@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat policy E0 on bridge-1122 (spi `0e1305b`
+  SYNTAX-V5 + combat contract, example1 `fadee60` combat table,
+  bridge-1122 `c1378a1` wireCombat, hub `decisions/VIRTUAL_HITBOXES.md`
+  policy addendum, `PORT_QUEUE` `TODO | e0 | TODO | TODO`) : stages
+  1-2 green (22 goldens py+java, `ExampleCheck` refusal battery,
+  `ModelWireCheck` sealed 2x, forge compile + autoplay-compile),
+  live proof TODO. `COMBAT_REACH`/`WEAKSPOTS` retired with zero
+  behaviour change (content seals `reach = 4.0`, `head` 2x) ;
+  mechanical SPI re-pin on the three siblings (additive, E0 green
+  each). Trouvaille (spec debt): hub `SYNTAX_V1_V2_V3.md` never
+  recorded the landed V4 — two-line pointer added for V4+V5 in the
+  same commit, deltas stay in `spi/spec/`.
 - 2026-09-11 : Combat weakspot hook live on bridge-1201
   (bridge-1201 `198e83e` E0 + `a194310` pin-loop refactor, hub
   `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`

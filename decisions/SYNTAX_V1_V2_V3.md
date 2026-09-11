@@ -56,5 +56,10 @@ packs.
 
 - V4 (new genre or type): new `SYNTAX-V4.md` delta + goldens both
   sides, never a silent V1..V3 edit.
-- A third implementation: it passes the same 18 goldens or it does
+- Landed since: V4 vein (`spi/spec/SYNTAX-V4.md` + `valid_v4_vein` /
+  `err_v3_vein` goldens) and V5 weakspot (`spi/spec/SYNTAX-V5.md` +
+  `valid_v5_weakspot` / `err_v4_weakspot` goldens, hub
+  `decisions/VIRTUAL_HITBOXES.md` combat-policy tranche) — each its
+  own delta file, this file frozen.
+- A third implementation: it passes the same goldens or it does
   not exist.

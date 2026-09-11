@@ -394,6 +394,54 @@ upfront in the E0:
   `live | live | live | live` (combat hook live on 4/4 runtimes, 0
   `e0` / `TODO` remaining).
 
+## Addendum — combat policy, lead bridge-1122 E0 (2026-09-11)
+
+Closes the third re-opener below (attribute-driven reach +
+content-driven weakspot tables): the `COMBAT_REACH = 4.0` bridge
+constant and the `BeastModel.WEAKSPOTS` singleton are retired, replaced
+by content-sealed policy end to end. Stages 1-2 green on the lead,
+live proof TODO — same bar as every lead E0.
+
+- Language (spi `0e1305b`): `spec/SYNTAX-V5.md` delta (frozen after
+  gate) — new v5-only `Weakspot` genre, V1 types only (the instance
+  name IS the bone, one required `mult : f32`; the parser stays
+  syntactic, positivity/dupe/empty refused by the deciding table, same
+  split as `vein.size`). The mob reach attribute stays a `Mob` field
+  (`reach : f32`, no genre needed); tables join by file co-location
+  (one owned file funds one mob plus its weakspots), same join as
+  loot/spawn. Both parsers gain the version-gated table
+  (`GENRES_V5`, header `syntax 5`); 22 goldens green both runners
+  (`valid_v5_weakspot`, `err_v4_weakspot`, `err_version` bumped 5→6 —
+  the V4 tranche's own mechanical share). Version gating reuses the
+  existing codes (`E_MATOU_GENRE` / `E_MATOU_TYPE`, no new codes).
+- SPI contract: `PolicyPack.combatWeakspots()` (insertion-ordered
+  bone→mult, never null/empty, values positive finite) +
+  `PolicyPack.combatReach()` (positive finite eye-to-hitVec cutoff, no
+  operator override in v1 — same split as `spawnHp`: the spec field
+  ships with its live reader, the override is a named follow-up).
+  Only implementer is `ExamplePack` — no other tree implements the
+  interface (audited by grep, not assumed).
+- Content (example1 `fadee60`): `CombatTable.fromFile` (single-mob
+  scope, `E_EXAMPLE_COMBAT:multi/empty`, `bad reach/mult`, `dupe`
+  bone — never defaulted) + `ExamplePolicy` third table + pack
+  delegates; `content/owned.matou` bumped `syntax 1`→`5` with
+  `reach = 4.0` and `weakspot head mult = 2.0` — the exact retired
+  values (vanilla 3.0 plus one block of bone extent, derivation moved
+  from the code comment into content, zero behaviour change for the
+  live proof). `ExampleCheck` covers seal values, immutability,
+  wires-like-owned, the full refusal battery, pack parity on every
+  wiring path, and unwired loudness; `tools/check_content.py` owned
+  shape gains the fifth genre.
+- Lead bridge (bridge-1122 `c1378a1`): `wireCombat` seals the table
+  into `BeastModel` once at wire time and lands the reach on the
+  hook's cutoff (`E_COMBAT_POLICY:unwired/null/empty` — a hit-time
+  read before the seal refuses, never 1.0x); `MatouEntity` serves the
+  sealed map; `onHurt` ray-tests at the sealed reach. No owned file
+  means combat stays passive (Q1). Mechanical SPI re-pin on the three
+  siblings (additive change, E0 green each, no live re-proof).
+- `PORT_QUEUE` row `Combat policy weakspots+reach` (`BRIDGE_PARITY.md`):
+  `TODO | e0 | TODO | TODO`.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -412,5 +460,10 @@ state and stay inside the declared set.
   only refines delivered hurts).
 - Client prediction + attack packet with server re-ray-test and
   tolerance check (the §3 lifecycle as specified above).
-- Attribute-driven reach (replacing `COMBAT_REACH`) and
-  content-driven weakspot tables (replacing the beast-local 2x).
+- Combat policy follow-ups (not silent): live proof on the lead plus
+  the three ports (`PORT_QUEUE` row above); operator `combat.reach`
+  override (v1 serves content only, like `spawnHp`); per-mob tables
+  (single-table scope holds); MC-`AttributeInstance` reach stays
+  refused — the content `reach` field IS the attribute-driven
+  reading (one SPI number, four identical wires, no per-version
+  attribute call-site to drift).
