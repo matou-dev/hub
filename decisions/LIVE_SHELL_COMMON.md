@@ -151,6 +151,21 @@ Reobf, java-52, R2, deploy, registration greps, era pin helpers):
 - Remaining natural step: full live 1201 boot (steps 5-7) on the
   refactored wrapper — first live run with the 48-line renderer map.
 
+## Addendum — 1201 full live validates the refactored harness (2026-09-11)
+
+First live run with the 48-line renderer map on the thin wrapper
+(bridge-1201 `27f3247`) + lib (hub `44a762d`): host machine-local
+Temurin 17.0.20, `D3_OFFLINE=1` warm cache, full 150 s window —
+derive 48 lines, stub + forge pins green, jars built, server ran to
+timeout (exit 124), bind clean / ticks clean, `my_ore` + `my_gem`
+registration lines present, `live_compare_names` world == pure union
+(1922 cells, `example1:my_ore` + `minecraft:stone`), zero `E_*` /
+linkage. Green first try, no code change on either side. This closes
+the remaining step named in the previous addendum; its `jdk21`
+stand-in caveat dies with it (flow-proof superseded by a
+real-toolchain boot — dist bytes stay toolchain-sensitive, still
+never compared cross-toolchain).
+
 ## What would re-open it
 
 - A fifth bridge: scaffold a thin wrapper from day one (pins + derive),
