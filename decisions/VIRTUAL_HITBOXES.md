@@ -152,6 +152,42 @@ table).
 - `PORT_QUEUE` row `Combat weakspot hook` (`BRIDGE_PARITY.md`):
   `TODO | e0 | TODO | TODO`.
 
+## Addendum — live proof, bridge-1122 (2026-09-11)
+
+`bridge-1122` `9ae00d4` (E0) + `840507c` (live fix) proves the hook
+live on Forge 2860 (launcher-free headless direct-client run,
+`SPAWN=1 COMBAT=1`, Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502):
+
+- Server re-proof green with the 48-line map (bind clean, ticks
+  clean, world == pure union 1922 cells — hook present but dormant,
+  zero `E_HIT`, zero combat lines on the playerless dedicated
+  server).
+- Client: census 1→4 at worldTicks 2..5, `spawn hp <20.0>`, then
+  `[MatouBridge] combat resolved <bone=head mult=2.0 dmg=1.0->2.0>`
+  at worldTick 500 (the SPI ray-test off the live attacker eye/look
+  landed the head box first, vanilla 1.0 scaled to 2.0),
+  `[MatouAutoplay] combat struck <head hp=20.0>` the same tick,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, i.e. bare-hand 1.0 x head
+  2x, no crit, no fallback), spawn kill at 1000 → gem carrier at
+  1001 (elapsed 1, chain intact on the wounded beast).
+- `verify-client-save.sh` world == pure union (1274 cells, stone) ;
+  zero `E_*` / linkage lines in `game.log`.
+- Trouvaille (owner-discipline class, one server crash): the first
+  play run died with `NoSuchFieldError: posX` in
+  `MatouEntity.hitBoxes` — bare `posX` reads owner `MatouEntity`,
+  whose reobf walk dies at the vanilla `EntityPig` link (vanilla
+  classes are absent from the reobf input, so a subclass-owner ref
+  passes through silently and dies linking live — the same trap
+  `E_MAP_COVER` was built for on the renderer path, and the scan
+  cannot catch it because it walks the stub-inclusive build jar
+  where the chain exists). Fix (`840507c`): read through a
+  declaring-`Entity`-typed self, like every other hook. The crash
+  itself proved the rest of the path first try (teleport, aim,
+  genuine strike, event delivery, `HitTester` entry).
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `TODO | live | TODO | TODO`.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

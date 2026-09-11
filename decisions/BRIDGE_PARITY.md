@@ -97,7 +97,7 @@ never with the code copy.
 | Item registration MatouItem, `E_REG_ITEM` (`ITEM_REGISTRATION.md`) | live | live | live | live |
 | GL Instancing Renderer (`GL_INSTANCING_ADAPTER.md`) | live | live | live | live |
 | Beast model mesh+hitboxes (`MATOU_MODEL.md`) | live | live | live | live |
-| Combat weakspot hook, `E_HIT_*` (`VIRTUAL_HITBOXES.md`) | TODO | e0 | TODO | TODO |
+| Combat weakspot hook, `E_HIT_*` (`VIRTUAL_HITBOXES.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

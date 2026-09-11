@@ -1,19 +1,19 @@
 # STATE.md — présent
 
-- 2026-09-11 : Combat weakspot hook E0 on bridge-1122 (hub
-  `decisions/VIRTUAL_HITBOXES.md` addendum + catalog completion,
-  `BRIDGE_PARITY.md` `PORT_QUEUE` row `TODO | e0 | TODO | TODO`, hub
-  `tools/live-derive.sh` era-1.12 42 → 48) : `MatouBridgeMod.onHurt`
-  (server-side dim-0 LivingHurt on the registered beast → pure
-  `HitTester` bone resolve → weakspot scaling, head 2x,
-  `COMBAT_REACH = 4.0` eye-to-hitVec) with version-native eye/look
-  (`Entity.getLookVec/getEyeHeight`, `DamageSource.getTrueSource`,
-  `Vec3d/x/y/z` — javap-measured on the pinned 2860 bytes, Forge
-  `LivingHurtEvent` presence-pinned) ; autoplay `COMBAT=1` leg rides
-  `SPAWN=1` (teleport 2.2 east, SPI-parsed head aim with dot > 0.999
-  self-check, genuine `attackTargetEntityWithCurrentItem`, exact-2.0
-  wound assert). E0 stages 1-2 green, live proof TODO (next tranche
-  before any standard promotion).
+- 2026-09-11 : Combat weakspot hook live on bridge-1122
+  (bridge-1122 `9ae00d4` E0 + `840507c` owner-discipline fix, hub
+  `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
+  `TODO | live | TODO | TODO`) : server re-proof green with the
+  48-line map (bind clean, world == pure union 1922, hook dormant,
+  zero `E_HIT`) ; headless direct-client `SPAWN=1 COMBAT=1` run
+  (exit 0) — `[MatouBridge] combat resolved <bone=head mult=2.0
+  dmg=1.0->2.0>` at worldTick 500, autoplay exact-2.0 wound
+  (20.0 → 18.0, elapsed 1), spawn chain intact (kill 1000 →
+  carrier 1001), client save world == pure union (1274 cells),
+  zero `E_*` / linkage. Trouvaille: `MatouEntity.hitBoxes` bare
+  `posX` died `NoSuchFieldError` live (subclass-owner ref passes
+  reobf silently — fixed through declaring `Entity`, same class
+  the `E_MAP_COVER` scan cannot catch by construction).
 
 > **Archives historiques :**
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
