@@ -1,5 +1,18 @@
 # STATE.md — présent
 
+- 2026-09-11 : Qualified PolicyPack mob view E0, all bridges (spi
+  `f1499ee` `PolicyPack.spawnMobRef`, example1 `63ff7b7`
+  `SpawnTable.mobRef` + delegates + battery, bridges 1710 `5dc3a2a`
+  + 1122 `3338075`   + 1165 `417b5f5` + 1201 `de4f525` wire swap +
+  `contentNamespace()` deleted, hub `decisions/SPAWN.md` addendum,
+  `LOOT.md` staying-open line closed) : stages 1-2 green everywhere
+  (spi checks, example1 535 oks, 4 bridge gates incl. forge +
+  autoplay compile, SPI pins `f1499ee` x4, parity catalog
+  unchanged) ; zero behaviour difference proven by battery (same
+  qualified strings, same map keys). Live proof TODO — same bar as
+  every E0 (lead 150 s server + `SPAWN=1 COMBAT=1` legs, then
+  ports). No open follow-up remains on any per-mob row.
+
 - 2026-09-11 : Shell ceiling defused on bridge-1201 (bridge-1201
   `2ceec2f` table-driven pin groups, zero logic change —
   `tools/run-live.sh` 449→431 eSLOC, 19 under the 450 hard ceiling,

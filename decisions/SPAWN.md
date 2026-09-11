@@ -706,3 +706,38 @@ Lead `wireSpawn`/`SpawnSeal`/census dispatch per mob
 single-mob seals with per-mob content oracles
 (1710 `aabc70c`, 1165 `16dcfcc`, 1201 `8bdf576` — dispatch ports
 TODO). Live proof TODO (second entity registration first).
+
+## Addendum — qualified PolicyPack mob view, E0 all bridges (2026-09-11)
+
+Closes the last named follow-up of the per-mob rows (hub
+`decisions/LOOT.md` staying-open line, `VIRTUAL_HITBOXES.md`
+second-beast registration row): the spawn wire no longer reads the
+file namespace off the loot drop refs.
+
+- `spi` `f1499ee` (additive): `PolicyPack.spawnMobRef(String mob)`
+  serves one sealed mob's qualified `ns:name` ref — never null/empty,
+  loud on null/unknown mob, never defaulted. Per-mob shape like every
+  other per-mob view (no order coupling between `spawnMobs()` and the
+  qualification). No existing view touched, no reseal.
+- `example1` `63ff7b7`: `SpawnTable.mobRef(String mob)` (same
+  `E_EXAMPLE_SPAWN` null/unknown shape as the other per-mob readers)
+  plus `ExamplePolicy.spawnMobRef` / `ExamplePack.spawnMobRef`
+  delegates (twenty-eight `PolicyPack` accessors now) ;
+  `ExampleCheck` battery — owned/single/tmp per-mob values,
+  null/unknown refusals, pack-level values + unknown refusal,
+  unwired probe (535 oks).
+- Bridges (byte-identical hunk each, zero MC delta, zero narrow-map
+  delta): `wireSpawn` qualifies through
+  `policy.spawnMobRef(shortMob)` (1710 `5dc3a2a`, 1122 `3338075`,
+  1165 `417b5f5`, 1201 `de4f525`), `contentNamespace()` deleted —
+  the `E_SPAWN_MOB:nowire` / `:null drop` tripwires retire with it
+  (the `E_SPAWN_MOB` family stays thrown elsewhere, so the parity
+  catalog is unchanged) ; SPI pins bumped to `f1499ee` on all four.
+- Zero behaviour difference, proven not asserted: the battery pins
+  `spawnMobRef(m)` against the old `ns + ":" + m` derivation on the
+  shipped two-mob content (`example1.content:my_beast`,
+  `example1.content:my_brute`) — the same maps land under the same
+  keys. Stages 1-2 green everywhere (spi checks, example1 535 oks,
+  4 bridge gates incl. forge + autoplay compile).
+- Live proof TODO — same bar as every E0 (lead 150 s server +
+  `SPAWN=1 COMBAT=1` legs, then ports).

@@ -382,4 +382,7 @@ spelling kept per era).
   tick-73 beast/brute falls paid 1 gem / 2 brute-gems — dispatch
   covers every kill, not just scripted ones, entities only, union
   intact).
-- Staying open (not silent): qualified `PolicyPack` mob view.
+- Staying open (not silent): qualified `PolicyPack` mob view —
+  CLOSED 2026-09-11 by hub `decisions/SPAWN.md` qualified-view
+  addendum (spi `f1499ee` + example1 `63ff7b7` + 4 bridge swaps,
+  E0 green everywhere, live proof TODO).
