@@ -1,5 +1,26 @@
 # STATE.md — présent
 
+- 2026-09-11 : Second beast live, lead bridge-1122 (bridge-1122
+  `eab8e0e` NBT helpers + per-mob autoplay + 53-line narrow map, hub
+  `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
+  `TODO | live | TODO | TODO` both second-beast rows) : server 150 s
+  green (bind clean, world == pure union 1922, `registered-entity
+  <my_beast,my_brute>`, per-mob spawn+combat wire lines, zero `E_*`) ;
+  headless direct-client `SPAWN=1 COMBAT=1` (exit 0) — census 2→8 at
+  worldTicks 2..5 (beast=brute, cap 4+4), hp 20.0 + 30.0, exact-2.0 at
+  500→501 then exact-3.0 at 600→601 (elapsed 1 each, chain intact),
+  kill 1000 → carrier 999 → polled 1001, client save pure union 1274,
+  zero `E_*` / linkage (two benign gem-model `Caused by`, same as every
+  1122 proof). Trouvaille (owner-discipline class): the public
+  `writeToNBT`/`readFromNBT` super calls emit the intermediate
+  `EntityPig` owner no narrow-map row can cover (`E_MAP_COVER` refused
+  before the first boot) — the beast overrides the Pig-declared
+  `writeEntityToNBT`/`readEntityFromNBT` helpers instead (same 5-row
+  delta, mappable). Siblings keep refusing 2-mob content loudly
+  (`E_REG_BEAST`), which is the dispatch-port rationale. Per-mob
+  operator keys, distinct per-mob drops and the qualified mob view stay
+  named follow-ups.
+
 - 2026-09-11 : Second beast registration E0, lead bridge-1122
   (example1 `5397dd0` `SpawnTable.mobRefs()` qualified mob list,
   bridge-1122 `6a50517` one generic registration over every sealed

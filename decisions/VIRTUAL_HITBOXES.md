@@ -921,6 +921,66 @@ every lead E0.
   legs; per-mob operator override keys; distinct per-mob loot drops;
   qualified `PolicyPack` mob view.
 
+## Addendum — second beast live, lead bridge-1122 (2026-09-11)
+
+Closes both live blockers the rows above left open (registration E0 +
+class E0, live TODO each): the 2-mob content boots, persists and fights
+end to end on Forge 2860. Bridge-1122 `eab8e0e`, stages 1-2 green plus
+150 s server + launcher-free headless direct-client `SPAWN=1 COMBAT=1`
+run (Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502 for the server leg)
+— zero live fixes.
+
+- NBT identity (narrow-map 48 -> 53): the beast overrides the
+  Pig-declared persist helpers `writeEntityToNBT` (`func_70014_b`) +
+  `readEntityFromNBT` (`func_70037_a`) — never the public
+  `writeToNBT`/`readFromNBT` one level up on `Entity` (their super
+  calls emit the intermediate `EntityPig` owner, which no narrow-map
+  row can cover: `E_MAP_COVER` refused it loudly before the first boot,
+  never a silent passthrough) — plus `NBTTagCompound` `hasKey`
+  (`func_74764_b`, anchored: three `(String)Z` candidates) +
+  `getString` (`func_74779_i`, static-disambiguated) + `setString`
+  (`func_74778_a`, unique descriptor). The stub `EntityPig` gains the
+  two protected helpers; the `Entity` stub keeps the public pair for
+  hierarchy shape only. `E_MAP_COVER` green, reobf 33 methods + 20
+  fields, java-52 contract held.
+- Registration: `registered-entity
+  <example1.content:my_beast,example1.content:my_brute>` (comma join,
+  single-mob byte-identical); `spawn wired <{my_beast hp <20> cap <4>
+  budget <1> y <66..68>},{my_brute hp <30> cap <4> budget <1> y
+  <66..68>}>`; `combat wired <{my_beast={head=2.0}},{my_brute=
+  {head=3.0}}> reach <{my_beast=4.0},{my_brute=5.0}>` — server and
+  client byte-identical lines.
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — same union as every single-mob proof: beasts never
+  touch blocks; `my_ore` id 253 + `my_gem` id 4096 dynamic from the boot
+  log; zero `E_*`).
+- Client: census 2→4→6→8 at worldTicks 2..5 (`beast=brute` balanced,
+  cap 4+4, total default 8), `spawn hp <my_beast 20.0>` +
+  `spawn hp <my_brute 30.0>` at worldTick 2; `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>` then autoplay `combat
+  struck <my_beast head hp=20.0>` at 500 → `combat resolved <my_beast
+  drop=2.0 hp=18.0>` at 501 (elapsed 1, exact-2.0); `combat resolved
+  <bone=head mult=3.0 dmg=1.0->3.0>` then `combat struck <my_brute
+  head hp=30.0>` at 600 → `combat resolved <my_brute drop=3.0
+  hp=27.0>` at 601 (elapsed 1, exact-3.0); spawn kill at 1000 →
+  bridge tick 999 → carrier polled 1001 (elapsed 1, chain intact);
+  clean shutdown; `verify-client-save.sh` world == pure union (1274
+  cells); zero `E_*` / linkage (two benign client model-bake `Caused
+  by` for the registered gem item, same signature as every 1122 proof).
+  No `beast adopted` lines — every beast carried its NBT identity.
+- Autoplay (companion, DEV-only): per-mob census (total + beast/brute
+  counts, per-mob cap 4 tripwires), per-mob hp poll (20.0/30.0), two
+  combat legs (beast 500→501 exact-2.0, brute 600→601 exact-3.0, shared
+  head aim from the shipped geo). `SPAWN_CAP` default 4→8 (two-mob
+  total; override proofs scale by sealed mob count).
+- `PORT_QUEUE` rows `Second beast class` + `Second beast registration`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` each (lead live,
+  three dispatch ports TODO — the `E_SPAWN_MOB` dim-4 gap names them;
+  siblings keep refusing the 2-mob content loudly through the kept
+  `E_REG_BEAST` chain, which is the port rationale, never silent).
+- Named follow-ups staying open (not silent): per-mob operator override
+  keys; distinct per-mob loot drops; qualified `PolicyPack` mob view.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -942,10 +1002,9 @@ state and stay inside the declared set.
 - Combat policy follow-ups (not silent): policy live x4 and reach
   override live x4 (rows above, both closed); per-mob tables live
   x4 (rows above — one mob sealed on 4/4 runtimes, zero behaviour
-  change); second beast class E0 on the lead (row above — two mobs
-  sealed, per-mob spawn+dispatch on 1122, oracle backports on the
-  siblings, live TODO); second-beast registration E0 on the lead (row
-  above — one generic registration, NBT distinguishes, live TODO);
+  change); second beast class + registration live on the lead (row
+  above — two mobs sealed, one generic registration, NBT identity,
+  exact-2.0 + exact-3.0, three dispatch ports TODO);
   per-mob operator override and distinct per-mob loot/spawn drops stay
   named follow-ups (single-table scope holds there); MC-`AttributeInstance`
   reach stays refused — the content `reach` field IS the
