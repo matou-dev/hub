@@ -789,6 +789,16 @@ if [ -f "$IDIR/minecraft/config/matoubridge/packs.cfg" ]; then
 else
   printf 'fr.iamacat.example1.ExamplePack 63 minecraft:stone ownedFile=%s/matou-content/owned.matou scatterFile=%s/matou-content/additive.matou structureFile=%s/matou-content/structure.matou block.example1.structures:hut_wall=minecraft:stone block.example1.structures:hut_roof=minecraft:stone\n' "$GDIR" "$GDIR" "$GDIR" > "$IDIR/minecraft/config/matoubridge/packs.cfg"
 fi
+# Beast shape (hub decisions/MATOU_MODEL.md): same keep-or-stage rule as
+# packs.cfg — the renderer bakes it and the hitboxes derive from it, so a
+# dev hand-tuning the mesh must never lose it to a re-stage.
+if [ -f "$IDIR/minecraft/config/matoubridge/my_beast.geo.json" ]; then
+  echo "note run-client : keeping existing my_beast.geo.json (delete it to reset to the shipped beast):"
+elif [ -f "$BRIDGE/tools/live/my_beast.geo.json" ]; then
+  cp "$BRIDGE/tools/live/my_beast.geo.json" "$IDIR/minecraft/config/matoubridge/my_beast.geo.json"
+else
+  echo "note run-client : no beast geometry shipped by $BRIDGE (shell renderer, nothing to stage)"
+fi
 WORLD="${AUTOPLAY_WORLD:-matou}"
 export AUTOPLAY_WORLD="$WORLD"
 OFFLINE_NAME="${OFFLINE_NAME:-MatouDev}"

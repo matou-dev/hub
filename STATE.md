@@ -4,6 +4,23 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model consumer live on bridge-1122 e0 (hub
+  `decisions/MATOU_MODEL.md` addendum, spi `e52c0d3`, bridge-1122
+  `3fe9c6c`) :
+  - `spi`: `MatouModel.placedBoxes` world-space derivation (offset
+    after px-to-block narrowing, `E_MODEL_PLACE:nan`), `ModelCheck`
+    extended ; `tools/check.sh` green.
+  - `bridge-1122`: `BeastModel` holder (zero MC, lazy singleton over
+    `config/matoubridge/my_beast.geo.json`, cached bake, `boxesAt`,
+    beast-local head-2x table, `E_MODEL_GEO:*` refusals) ;
+    `MatouEntity implements Hittable` (boxes ride the feet origin) ;
+    `InstancedMeshRenderer` VBO is the SPI bake (`BOX_VERTICES`
+    deleted, count/stride derived) ; gate `ModelWireCheck` proves the
+    shipped asset end to end pure ; live/client harness deploys the
+    geo beside packs.cfg (dist SHA-pinned, keep-or-stage on client).
+  - `PORT_QUEUE` row `Beast model mesh+hitboxes` (`TODO | e0 | TODO |
+    TODO`) ; `tools/check-bridges.sh` green (no new forge file, no new
+    `E_FORGE_*` code).
 - 2026-09-11 : Declarative Bedrock model landed in SPI (hub
   `decisions/MATOU_MODEL.md` spec, spi `4831e5d`) :
   - `spi`: `fr.iamacat.spi.model` pure Java 8, zero dep (minimal

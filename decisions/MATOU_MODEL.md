@@ -60,7 +60,8 @@ zero GL, zero dependency). Bridges consume the bake, never the file.
   `E_MODEL_JSON:empty/syntax/type`, `E_MODEL_VERSION:missing`,
   `E_MODEL_GEOMETRY:missing/shape`, `E_MODEL_IDENTIFIER:missing`,
   `E_MODEL_TEXTURE:shape`, `E_MODEL_BONE:empty/shape/duplicate/parent/pivot`,
-  `E_MODEL_CUBE:null/shape/origin/size/uv/nan`.
+  `E_MODEL_CUBE:null/shape/origin/size/uv/nan`,
+  `E_MODEL_PLACE:nan`, `E_MODEL_GEO:null/unreadable/no-head`.
 - Gate `ModelCheck`
   (`spi/java/test/fr/iamacat/spi/model/ModelCheck.java`, wired in
   `spi/tools/check.sh`): parse goldens (2-bone beast, empty model,
@@ -79,6 +80,47 @@ zero GL, zero dependency). Bridges consume the bake, never the file.
   precedent).
 - 4 bridges re-pinned to the model SPI (mechanical, scaling-audit
   precedent: decided bytes identical, E0 green each, no live re-proof).
+
+## Addendum — consumer tranche, bridge-1122 e0 (2026-09-11)
+
+`bridge-1122` `3fe9c6c` wires the bake into the two thin forge
+call-sites, E0 (stages 1-2 green, live proof TODO):
+
+- `MatouModel.placedBoxes(x, y, z)` (spi `e52c0d3`): world-space
+  placement at the entity origin, the single translation every bridge
+  applies instead of copying the offset loop per version. Rejects NaN
+  origins (`E_MODEL_PLACE:nan`); the offset applies after the px-to-block
+  narrowing (blocks + blocks, never px + blocks).
+- `fr.iamacat.bridge.model.BeastModel` (bridge `java/src`, zero MC):
+  loads `config/matoubridge/my_beast.geo.json` once (lazy singleton),
+  serves the cached baked mesh and `boxesAt` placements. Refuses a null
+  path (`E_MODEL_GEO:null`), an unreadable file
+  (`E_MODEL_GEO:unreadable`) and a model without the weakspot bone
+  (`E_MODEL_GEO:no-head` — the beast-local `WEAKSPOTS` table names
+  `head` at 2x until content-driven weakspots land). No `E_FORGE_*`
+  code added, no new `forge/src` file: parity file-set and error
+  catalog hold untouched.
+- `MatouEntity implements Hittable`: `hitBoxes()` rides the entity
+  origin (feet), `hitWeakspots()` serves the beast table. No combat
+  hook reads them yet.
+- `InstancedMeshRenderer`: the static VBO is the SPI bake
+  (`vertexCount = mesh.length / VERTEX_STRIDE`, stride likewise
+  derived); the hardcoded `BOX_VERTICES` is deleted, single derivation
+  point restored. A missing or broken model refuses in `initGl`,
+  loudly, before the first frame.
+- Asset: `bridge-1122/tools/live/my_beast.geo.json` (the 2-bone beast
+  proven by the SPI goldens) ships to `dist/` (SHA-pinned) and to
+  `$SERV/config/matoubridge/` beside packs.cfg; the hub client script
+  stages it keep-or-copy like packs.cfg. Operator-replaceable, harness
+  never clobbers a hand-tuned copy it did not write.
+- Gate `ModelWireCheck` (bridge `java/test`, wired in
+  `bridge-1122/tools/check.sh`): shipped asset loads/bakes/resolves
+  end to end pure (bones body+head tripwire the weakspot table),
+  temp-file roundtrip, refusal battery (`E_MODEL_GEO:*` plus a
+  non-geometry file proving `E_MODEL_JSON:syntax` propagation).
+- `PORT_QUEUE` row `Beast model mesh+hitboxes`: `TODO | e0 | TODO |
+  TODO`. Live proof (client visual + server no-regression) rides the
+  next live tranche, never silently.
 
 ## What remains (re-opens as spec, not silently)
 
