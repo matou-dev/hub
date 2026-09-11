@@ -587,6 +587,34 @@ spelling, the policy wire is era-blind).
   `live | live | live | live` (four ports live, 0 `TODO` remaining —
   the `E_COMBAT_POLICY` local-code gap is closed).
 
+## Addendum — combat reach override, lead bridge-1122 E0 (2026-09-11)
+
+Closes the operator-override half of the third re-opener below (the
+content half already closed by the policy E0): the sealed content reach
+gains an operator win, same split as the `SPAWN.md` operator-override
+tranche. Stages 1-2 green on the lead, live proof TODO — same bar as
+every lead E0.
+
+- Lead bridge (bridge-1122): `OperatorPolicy` gains the `combat.reach`
+  key (positive finite f64, `COMBAT_REACH`) with `effectiveCombatReach`
+  (absent means content, present wins, bad/multi/unknown refuse loudly
+  under the new `E_COMBAT_WIRE` code — declared here, so the parity dim-4
+  gap names it on the three siblings, never silently) ; `wireCombat`
+  seals the effective reach and logs `overridden <combat.reach>` on
+  override (same suffix shape as the spawn/loot wires). Weakspot
+  multipliers stay content-only (damage balance, same split as
+  `spawnHp` — no operator key, never a quiet knob). No SPI change, no
+  re-pin (bridge-owned operator domain) ; no new `forge/src` file, no
+  new `E_FORGE_*`.
+- Gate: `ModelWireCheck` gains the reach-override battery (content 4.0
+  read from `../example1/content/owned.matou`, absent-means-content,
+  5.0 win, present/absent, zero/negative/non-numeric/NaN/Infinity/
+  multi/unknown/null refusals) — same shape as the spawn/loot
+  batteries, no new gate. `tools/check.sh` exit 0 (etages 1-2, live
+  skipped).
+- `PORT_QUEUE` row `Combat reach override` (`BRIDGE_PARITY.md`):
+  `TODO | e0 | TODO | TODO`.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -605,9 +633,9 @@ state and stay inside the declared set.
   only refines delivered hurts).
 - Client prediction + attack packet with server re-ray-test and
   tolerance check (the §3 lifecycle as specified above).
-- Combat policy follow-ups (not silent): live proof on the lead plus
-  the three ports (`PORT_QUEUE` row above); operator `combat.reach`
-  override (v1 serves content only, like `spawnHp`); per-mob tables
+- Combat policy follow-ups (not silent): policy live x4 (row above,
+  closed); reach override E0 on the lead, live proof plus the three
+  ports TODO (`PORT_QUEUE` row `Combat reach override`); per-mob tables
   (single-table scope holds); MC-`AttributeInstance` reach stays
   refused — the content `reach` field IS the attribute-driven
   reading (one SPI number, four identical wires, no per-version
