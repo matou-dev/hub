@@ -463,11 +463,15 @@ GAME_PID=$!
 # for a process that will never exit). A background watcher polls the log
 # for fatal-only markers and kills the whole game stack as soon as one
 # lands: 600 s -> seconds per trouvaille of this class. Markers are the
-# crash-report header plus linkage errors — never the E_* refusal
-# vocabulary (the verdict's job; a mentioned code is not a crash).
+# FML crash ack plus linkage errors — never the E_* refusal
+# vocabulary (the verdict's job; a mentioned code is not a crash), and
+# never the bare crash-report header: 1.7.10 SplashProgress prints it on
+# EVERY boot ("Loading screen debug info ... THIS IS NOT A ERROR",
+# measured killing a healthy combat-proof run) — the real crashes all
+# print "#@!@# Game crashed!" beside it (server tick loop included).
 if command -v pgrep >/dev/null 2>&1; then
   ( while kill -0 "$GAME_PID" 2>/dev/null; do
-      if grep -a -q -e "---- Minecraft Crash Report ----" -e "#@!@# Game crashed!" -e "Encountered an unexpected exception" -e "NoSuchMethodError" -e "NoSuchFieldError" -e "NoClassDefFoundError" "$UP/game.log" 2>/dev/null; then
+      if grep -a -q -e "#@!@# Game crashed!" -e "Encountered an unexpected exception" -e "NoSuchMethodError" -e "NoSuchFieldError" -e "NoClassDefFoundError" "$UP/game.log" 2>/dev/null; then
         echo "note run-direct : crash-fast trip (fatal marker in game log, killing the game stack early)"
         # Kill the whole stack leaves-first (timeout -> xvfb-run -> Xvfb +
         # xargs -> java): killing timeout alone would orphan the lingered
