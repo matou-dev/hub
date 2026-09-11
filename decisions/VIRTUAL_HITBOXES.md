@@ -805,6 +805,79 @@ narrow-map delta, no new `forge/src` file, no new `E_FORGE_*`):
   remaining — per-mob sealed on 4/4 runtimes with one mob; the
   second beast class stays the named follow-up).
 
+## Addendum — second beast class, lead bridge-1122 E0 (2026-09-11)
+
+Closes the per-mob content hinge the rows above left open (one mob
+sealed on 4/4 runtimes): `owned.matou` now funds two mobs end to end
+— `my_beast` byte-identical (hp 20, reach 4.0, head 2.0, so the
+exact-2.0 leg is preserved) plus `my_brute` (hp 30, reach 5.0, head
+3.0, same drop+count so loot agreement holds, shared `head` bone
+proving the SYNTAX-V6 `(mob, bone)` join). Stages 1-2 green on the
+lead, live proof TODO — same bar as every lead E0.
+
+- Language (spi `3eb6e8d`): `PolicyPack` gains per-mob spawn
+  accessors (`spawnMobs()` + `spawnHp/Cap/Budget/YMin/YMax(mob)`,
+  short names in file order like `combatMobs()`), sole-mob views
+  kept (they refuse on multi, never a quiet pick);
+  `SpawnStates.TABLE` javadoc allows the ordered qualified-ref list
+  (the sole string stays valid — `SpawnJob` decides both shapes and
+  single-mob seals decide identical cells). No new error-code
+  families, zero MC.
+- Content (example1 `41c8fa1`): `SpawnTable` seals per-mob
+  hp/cap/budget/y maps (the `:multi` table refusal retired, `:dupe`
+  added, sole-views refuse multi mirroring `CombatTable`);
+  `LootTable` agree-or-refuse multi (unanimous drop+count seals the
+  identical table — zero bridge change; `E_EXAMPLE_LOOT:diverged`
+  names disagreeing mobs, distinct per-mob drops stay a named
+  follow-up); `SpawnJob` decides per mob (room/due per mob,
+  mob-addressed RNG pads, mixed census, foreign = outside TABLE);
+  `ExamplePolicy`/`ExamplePack` serve the six new accessors;
+  `ExampleCheck` battery (two-mob goldens, sole-view multi
+  refusals, diverged refusals, per-mob decide plus single-mob
+  back-compat).
+- Lead bridge (bridge-1122 `991e004`): `MatouEntity` carries its mob
+  (`setMob` loud, `MatouMob` NBT persisted, missing NBT adopts the
+  first sealed mob with a log line — naturals keep today's
+  behaviour, never silent); `hitWeakspots()` dispatches per mob (no
+  `weakspotMultiplier` override — the inherited `Hittable` default
+  already resolves through it); `SpawnSeal` seals per-mob (the
+  legacy single-mob call delegates, sealed states identical);
+  `wireSpawn`/`wireCombat` seal per-mob maps with the global
+  operator overrides applied uniformly per mob (per-mob override
+  keys stay a named follow-up); `onJoin` vetoes the per-mob cap,
+  `reconcile`/`landBeast`/`spawnTick`/`onHurt` resolve the entity's
+  mob (hp tripwire per mob, reach from the per-mob map); the loot
+  wire untouched. New wire-log shapes (single-mob byte-identical):
+  `spawn wired <{my_beast hp <20> ...},{my_brute hp <30> ...}>`,
+  `combat wired <{my_beast={head=2.0}},{my_brute={head=3.0}}>
+  reach <{my_beast=4.0},{my_brute=5.0}>`; `combat resolved`
+  unchanged. `ModelWireCheck` + `SpawnCheck` per-mob oracles
+  (single-mob back-compat asserted); forge compile +
+  autoplay-compile green (autoplay untouched — live TODO).
+- Siblings (1710 `aabc70c`, 1165 `16dcfcc`, 1201 `8bdf576`):
+  content-oracle backport only (`SpawnCheck`/`ModelWireCheck` read
+  per-mob, seals stay single-mob, each pins its sole-view multi
+  refusal as the dispatch-port rationale) plus SPI re-pin, E0 green
+  each, zero forge dispatch (their `forge/src` + `java/src`
+  untouched — the per-mob dispatch port is the next tranche, never
+  smuggled here).
+- `PORT_QUEUE` new row `Second beast class, per-mob spawn+dispatch`
+  (`BRIDGE_PARITY.md`): `TODO | e0 | TODO | TODO` (sibling cells
+  stay TODO: oracles green, dispatch unported, live unproven).
+- Parity gap (dim 4, declared here): `E_SPAWN_MOB` (suffix of the
+  kept `E_SPAWN_*` family — `MatouEntity.setMob` null/empty refusal
+  on the lead) exists on 1122 only until the dispatch ports land it
+  on the siblings; no new `E_FORGE_*`, no new `forge/src` file, no
+  new error-code family.
+- Named follow-ups blocking live (not silent): second entity
+  registration (`Example1Mod.loadMobRef` serves the sole `mob()`
+  view and refuses the 2-mob content — registration tranche, live
+  cannot boot before it); NBT narrow-map delta (~5 `want.tsv` rows)
+  at lead live; qualified mob view on `PolicyPack` (lead
+  `wireSpawn` qualifies shorts via the loot drop namespace —
+  loot-to-spawn read, zero behaviour difference); per-mob operator
+  override keys; distinct per-mob loot drops.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -826,9 +899,11 @@ state and stay inside the declared set.
 - Combat policy follow-ups (not silent): policy live x4 and reach
   override live x4 (rows above, both closed); per-mob tables live
   x4 (rows above — one mob sealed on 4/4 runtimes, zero behaviour
-  change); second beast class, per-mob operator override and
-  loot/spawn per-mob stay named follow-ups (single-table scope
-  holds there); MC-`AttributeInstance` reach stays
-  refused — the content `reach` field IS the attribute-driven
-  reading (one SPI number, four identical wires, no per-version
-  attribute call-site to drift).
+  change); second beast class E0 on the lead (row above — two mobs
+  sealed, per-mob spawn+dispatch on 1122, oracle backports on the
+  siblings, live TODO); per-mob operator override, second entity
+  registration, and distinct per-mob loot/spawn drops stay named
+  follow-ups (single-table scope holds there); MC-`AttributeInstance`
+  reach stays refused — the content `reach` field IS the
+  attribute-driven reading (one SPI number per mob, four identical
+  wires, no per-version attribute call-site to drift).

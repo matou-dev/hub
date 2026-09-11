@@ -1,5 +1,26 @@
 # STATE.md — présent
 
+- 2026-09-11 : Second beast class E0, lead bridge-1122 (spi `3eb6e8d`
+  per-mob spawn contract, example1 `41c8fa1` two-mob content,
+  bridge-1122 `991e004` per-mob spawn+combat dispatch, hub
+  `decisions/VIRTUAL_HITBOXES.md` E0 addendum, `PORT_QUEUE`
+  `TODO | e0 | TODO | TODO`) : stages 1-2 green (spi 131 ok,
+  `ExampleCheck` two-mob battery, `ModelWireCheck` + `SpawnCheck`
+  per-mob oracles with single-mob back-compat, forge compile +
+  autoplay-compile, autoplay untouched), live proof TODO — same bar
+  as every lead E0. `owned.matou` funds `my_beast` (byte-identical:
+  hp 20, reach 4.0, head 2.0) plus `my_brute` (hp 30, reach 5.0,
+  head 3.0, same drop+count — loot agrees, zero loot-wire change) ;
+  entity mob-id NBT-persisted, per-mob cap veto / hp tripwire /
+  reach dispatch on the lead. Siblings oracle-backported only
+  (1710 `aabc70c`, 1165 `16dcfcc`, 1201 `8bdf576` — oracles read
+  per-mob, seals stay single-mob, sole-view multi refusal pinned as
+  the dispatch-port rationale), E0 green each, zero forge dispatch.
+  Live blocked loud, not silent: second entity registration
+  (`Example1Mod.loadMobRef` sole view refuses 2-mob content), NBT
+  narrow-map delta (~5 rows) at lead live, per-mob operator keys and
+  distinct per-mob drops stay named follow-ups.
+
 - 2026-09-11 : Combat policy live on bridge-1201 (bridge-1201
   `3712673` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
   port addendum, `PORT_QUEUE` `live | live | live | live`) : 150 s

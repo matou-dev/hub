@@ -218,3 +218,14 @@ conditional tables (biome, moon phase), experience orbs.
   decisions/SPI_STATE_VOCABULARY.md — the seal resolves the
   pack-served vocabulary through the SPI registry, same T4
   pack-driven re-opener as spawn).
+
+## Addendum — loot agree-or-refuse multi, second-beast E0 (2026-09-11)
+
+`LootTable` tolerates several mobs iff they agree (example1
+`41c8fa1`, hub `decisions/VIRTUAL_HITBOXES.md` second-beast row):
+unanimous drop+count seals the identical two-entry table (zero
+bridge change — the loot wire is untouched on all four bridges);
+any disagreement refuses `E_EXAMPLE_LOOT:diverged` naming the mobs,
+never a quiet pick. Distinct per-mob drops stay a named follow-up
+(harvest cells would need the mob identity the kill hook does not
+record yet).

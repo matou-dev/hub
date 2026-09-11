@@ -688,3 +688,21 @@ missing-WANT class does not repeat.
   1922 cells, ids 1,253). The pre-fix greenness cause is unreproduced
   and needs no reproduction : the standing rule holds the retention,
   the lock holds the bytes.
+
+## Addendum — per-mob spawn seals, second-beast E0 (2026-09-11)
+
+`SpawnTable` seals per-mob hp/cap/budget/y maps (spi `3eb6e8d`,
+example1 `41c8fa1`, hub `decisions/VIRTUAL_HITBOXES.md` second-beast
+row): the `:multi` table refusal is retired (multi is now legal),
+sole-mob views refuse multi mirroring `CombatTable`, and `SpawnJob`
+decides per mob over a mixed census (room/due per mob,
+mob-addressed RNG pads, foreign = outside the sealed TABLE list).
+`SpawnStates.TABLE` accepts the ordered qualified-ref list (the sole
+string stays valid — single-mob seals decide identical cells, proven
+by golden). Operator overrides apply uniformly per mob until
+per-mob keys land (named follow-up, never a quiet per-mob knob).
+Lead `wireSpawn`/`SpawnSeal`/census dispatch per mob
+(bridge-1122 `991e004`, entity mob persisted via NBT); siblings keep
+single-mob seals with per-mob content oracles
+(1710 `aabc70c`, 1165 `16dcfcc`, 1201 `8bdf576` — dispatch ports
+TODO). Live proof TODO (second entity registration first).
