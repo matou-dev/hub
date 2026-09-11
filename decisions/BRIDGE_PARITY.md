@@ -95,8 +95,8 @@ never with the code copy.
 | Repop hook+seal, `E_SPIKE_*` (`REPOP_SPIKE.md`) | live | live | live | live |
 | Pack-driven loot/spawn policy, T4 (`SPI_STATE_VOCABULARY.md`) | live | live | live | live |
 | Item registration MatouItem, `E_REG_ITEM` (`ITEM_REGISTRATION.md`) | live | live | live | live |
-| GL Instancing Renderer (`GL_INSTANCING_ADAPTER.md`) | live | live | live | shell |
-| Beast model mesh+hitboxes (`MATOU_MODEL.md`) | live | live | live | TODO |
+| GL Instancing Renderer (`GL_INSTANCING_ADAPTER.md`) | live | live | live | e0 |
+| Beast model mesh+hitboxes (`MATOU_MODEL.md`) | live | live | live | e0 |
 
 ## Gates
 
