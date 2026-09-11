@@ -797,5 +797,31 @@ file namespace off the loot drop refs.
    verified), zero `E_*` / linkage / `Caused by`. Trouvaille: the same
    deterministic brute churn as the 1710 runs at the same ticks 308/324
    (`loot dropped 2 carrier(s)` with adopted replacements — the drop
-   stays exact either way, so the weakspot proof holds). 1201 sibling
-   live TODO — last open item on the row.
+   stays exact either way, so the weakspot proof holds). Sibling live
+   1201 done (same legs, byte-identical hunk, zero live fixes — bridge
+   stays `de4f525`, SPI pin `f1499ee` untouched, host Temurin 17.0.20
+   machine-local re-extracted from the cached `matou-live-1201` image
+   — `/tmp` is tmpfs so the wipe took the old copy, same bytes, never
+   committed): `JAVA17_HOME=/tmp/jdk17 D3_OFFLINE=1 sh tools/run-live.sh`
+   exit 0 first try (150 s Forge 47.2.0 run, world == pure union 1922
+   cells `example1:my_ore` + `minecraft:stone`, per-mob spawn wire
+   `{my_beast hp <20> cap <4> budget <1> y <66..68>},{my_brute hp <30>
+   cap <4> budget <1> y <66..68>}` plus `registered-entity
+   <example1.content:my_beast, example1.content:my_brute>`, zero `E_*`) ;
+   headless direct-client `JAVA17_HOME=/tmp/jdk17 SPAWN=1 COMBAT=1`
+   exit 0 end to end (internal `ok verify-client : world == pure union
+   (1274 cells, minecraft:stone only)`, no `NUMERIC_IDS` on this
+   flattening era) — census 2→8 balanced at worldTicks 1..4
+   (flattening-era timing), hp 20.0 + 30.0 at tick 1, beast head x2 →
+   18.0 at 501 then brute head x3 with drop=3.0 exact → 27.0 at 601
+   (elapsed 1 each, full-health baseline this run — no ambient churn),
+   spawn kill at 1000 → gem at 1001 (elapsed 1), replacement joined the
+   same tick 1000 under the qualified ref
+   `example1.content:my_beast`, clean shutdown (game exited 0, save
+   verified), zero `E_*` (single benign `Caused by` = vanilla flite
+   narrator, same as every 1201 proof). Trouvaille: the struck-brute
+   baseline is run-dependent, not era-dependent — full 30.0 here (27.0
+   wound) versus ambient-damaged 18.0/19.0 on the 1710 runs and 19.0 on
+   1165 ; the drop stays exact either way, so the weakspot proof holds
+   regardless. Row closed: qualified mob view live on 4/4 bridges, zero
+   live fixes on all four, no open item remaining.

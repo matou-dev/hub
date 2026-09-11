@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-12 : Qualified mob view sibling live, bridge-1201
+  (`de4f525`, zero live fixes, hub `decisions/SPAWN.md` addendum —
+  row closed live x4) : 150 s server green (world == pure union 1922
+  `example1:my_ore`+stone, per-mob spawn+combat wire, zero `E_*`) ;
+  headless direct-client `SPAWN=1 COMBAT=1` (exit 0 end to end, no
+  `NUMERIC_IDS` flattening era) — census 2→8 at worldTicks 1..4, hp
+  20.0 + 30.0, beast head x2 → 18.0 at 501 then brute head x3
+  (drop=3.0 exact → 27.0 at 601, full-health baseline this run — no
+  ambient churn, proving the 1710/1165 damaged baselines
+  run-dependent), kill 1000 → gem 1001 (elapsed 1) with the replacement
+  joining the same tick 1000 under `example1.content:my_beast`, clean
+  shutdown (game exited 0, save pure union 1274), zero `E_*` (single
+  benign `Caused by` = vanilla flite narrator, same as every 1201
+  proof). Trouvaille machine-locale: `/tmp` is tmpfs so the wipe took
+  the old `/tmp/jdk17` — re-extracted same Temurin 17.0.20 bytes from
+  the cached `matou-live-1201` image, never committed. No open item
+  remaining on the row.
+
 - 2026-09-12 : Qualified mob view sibling live, bridge-1165
   (`417b5f5`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
   150 s server green (world == pure union 1922
