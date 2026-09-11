@@ -69,6 +69,47 @@ outside-union direction the 1710 compare keeps).
 - Rollout order: 1710 first (smallest, live-proven — pattern proof), then
   1122/1165/1201 + strict-compare unification as one follow-up tranche.
 
+## Addendum — strict-compare unification landed, derive stays the ceiling driver (2026-09-11)
+
+Measured before the 1122/1165/1201 rollout (three parallel codebase
+surveys, same day): thin-wrapper replacement of the generic mechanics
+(`live_preflight/fetch/install`, pin adapters, `live_mkjar/normjar`,
+`live_boot/verdict/anvil/compare`) saves only ~140-260 eSLOC per
+wrapper. The floor is version-measured and must stay local per rule 2:
+1122 narrow-derive 219 lines + coverage 101, 1165 derive 176 + map-cover
+99, 1201 derive 405 + build 235. Post-replace estimates: 1122 ~470,
+1165 ~440 (borderline), 1201 ~700 — the 1710 shape (360 raw / 232
+eSLOC) is unreachable by mechanics extraction alone.
+
+1. **Strict compare is landed now (this cut).** `live_compare_names`
+   gains the `world cells outside pure union` direction, same position
+   (after mismatch, before missing) and same message shape as
+   `live_compare_ids` — both functions now carry foreign + mismatch +
+   outside + missing. Proven by fixture, not by re-reading: ok pair
+   prints `world == pure union`, extra cell fails loud (via mismatch
+   today, outside stands as defense-in-depth in the same order the
+   1710 donor uses), missing cell fails `pure cells missing`. The
+   1122 inline ids compare (missing only) inherits the strict shape
+   automatically when it switches to `live_compare_ids` in the
+   rollout — no silent strengthening was smuggled in before.
+2. **Derive extraction is the named next cut (table-driven, era-split,
+   not this cut).** Narrow-map derive shares one skeleton (fetch maps
+   → parse `joined.tsrg` → WANT table → per-row obf resolve + javap
+   static check → emit MD/FD → count assert) with three era-bound
+   locks: 1122 MCP-config-only 42 rows (anchor pattern), 1165
+   MCP-config + snapshot (`methods/fields.csv` lock) 48 rows
+   (OVERWORLD disambiguation), 1201 Mojmaps server+client +
+   `joined.tsrg` + dual-javap triple-lock 48 rows (+ SAM skip-javap
+   rows, inner-jar extraction). Per the rule below (never `if SFX`
+   in the common lib) the extraction splits by era — one function
+   per lock shape, WANT rows staying version-measured tables in the
+   wrappers — never a branching mega-function. Map-cover
+   (`E_MAP_COVER`) walks ride the same split (ALLOW set stays local).
+3. **Ceiling stays advisory until the derive cut lands**
+   (`decisions/EFFECTIVE_SLOC.md` semantics, exit 0). Splitting a
+   wrapper into sourced satellites to dodge the per-file count is
+   refused (`AGENTS.md` §3 — never split satellite).
+
 ## What would re-open it
 
 - A fifth bridge: scaffold a thin wrapper from day one (pins + derive),

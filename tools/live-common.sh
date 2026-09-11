@@ -288,6 +288,9 @@ bad = {p: (w[p], u.get(p)) for p in w if u.get(p) != w[p]}
 if bad:
     print("FAIL live-compare : name mismatch at %s (want pure union names)" % sorted(bad.items())[:5])
     sys.exit(1)
+if set(w) - set(u):
+    print("FAIL live-compare : world cells outside pure union %s" % sorted(set(w) - set(u))[:5])
+    sys.exit(1)
 if u.keys() - w.keys():
     print("FAIL live-compare : pure cells missing from world (%d)" % len(u.keys() - w.keys()))
     sys.exit(1)
