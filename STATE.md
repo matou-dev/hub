@@ -114,6 +114,21 @@
   - Autoplay companion updated across all bridges to resolve and poll `example1:my_gem`.
   - `decisions/BRIDGE_PARITY.md` `PORT_QUEUE`: Item registration row promoted
     from `live | shell | shell | shell` to `live | live | live | live` (0 shells remaining).
+- 2026-09-11 : Minecraft reproducibility findings documented + virtual hitboxes
+  pure geometry landed in SPI (hub `845c0f9`, spi `2e8d17b`) :
+  - `decisions/MINECRAFT_BACKEND_REPRODUCIBILITY.md` ruling: documents why vanilla
+    coarse AABBs, asymmetric client/server raycasts, and 4 incompatible render pipelines
+    destroy cross-version reproducibility ; records lessons from `matoulib-core`
+    (pure geometry vs. GL instancing) and enforces pure simulation in SPI.
+  - `decisions/VIRTUAL_HITBOXES.md` spec: specifies double-precision `AABBd`, `Vec3d`,
+    `BoneBox`, `RayHit`, `HitTester`, `Hittable` with Kay-Kajiya slab ray-test,
+    closest bone resolution, and authoritative client/server validation.
+  - `spi`: `fr.iamacat.spi.hit.*` fully implemented (pure Java 8, zero MC, zero GL) ;
+    test suite `HitCheck` covers center/corner/inside hits, slab parallel rays,
+    multi-bone occlusion ordering, reach cutoffs, and `E_HIT_*` error codes.
+  - Mechanical SPI pin bump across all 4 bridges (bridge-1710 `9d29347`,
+    bridge-1122 `5c0b797`, bridge-1165 `ce6c4d9`, bridge-1201 `0d21260` to
+    `2e8d17b`) ; `tools/check-bridges.sh` green with 0 shells and 0 gap.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
