@@ -1,5 +1,19 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat policy live on bridge-1710 (bridge-1710
+  `2b74075` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
+  port addendum, `PORT_QUEUE` `live | live | TODO | TODO`) : 150 s
+  Forge 1614 server green (`combat wired <{head=2.0}> reach <4.0>`,
+  bind clean, world == pure union 1922, hook dormant, zero `E_HIT`) ;
+  headless direct-client `SPAWN=1 COMBAT=1` (exit 0) — combat resolved
+  head 2.0 at worldTick 500, exact-2.0 wound (18.0, elapsed 1), kill
+  1000 → carrier 999 → polled 1001 (elapsed 1, chain intact), clean
+  shutdown at 4600 ticks, client save world == pure union (1274
+  cells), zero `E_*` / linkage (one benign Forge Version Check
+  `Caused by` offline plus one benign missing gem-icon texture
+  error, both non-fatal). The exact-2.0 proof now reads through
+  sealed content on the second runtime. Two ports TODO, never
+  silent.
 - 2026-09-11 : Combat policy live on bridge-1122 (bridge-1122
   `c1378a1` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
   live addendum, `PORT_QUEUE` `TODO | live | TODO | TODO`) : 150 s

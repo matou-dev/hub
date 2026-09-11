@@ -98,7 +98,7 @@ never with the code copy.
 | GL Instancing Renderer (`GL_INSTANCING_ADAPTER.md`) | live | live | live | live |
 | Beast model mesh+hitboxes (`MATOU_MODEL.md`) | live | live | live | live |
 | Combat weakspot hook, `E_HIT_*` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
-| Combat policy weakspots+reach (`VIRTUAL_HITBOXES.md`) | TODO | live | TODO | TODO |
+| Combat policy weakspots+reach (`VIRTUAL_HITBOXES.md`) | live | live | TODO | TODO |
 
 ## Gates
 

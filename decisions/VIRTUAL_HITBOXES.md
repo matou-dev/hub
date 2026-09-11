@@ -472,6 +472,44 @@ not constants.
   `TODO | live | TODO | TODO` (lead live, three ports TODO, the
   `E_COMBAT_POLICY` local-code gap names them).
 
+## Addendum — combat policy port, bridge-1710 (2026-09-11)
+
+`bridge-1710` `2b74075` (E0, zero live fixes) proves the sealed policy
+live on Forge 1614 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host
+OpenJDK 1.8.0_502): the exact-2.0 proof now reads through content,
+not constants — same 4-file shape as the 1122 lead E0, 1614-native
+throughout (no narrow-map delta: the hook already rides the
+1614-native `getEntity` / `Vec3.xCoord` spelling, the policy wire is
+era-blind).
+
+- Stages 1-2 green on the port (`tools/check.sh`: `ModelWireCheck`
+  sealed 2x, forge-stub + autoplay-compile) ; SPI already pinned at
+  `0e1305b` (mechanical re-pin landed ahead, additive).
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,165 — hook present but dormant, zero `E_HIT`, zero
+  combat lines on the playerless dedicated server) with `combat wired
+  <{head=2.0}> reach <4.0>` sealed from the owned file at wire time.
+- Client: `combat wired <{head=2.0}> reach <4.0>`, census 1→4 at
+  worldTicks 2..5, `spawn hp <20.0>`, then `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x sealed head
+  2x, no crit, no fallback), natural adopt/sweep/replacement at
+  49/69 (same signature as the T4 proofs), spawn kill at 1000 → gem
+  carrier at tick 999 → polled at 1001 (elapsed 1, chain intact),
+  clean shutdown at 4600 ticks ; `verify-client-save.sh` world ==
+  pure union (1274 cells, stone) ; zero `E_*` / linkage lines in
+  `game.log` (one benign Forge Version Check `Caused by` — offline
+  version JSON fetch, non-fatal — plus one benign `TEXTURE ERRORS
+  MISSING_ICON_ITEM_4096_my_gem.png` for the registered gem item,
+  non-fatal, game runs to clean shutdown and the verdict stays
+  green).
+- `PORT_QUEUE` row `Combat policy weakspots+reach` flips to
+  `live | live | TODO | TODO` (two ports live, two TODO, the
+  `E_COMBAT_POLICY` local-code gap names the remaining two).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
