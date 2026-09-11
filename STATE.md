@@ -1,5 +1,19 @@
 # STATE.md — présent
 
+- 2026-09-11 : Second beast ports live on bridge-1165 + bridge-1201
+  (bridge-1165 `0aca413`, bridge-1201 `2ee4033`, zero live fixes, hub
+  `decisions/VIRTUAL_HITBOXES.md` port addenda, `PORT_QUEUE`
+  `live | live | live | live` both rows) : 150 s servers green each
+  (worlds == pure union 1922, per-mob wire lines, zero `E_*`, 25565
+  bind-races retried green) ; headless direct-clients `SPAWN=1
+  COMBAT=1` (exit 0 each) — census 8 balanced, hp 20.0 + 30.0,
+  exact-2.0 at 500→501 then exact-3.0 at 600→601 (elapsed 1 each, chain
+  intact, saves pure union 1274, zero `E_*` / linkage). Four ports
+  live, 0 `TODO` remaining, never silent. Trouvailles: 1165
+  `run-live.sh` at 431/450 eSLOC, 1201 at 449/450 (next shell growth
+  table-driven) ; Pig-level persist helpers `public` on all three
+  ports (lead `protected`).
+
 - 2026-09-11 : Second beast port live on bridge-1710 (bridge-1710
   `19378d4`, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md` port
   addendum, `PORT_QUEUE` `live | live | TODO | TODO` both rows) : 150 s

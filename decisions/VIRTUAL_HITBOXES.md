@@ -1017,10 +1017,54 @@ rows against the sha1-pinned `srg-mcp.srg`).
   (same owner-discipline class, one visibility grade shifted). Pure
   `java/src` files port byte-identical from the lead (verified by
   `cmp`, zero version-specific strings).
+## Addendum — second beast ports live, bridge-1165 + bridge-1201 (2026-09-11)
+
+Two parallel port proofs, both live-green first try after the shared
+derive 54→59 unblock (hub `f18131b`), zero live fixes — the per-mob
+seal confirmed era-blind on each (same tranche shape as the 1122 lead,
+version-native throughout):
+
+- `bridge-1165` `0aca413` (Forge 36.2.42, `E3_OFFLINE=1`) : 150 s
+  server green (bind clean after one 25565 wait-retry against the
+  sibling run, ticks clean, world == pure union 1922 cells ore + stone)
+  with `registered-entity <example1:my_beast,example1:my_brute>`,
+  per-mob spawn+combat wire lines ; client `SPAWN=1 COMBAT=1` (exit 0)
+  — census 8 balanced at worldTick 4, hp 20.0 + 30.0, exact-2.0 at
+  500→501 then exact-3.0 at 600→601 (elapsed 1 each), kill 1000 →
+  carrier 1001, save pure union 1274 cells, zero `E_*` / linkage (one
+  benign `ModelBakery` gem WARN plus one benign vanilla Narrator
+  `fliteWrapper` ERROR, both non-fatal). 59-line narrow map (snapshot
+  59/59, 42 methods + 17 fields). NBT: `PigEntity` declares
+  `writeAdditional`/`readAdditional` public (lead `protected` would
+  narrow — override widens), `CompoundNBT.contains/getString/putString`
+  (1.12 `hasKey`/`setString` do not port). Trouvaille (hub tooling):
+  `bridge-1165/tools/run-live.sh` sits at 431/450 eSLOC (19 under) —
+  next shell growth must be table-driven.
+- `bridge-1201` `2ee4033` (Forge 47.2.0, Temurin 17.0.20 re-provisioned
+  machine-local, `D3_OFFLINE=1`) : 150 s server green (bind clean after
+  two 25565 bind-race losses to the sibling run, third boot green,
+  ticks clean, world == pure union 1922 cells) with the same per-mob
+  wire lines ; client `SPAWN=1 COMBAT=1` (exit 0) — census 2→8 at
+  worldTicks 1..4, hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0
+  at 600→601 (elapsed 1 each), kill 1000 → carrier 1001, save pure
+  union 1274 cells, zero `E_*` / linkage (single benign vanilla flite
+  `Caused by`). 59-line Mojmap narrow map (46 methods + 13 fields).
+  NBT: `Pig.addAdditionalSaveData` (`m_7380_`) /
+  `readAdditionalSaveData` (`m_7378_`) public (same owner class as the
+  1710 sibling). Trouvaille: `run-live.sh` untouched at 449/450 eSLOC
+  (1 under — fragile, flagged).
+- Trouvaille (live ops, no code impact): all four Forge servers bind
+  the same 25565 port, so parallel port runs serialize on the server
+  leg — the 1165 run waited out one sibling bind, the 1201 run lost
+  two races then went green on the third boot. Ports stay parallel-safe
+  on code, sequential on boot.
 - `PORT_QUEUE` rows `Second beast class` + `Second beast registration`
-  flip to `live | live | TODO | TODO` (two ports live, two TODO — the
-  `E_SPAWN_MOB` dim-4 gap names the remaining two; 1165/1201 code green
-  behind the shared derive-assert unblock, live next).
+  flip to `live | live | live | live` (four ports live, 0 `TODO`
+  remaining — the `E_SPAWN_MOB` dim-4 gap is closed; per-mob sealed on
+  4/4 runtimes with two mobs; operator keys, distinct drops and the
+  qualified mob view stay named follow-ups).
+
+## Error catalog — completion (same tranche)
 
 ## Error catalog — completion (same tranche)
 
@@ -1043,9 +1087,9 @@ state and stay inside the declared set.
 - Combat policy follow-ups (not silent): policy live x4 and reach
   override live x4 (rows above, both closed); per-mob tables live
   x4 (rows above — one mob sealed on 4/4 runtimes, zero behaviour
-  change); second beast class + registration live on the lead (row
-  above — two mobs sealed, one generic registration, NBT identity,
-  exact-2.0 + exact-3.0, three dispatch ports TODO);
+  change); second beast class + registration live x4 (rows above —
+  two mobs sealed, one generic registration, NBT identity, exact-2.0 +
+  exact-3.0 on 4/4 runtimes, 0 `TODO` remaining);
   per-mob operator override and distinct per-mob loot/spawn drops stay
   named follow-ups (single-table scope holds there); MC-`AttributeInstance`
   reach stays refused — the content `reach` field IS the
