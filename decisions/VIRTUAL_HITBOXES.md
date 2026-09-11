@@ -297,9 +297,10 @@ OpenJDK 1.8.0_502):
   (`605b623`): `Entity self = this`, read through `self`, mirroring
   the 1122 spelling. The crash itself proved the rest of the path
   first try (teleport, aim, genuine strike, event delivery,
-  `HitTester` entry) ; crash-fast killed the run in seconds.
+   `HitTester` entry) ; crash-fast killed the run in seconds.
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
-  `live | live | live | e0`.
+  `live | live | live | TODO` (1201 stays the last TODO cell, never
+  silent).
 
 ## Addendum — port E0, bridge-1201 (2026-09-11)
 
@@ -349,10 +350,49 @@ landed upfront instead of red-crashed first.
 - Owner discipline upfront (`MatouEntity.hitBoxes` through a
   declaring-`Entity`-typed self, citing `840507c` + `605b623`): the
   1201 port lands WITH the fix the 1122/1165 ports each red-crashed
-  into — same bare-`getX` shape, same vanilla `Pig` link death, refused
-  before the first live run instead of after.
+   into — same bare-`getX` shape, same vanilla `Pig` link death, refused
+   before the first live run instead of after.
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
   `live | live | live | e0`.
+
+## Addendum — port live, bridge-1201 (2026-09-11)
+
+`bridge-1201` `198e83e` (E0) + `a194310` (pin-loop refactor) proves
+the hook live on Forge 47.2.0 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb, exit 0, host Temurin
+17.0.20) — zero live fixes, the owner-discipline fix having landed
+upfront in the E0:
+
+- Server green with the 54-line map (bind clean, ticks clean, world ==
+  pure union 1922 cells — hook present but dormant, zero `E_HIT`,
+  zero combat lines on the playerless dedicated server).
+- Client: census 1→4 at worldTicks 2..5, `spawn hp <20.0>`, then
+  `[MatouBridge] combat resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x head 2x, no
+  crit, no fallback), spawn kill at 1000 → gem carrier at 1001
+  (elapsed 1, chain intact on the wounded beast), clean shutdown ;
+  `verify-client-save.sh` world == pure union (1274 cells, stone) ;
+  zero `E_*` / linkage lines in `game.log` (the single `Caused by` is
+  the known vanilla flite narrator `UnsatisfiedLinkError`, non-fatal —
+  same signature as the 1201 renderer proof).
+- 47.2.0-native shapes proven first try (no red crash, no fix
+  commit): `Vec3` eye/look direct (no height arithmetic),
+  `DamageSource.getEntity` as the true attacker, `Player.attack` as
+  the genuine strike path, `moveTo` teleport, exact-2.0 poll. The
+  upfront owner fix (`Entity self = this` in `hitBoxes`, citing
+  `840507c` + `605b623`) held — no `NoSuchMethodError`, the crash
+  class the two older ports each paid once never fired here.
+- Trouvaille (hub tooling, same tranche): the combat E0 pushed
+  `bridge-1201/tools/run-live.sh` to 452 eSLOC, tripping the hardened
+  shell ceiling (hub gate, was 442 with 8 under at hardening). Fixed
+  in `a194310` the same day: same pins table-driven (Vec3 fields +
+  LivingHurtEvent members in loop form, every name literal), 452 →
+  447, no logic change.
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `live | live | live | live` (combat hook live on 4/4 runtimes, 0
+  `e0` / `TODO` remaining).
 
 ## Error catalog — completion (same tranche)
 

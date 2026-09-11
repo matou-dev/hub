@@ -1,5 +1,22 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat weakspot hook live on bridge-1201
+  (bridge-1201 `198e83e` E0 + `a194310` pin-loop refactor, hub
+  `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
+  `live | live | live | live`) : 150 s Forge 47.2.0 server green
+  with the 54-line map (bind clean, world == pure union 1922, hook
+  dormant, zero `E_HIT`) ; headless direct-client `SPAWN=1 COMBAT=1`
+  (exit 0) — `[MatouBridge] combat resolved <bone=head mult=2.0
+  dmg=1.0->2.0>`, autoplay struck head hp 20.0 at worldTick 500 then
+  exact-2.0 wound (18.0, elapsed 1), kill 1000 → carrier → polled 1001
+  (elapsed 1, chain intact), client save world == pure union (1274
+  cells), zero `E_*` / linkage (one benign vanilla flite
+  `UnsatisfiedLinkError`, same as the 1201 renderer proof). Zero live
+  fixes — the owner-discipline fix landed upfront in the E0, the
+  `NoSuchMethodError` class never fired. Trouvaille (hub tooling):
+  combat E0 pushed `bridge-1201/tools/run-live.sh` to 452 eSLOC,
+  tripping the hardened shell ceiling — fixed same-day table-driven
+  (447, no logic change). Combat hook live on 4/4 runtimes.
 - 2026-09-11 : Combat weakspot hook live on bridge-1165
   (bridge-1165 `531799c` E0 + `605b623` owner-discipline fix, hub
   `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
