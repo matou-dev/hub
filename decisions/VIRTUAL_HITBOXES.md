@@ -878,6 +878,49 @@ lead, live proof TODO — same bar as every lead E0.
   loot-to-spawn read, zero behaviour difference); per-mob operator
   override keys; distinct per-mob loot drops.
 
+## Addendum — second beast registration, lead bridge-1122 E0 (2026-09-11)
+
+Unblocks the live leg the row above left refusing: lead
+`Example1Mod.loadMobRef` served the sole `mob()` view and died
+`E_EXAMPLE_SPAWN:multi` on the 2-mob content (every sibling's
+`Example1Mod` shares the shape, so no 2-mob live could boot before
+this). Stages 1-2 green on the lead, live proof TODO — same bar as
+every lead E0.
+
+- Content (example1 `5397dd0`): `SpawnTable.mobRefs()` (ordered
+  qualified `ns:name` refs in file order, unmodifiable, never empty —
+  the registration enumerates every sealed mob through it) plus
+  `ExampleCheck` battery (owned two-mob order, immutability,
+  single-mob back-compat, tmp two-mob order). No SYNTAX change, no
+  table reseal, sole views untouched. The qualified `PolicyPack`
+  view stays the named follow-up (zero behaviour difference).
+- Lead bridge (bridge-1122 `6a50517`): `registerBeast` loads the full
+  ref list (`loadMobRefs`, every entry shape-checked under the kept
+  `E_REG_BEAST` family — no new code, no new `forge/src` file, no
+  new `E_FORGE_*`) and registers ONE generic beast: the registry
+  name rides the first sealed mob (file order, so single-mob tables
+  register byte-identical bytes and log the byte-identical
+  `registered-entity <mob>` line), the per-mob census/dispatch reads
+  each beast's NBT identity (a second mod-local id would be a second
+  entity — `ENTITY_BEAST_ID` already says so). Multi logs
+  `registered-entity <m1,m2>` (comma join, same separator as
+  `MatouBridgeMod.join` — one convention, not two; no script greps
+  the line, presence token only). The class-keyed `lookupModSpawn`
+  tripwire is unchanged.
+- Siblings: untouched (no SPI change, hence no re-pin; no pure
+  oracle — registration is forge-side only, so no backport). Their
+  `Example1Mod` keeps refusing the 2-mob content loudly through the
+  kept `E_REG_BEAST` chain — that refusal is the dispatch-port
+  rationale, never silent.
+- `PORT_QUEUE` new row `Second beast registration`
+  (`BRIDGE_PARITY.md`): `TODO | e0 | TODO | TODO`.
+- Parity gap: none new (`E_REG_BEAST` kept; dim-4 `E_SPAWN_MOB`
+  still names the dispatch ports).
+- Named follow-ups blocking live (not silent): NBT narrow-map delta
+  (~5 `want.tsv` rows) at lead live; exact-2.0 + exact-3.0 proof
+  legs; per-mob operator override keys; distinct per-mob loot drops;
+  qualified `PolicyPack` mob view.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -901,9 +944,10 @@ state and stay inside the declared set.
   x4 (rows above — one mob sealed on 4/4 runtimes, zero behaviour
   change); second beast class E0 on the lead (row above — two mobs
   sealed, per-mob spawn+dispatch on 1122, oracle backports on the
-  siblings, live TODO); per-mob operator override, second entity
-  registration, and distinct per-mob loot/spawn drops stay named
-  follow-ups (single-table scope holds there); MC-`AttributeInstance`
+  siblings, live TODO); second-beast registration E0 on the lead (row
+  above — one generic registration, NBT distinguishes, live TODO);
+  per-mob operator override and distinct per-mob loot/spawn drops stay
+  named follow-ups (single-table scope holds there); MC-`AttributeInstance`
   reach stays refused — the content `reach` field IS the
   attribute-driven reading (one SPI number per mob, four identical
   wires, no per-version attribute call-site to drift).

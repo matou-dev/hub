@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-11 : Second beast registration E0, lead bridge-1122
+  (example1 `5397dd0` `SpawnTable.mobRefs()` qualified mob list,
+  bridge-1122 `6a50517` one generic registration over every sealed
+  mob, hub `decisions/VIRTUAL_HITBOXES.md` registration addendum,
+  `PORT_QUEUE` `TODO | e0 | TODO | TODO`) : stages 1-2 green
+  (example1 507 ok, bridge-1122 211 ok, forge + autoplay compile),
+  live proof TODO — same bar as every lead E0. The registry name
+  rides the first sealed mob (file order — single-mob tables
+  register byte-identical bytes and log the byte-identical
+  `registered-entity <mob>` line, multi logs `<m1,m2>`) ; the NBT
+  identity distinguishes the beasts at runtime (no second
+  mod-local id, no new code). Siblings untouched (no SPI change,
+  no forge-side oracle to backport) — their `Example1Mod` keeps
+  refusing the 2-mob content loudly, which is the dispatch-port
+  rationale. Live blocked loud, not silent: NBT narrow-map delta
+  (~5 `want.tsv` rows) at lead live, then exact-2.0 + exact-3.0
+  proof legs.
+
 - 2026-09-11 : Second beast class E0, lead bridge-1122 (spi `3eb6e8d`
   per-mob spawn contract, example1 `41c8fa1` two-mob content,
   bridge-1122 `991e004` per-mob spawn+combat dispatch, hub

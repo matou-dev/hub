@@ -102,6 +102,7 @@ never with the code copy.
 | Combat reach override, `E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Combat per-mob tables, `E_COMBAT_POLICY` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Second beast class, per-mob spawn+dispatch (`VIRTUAL_HITBOXES.md`) | TODO | e0 | TODO | TODO |
+| Second beast registration, one generic beast (`VIRTUAL_HITBOXES.md`) | TODO | e0 | TODO | TODO |
 
 ## Gates
 
