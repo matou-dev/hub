@@ -1,5 +1,18 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat policy live on bridge-1165 (bridge-1165
+  `17d41a8` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
+  port addendum, `PORT_QUEUE` `live | live | live | TODO`) : 150 s
+  Forge 36.2.42 server green (`combat wired <{head=2.0}> reach
+  <4.0>`, bind clean, world == pure union 1922, hook dormant, zero
+  `E_HIT`) ; headless direct-client `SPAWN=1 COMBAT=1` (exit 0) —
+  combat resolved head 2.0 at worldTick 500, exact-2.0 wound (18.0,
+  elapsed 1), kill 1000 → carrier same tick → polled 1001 (elapsed
+  1, chain intact), clean shutdown, client save world == pure union
+  (1274 cells), zero `E_*` / linkage / `Caused by` (one benign
+  `ModelBakery` missing gem-model WARN plus one benign vanilla
+  Narrator `fliteWrapper` ERROR, both non-fatal). Three ports live,
+  1201 remains, never silent.
 - 2026-09-11 : Combat policy live on bridge-1710 (bridge-1710
   `2b74075` E0, zero live fixes, hub `decisions/VIRTUAL_HITBOXES.md`
   port addendum, `PORT_QUEUE` `live | live | TODO | TODO`) : 150 s

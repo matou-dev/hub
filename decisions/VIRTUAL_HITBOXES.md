@@ -510,6 +510,45 @@ era-blind).
   `live | live | TODO | TODO` (two ports live, two TODO, the
   `E_COMBAT_POLICY` local-code gap names the remaining two).
 
+## Addendum — combat policy port, bridge-1165 (2026-09-11)
+
+`bridge-1165` `17d41a8` (E0, zero live fixes) proves the sealed policy
+live on Forge 36.2.42 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb, exit 0, host OpenJDK
+1.8.0_502): the exact-2.0 proof now reads through content, not
+constants — same 4-file shape as the 1122 lead E0, 36.2.42-native
+throughout (no narrow-map delta: the hook already rides the
+`getEntityLiving` / `getTrueSource` / declaring-`Entity` / `Vector3d`
+spelling, the policy wire is era-blind).
+
+- Stages 1-2 green on the port (`tools/check.sh`: `ModelWireCheck`
+  sealed 2x, forge-stub + autoplay-compile) ; SPI already pinned at
+  `0e1305b` (mechanical re-pin landed ahead, additive).
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ore + stone names — hook present but dormant, zero `E_HIT`,
+  zero combat lines on the playerless dedicated server) with `combat
+  wired <{head=2.0}> reach <4.0>` sealed from the owned file at wire
+  time.
+- Client: `combat wired <{head=2.0}> reach <4.0>`, census 1→4 at
+  worldTicks 1..4, `spawn hp <20.0>`, then `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x sealed head
+  2x, no crit, no fallback), natural adopt/sweep/replacement at
+  49/69 (same signature as the T4 proofs), spawn kill at 1000 → gem
+  carrier the same bridge tick → polled at 1001 (elapsed 1, chain
+  intact), clean shutdown (exit 0) ; `verify-client-save.sh` world ==
+  pure union (1274 cells, stone) ; zero `E_*` / linkage / `Caused by`
+  lines in `game.log` (one benign `ModelBakery` missing
+  `example1:models/item/my_gem.json` WARN for the registered gem
+  item plus one benign vanilla Narrator `fliteWrapper` ERROR,
+  both non-fatal, game runs to clean shutdown and the verdict stays
+  green).
+- `PORT_QUEUE` row `Combat policy weakspots+reach` flips to
+  `live | live | live | TODO` (three ports live, one TODO — 1201
+  remains, the `E_COMBAT_POLICY` local-code gap names it).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
