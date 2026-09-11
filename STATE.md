@@ -1,5 +1,18 @@
 # STATE.md — présent
 
+- 2026-09-11 : Render plan adapter E0, lead bridge-1122 (spi
+  `89406af` `RenderStates` + `ViewProjection` + gate batteries,
+  bridge-1122 `4119639` `RenderJob` + `RenderSeal` + `RenderWireCheck`
+  + per-bucket draw, hub `decisions/GPU_INSTANCING.md` addendum,
+  `PORT_QUEUE` `TODO | e0 | TODO | TODO`) : stages 1-2 green
+  (spi checks incl. `ok render-plan : 589 checks`, bridge E0 incl.
+  forge-stub + autoplay-compile, SPI pins `89406af` x4) ; zero
+  behaviour change for fully visible scenes (mob-addressed buckets
+  over the shared mesh, same upload bytes, `drew instances=` kept) ;
+  zero new MC surface (no stub or narrow-map delta). Live proof TODO
+  — same bar as every lead E0 (150 s server + `SPAWN=1 COMBAT=1`
+  wired-draw legs). Siblings re-pinned only (dispatch ports TODO).
+
 - 2026-09-12 : Qualified mob view sibling live, bridge-1201
   (`de4f525`, zero live fixes, hub `decisions/SPAWN.md` addendum —
   row closed live x4) : 150 s server green (world == pure union 1922
