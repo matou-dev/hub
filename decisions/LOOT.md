@@ -315,3 +315,32 @@ zero forge change — the E0 wire is untouched, zero WANT change —
   ore id via `NUMERIC_IDS` (253 here, from the game log).
 - Staying open (not silent): three dispatch ports, qualified
   `PolicyPack` mob view.
+
+## Addendum — distinct per-mob drops, 1710 port live (2026-09-11)
+
+First dispatch port (bridge-1710 `f85eb70`, SPI pin untouched —
+`f48d37e` already serves the per-mob views, zero WANT change —
+`setMob` is bridge-owned, 1614 `GameRegistry.findItem` reused for
+both gems, 6-arg `LivingDropsEvent` kept native).
+
+- Server 150 s green (bind clean, ticks clean, world == pure union
+  1922 ids 1,165, zero `E_*`): `loot wired
+  <{ore=gem, beast.my_beast=gem, beast.my_brute=brute_gem}> count
+  <{ore=1, beast.my_beast=1, beast.my_brute=2}> ore
+  <[example1:my_ore]>`, both items registered (`my_gem` 4096,
+  `my_brute_gem` 4097).
+- `LOOT=1` direct-client leg (exit 0, structured ore-wire packs with
+  no vein file, union 1274 `1,165` via `NUMERIC_IDS`): ore harvested
+  1000 → gem 1001, `my_beast` killed 1005 → gem 1006, `my_brute`
+  killed 1010 → `my_brute_gem` x2 at 1011 (elapsed 1 each, same
+  triple as the etage-1 gate). Explicit mob identities on the kills,
+  brute poll counts two carriers.
+- `SPAWN=1 COMBAT=1` regression leg (exit 0, same packs, union
+  1274): census 2→8 balanced (beast=brute), hp 20.0 + 30.0, beast
+  head x2 → 18.0 at 501 then brute head x3 → 27.0 at 601 (elapsed 1
+  each), spawn kill pins the first `my_beast` → gem 1001 elapsed 1.
+  The single benign `Caused by` is the known offline Forge Version
+  Check shape, same as every 1710 proof.
+- `PORT_QUEUE` flips the row to `live | live | TODO | TODO`.
+- Staying open (not silent): two dispatch ports (1165, 1201),
+  qualified `PolicyPack` mob view.

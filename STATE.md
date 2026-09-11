@@ -1,5 +1,19 @@
 # STATE.md — présent
 
+- 2026-09-11 : Distinct per-mob drops port live, bridge-1710
+  (bridge-1710 `f85eb70` per-mob loot wire + autoplay, SPI pin
+  untouched, hub `decisions/LOOT.md` port addendum, `PORT_QUEUE`
+  `live | live | TODO | TODO`) : server 150 s green (world == pure
+  union 1922 ids 1,165, loot wired per-mob with counts `{ore=1,
+  beast.my_beast=1, beast.my_brute=2}`, both gems registered, zero
+  `E_*`) ; `LOOT=1` direct-client leg (exit 0) — ore 1000→gem 1001,
+  beast 1005→gem 1006, brute 1010→brute-gem x2 at 1011 (elapsed 1
+  each), union 1274 (`1,165` via `NUMERIC_IDS`) ; `SPAWN=1 COMBAT=1`
+  regression leg (exit 0) — census 2→8 balanced, hp 20.0 + 30.0,
+  exact-2.0 at 500→501 then exact-3.0 at 600→601, spawn kill pins
+  `my_beast` → gem elapsed 1, union 1274. Two ports and the qualified
+  mob view stay named follow-ups.
+
 - 2026-09-11 : Distinct per-mob drops live, lead bridge-1122
   (bridge-1122 `8aebc3b` per-mob autoplay + beast-pinned spawn kill,
   zero forge change, hub `decisions/LOOT.md` live addendum,
