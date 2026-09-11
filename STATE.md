@@ -1,6 +1,29 @@
 # STATE.md — présent
 
-- 2026-09-11 : Combat weakspot hook live on bridge-1122
+- 2026-09-11 : VIRTUAL_HITBOXES promoted prototype → standard (hub
+  `decisions/VIRTUAL_HITBOXES.md` : front-matter flip, 1710 live
+  addendum, `PORT_QUEUE` `live | live | TODO | TODO`) : server
+  weakspot hook live-proven version-native on 2/2 runtimes so far
+  (1122 Forge 2860 + 1710 Forge 1614 — identical proof shape both
+  sides : head x2, exact-2.0 wound elapsed 1, chain intact, unions
+  pure, zero `E_*` / linkage, all gates green), known limits with
+  named reopeners (BUG-042 reach override, client prediction +
+  packet, attribute reach, content weakspots). 1165/1201 ports stay
+  TODO cells, never silent.
+- 2026-09-11 : Combat weakspot hook live on bridge-1710
+  (bridge-1710 `722097b`, hub `decisions/VIRTUAL_HITBOXES.md` port
+  addendum) : 150 s Forge 1614 server green (bind clean, world ==
+  pure union 1922, hook dormant, zero `E_HIT`) ; headless
+  direct-client `SPAWN=1 COMBAT=1` (exit 0) — `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>` at worldTick 500,
+  autoplay exact-2.0 wound (20.0 → 18.0, elapsed 1), kill 1000 →
+  carrier 1001, clean shutdown at 4600 ticks, client save world ==
+  pure union (1274 cells). 1614-native: public-field events
+  (`entityLiving`/`source`/`ammount`), `DamageSource.getEntity`,
+  `Vec3.xCoord` (see decision). Trouvaille (hub tooling):
+  crash-fast watcher false-positived on the 1.7.10 splash banner
+  (fixed `1f305b3` — trips on `#@!@# Game crashed!`, never the bare
+  header).
   (bridge-1122 `9ae00d4` E0 + `840507c` owner-discipline fix, hub
   `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
   `TODO | live | TODO | TODO`) : server re-proof green with the

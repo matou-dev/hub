@@ -115,7 +115,7 @@ is the same lie class as the Problem above.
 - STRUCTURES_CROSS_FILE.md : active (maturity standard, scope shared, roadmap -)
 - SYNTAX_V1_V2_V3.md : active (maturity standard, scope shared, roadmap -)
 - VEIN_V4.md : active (maturity standard, scope shared, roadmap -)
-- VIRTUAL_HITBOXES.md : active (maturity prototype, scope spi, roadmap -)
+- VIRTUAL_HITBOXES.md : active (maturity standard, scope spi, roadmap -)
 ### direction
 - GPU_INSTANCING.md : active (maturity prototype, scope spi, roadmap -)
 - REPOP_SPIKE.md : done (maturity standard, scope bridge, roadmap -)

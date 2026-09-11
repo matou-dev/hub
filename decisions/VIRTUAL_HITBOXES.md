@@ -1,7 +1,7 @@
 ---
 type: spec
 status: active
-maturity: prototype
+maturity: standard
 scope: spi
 roadmap: -
 ---
@@ -187,6 +187,41 @@ live on Forge 2860 (launcher-free headless direct-client run,
   genuine strike, event delivery, `HitTester` entry).
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
   `TODO | live | TODO | TODO`.
+
+## Addendum — port live, bridge-1710 (2026-09-11)
+
+`bridge-1710` `722097b` ports the hook version-native, proven live
+the same day (150 s Forge 1614 server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host
+OpenJDK 1.8.0_502):
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,165 — hook dormant, zero `E_HIT`).
+- Client: `[MatouBridge] combat resolved <bone=head mult=2.0
+  dmg=1.0->2.0>` at worldTick 500, autoplay exact-2.0 wound
+  (20.0 → 18.0, elapsed 1), spawn kill at 1000 → gem carrier at
+  1001, clean shutdown after 4600 server ticks ;
+  `verify-client-save.sh` world == pure union (1274 cells, stone) ;
+  zero `E_*` / linkage lines.
+- 1614-native shapes (srg-mcp.srg-measured, full-map era — no narrow
+  map): public-field events (`LivingEvent.entityLiving`,
+  `LivingHurtEvent.source`, `LivingHurtEvent.ammount` — the Forge
+  typo mirrored verbatim), `DamageSource.getEntity` (the 1122
+  `getTrueSource` does not exist here — same searge
+  `func_76346_g`), `Vec3.xCoord/yCoord/zCoord` (no `Vec3d` here),
+  `worldObj` / `dimensionId`, 6-arg `LivingDropsEvent` untouched.
+  The 1122 `hitBoxes` owner fix rides along (same bare-`posX`
+  shape). Bare-hand base is 1.0 here too, no crit on the standing
+  teleport — the exact-2.0 assert held first try.
+- Trouvaille (hub tooling, same run): the shared crash-fast watcher
+  (landed after the 1710 visual proof) killed the healthy game on
+  1.7.10's SplashProgress boot banner (`---- Minecraft Crash Report
+  ---- ... THIS IS NOT A ERROR`, exit 143, no save). Fixed in hub
+  `1f305b3`: the watcher trips on `#@!@# Game crashed!` (every real
+  crash prints it, server tick loops included), never on the bare
+  header.
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `live | live | TODO | TODO` (0 `e0` remaining).
 
 ## Error catalog — completion (same tranche)
 
