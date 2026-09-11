@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-11 : Per-mob operator override E0+live, lead bridge-1122
+  (bridge-1122 `823cda5`, zero live fixes, hub
+  `decisions/VIRTUAL_HITBOXES.md` addendum, `PORT_QUEUE`
+  `TODO | live | TODO | TODO` new row) : stages 1-2 green (per-mob
+  batteries, forge + autoplay compile), 150 s server green (world ==
+  pure union 1922, byte-identical wire lines, zero `E_*`) ; two
+  headless direct-client legs (exit 0 each) — default exact-2.0 at
+  500→501 + exact-3.0 at 600→601, override leg
+  (`combat.reach.my_brute=6.0`) identical with the win named, saves
+  pure union, zero `E_*`. Trouvaille: SPI seam key-agnostic, whole
+  operator vocabulary bridge-side — no SPI change. Three ports TODO.
+
 - 2026-09-11 : Second beast ports live on bridge-1165 + bridge-1201
   (bridge-1165 `0aca413`, bridge-1201 `2ee4033`, zero live fixes, hub
   `decisions/VIRTUAL_HITBOXES.md` port addenda, `PORT_QUEUE`

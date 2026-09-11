@@ -103,6 +103,7 @@ never with the code copy.
 | Combat per-mob tables, `E_COMBAT_POLICY` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Second beast class, per-mob spawn+dispatch (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Second beast registration, one generic beast (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
+| Per-mob operator override, `E_SPAWN_WIRE`/`E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

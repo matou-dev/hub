@@ -1064,7 +1064,48 @@ version-native throughout):
   4/4 runtimes with two mobs; operator keys, distinct drops and the
   qualified mob view stay named follow-ups).
 
-## Error catalog — completion (same tranche)
+## Addendum — per-mob operator override, lead bridge-1122 E0+live (2026-09-11)
+
+Closes the operator-override half of the per-mob follow-ups (content
+half stays content-only): every sealed spawn/combat number gains a
+per-mob operator win, same split as the T2 uniform tranche. Bridge-1122
+`823cda5`, stages 1-2 green plus 150 s server + two launcher-free
+headless direct-client legs (default + per-mob override, Xvfb, exit 0
+each) — zero live fixes, no SPI change, no re-pin, no new `forge/src`
+file, no new `E_FORGE_*`.
+
+- `OperatorPolicy` gains the per-mob keys (`spawn.cap.<mob>`,
+  `spawn.budget.<mob>`, `spawn.y_min.<mob>`, `spawn.y_max.<mob>`,
+  `combat.reach.<mob>` — short mob names): per-mob wins, else global,
+  else content (cross-level band merge included); `loot.count` stays
+  global (damage/count balance, same split as content-only weakspots
+  and `spawnHp`). Bad/multi/unknown refuse loudly under the kept
+  `E_SPAWN_WIRE` / `E_COMBAT_WIRE` families (the old
+  `E_SPAWN_WIRE:unknown <spawn.cap.my_beast>` refusal is gone — the key
+  now seals the win). Trouvaille: no SPI change was needed because the
+  SPI seam is key-agnostic (`Packs.parseLines` accepts arbitrary `k=v`,
+  the whole operator vocabulary lives bridge-side).
+- `wireSpawn`/`wireCombat` seal per-mob effective values and name
+  per-mob wins in full-key form (`overridden <spawn.cap.my_brute>`,
+  `overridden <combat.reach.my_brute>`); globals and no-override lines
+  stay byte-identical. `ModelWireCheck` + `SpawnCheck` gain the
+  per-mob batteries (absent→content/global, per-mob win, precedence,
+  all refusal shapes).
+- Server green (bind clean, ticks clean, world == pure union 1922,
+  byte-identical no-suffix wire lines, zero `E_*`).
+- Client default leg: census 8, hp 20.0 + 30.0, exact-2.0 at 500→501
+  then exact-3.0 at 600→601 (elapsed 1 each), kill chain intact, save
+  pure union, zero `E_*` (two benign gem-model `Caused by`).
+- Client override leg (operator act: `combat.reach.my_brute=6.0`
+  appended to the staged `packs.cfg`, no script edit): `combat wired
+  <{my_beast={head=2.0}},{my_brute={head=3.0}}> reach
+  <{my_beast=4.0},{my_brute=6.0}> overridden <combat.reach.my_brute>`
+  with identical exact-2.0 + exact-3.0 (the wider cutoff changes
+  nothing at 2.2 blocks, as designed); exit 0, save pure union, zero
+  `E_*`. Staged knob reset via the documented path after.
+- `PORT_QUEUE` new row `Per-mob operator override`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live, three
+  ports TODO).
 
 ## Error catalog — completion (same tranche)
 
