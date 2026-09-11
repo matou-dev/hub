@@ -104,19 +104,19 @@ is the same lie class as the Problem above.
 - RELEASE_ENG.md : active (maturity unrated, scope shared, roadmap -)
 ### spec
 - GL_INSTANCING_ADAPTER.md : active (maturity prototype, scope shared, roadmap -)
-- ITEM_REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
-- LOOT.md : active (maturity prototype, scope shared, roadmap -)
-- REGISTRATION.md : active (maturity prototype, scope shared, roadmap -)
+- ITEM_REGISTRATION.md : active (maturity standard, scope shared, roadmap -)
+- LOOT.md : active (maturity standard, scope shared, roadmap -)
+- REGISTRATION.md : active (maturity standard, scope shared, roadmap -)
 - SHARED_APPLY_SEAM_V1_1_0.md : active (maturity standard, scope shared, roadmap -)
-- SPAWN.md : active (maturity prototype, scope shared, roadmap -)
-- SPI_STATE_VOCABULARY.md : active (maturity prototype, scope shared, roadmap -)
-- STRUCTURES_CROSS_FILE.md : active (maturity prototype, scope shared, roadmap -)
+- SPAWN.md : active (maturity standard, scope shared, roadmap -)
+- SPI_STATE_VOCABULARY.md : active (maturity standard, scope shared, roadmap -)
+- STRUCTURES_CROSS_FILE.md : active (maturity standard, scope shared, roadmap -)
 - SYNTAX_V1_V2_V3.md : active (maturity standard, scope shared, roadmap -)
-- VEIN_V4.md : active (maturity prototype, scope shared, roadmap -)
+- VEIN_V4.md : active (maturity standard, scope shared, roadmap -)
 - VIRTUAL_HITBOXES.md : active (maturity prototype, scope spi, roadmap -)
 ### direction
 - GPU_INSTANCING.md : active (maturity prototype, scope spi, roadmap -)
-- REPOP_SPIKE.md : done (maturity prototype, scope bridge, roadmap -)
+- REPOP_SPIKE.md : done (maturity standard, scope bridge, roadmap -)
 ### note
 - SCALING_AUDIT_STRUCTURAL_FIX.md : active (maturity unrated, scope shared, roadmap -)
 <!-- END GENERATED:decisions -->

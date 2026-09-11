@@ -1,7 +1,7 @@
 ---
 type: direction
 status: done
-maturity: prototype
+maturity: standard
 scope: bridge
 roadmap: -
 ---

@@ -4,6 +4,10 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Decision maturity promotion to standard (hub `decisions/`) :
+  - 8 decisions promoted from `prototype` to `standard`: `ITEM_REGISTRATION.md`, `REGISTRATION.md`, `LOOT.md`, `SPAWN.md`, `VEIN_V4.md`, `SPI_STATE_VOCABULARY.md`, `STRUCTURES_CROSS_FILE.md`, and `REPOP_SPIKE.md`.
+  - Quality justification: every promoted system has live-proven consumers across 4/4 Forge runtimes (1.7.10, 1.12.2, 1.16.5, 1.20.1) with 0 shells and all gates 100% green.
+  - `DECISIONS_INDEX_AND_STATUS.md` regenerated via `tools/check.sh --fix` ; `check.sh` passes 100% green.
 - 2026-09-11 : GL Instancing adapter live driver on bridge-1122 + parity shells (hub, bridge-1122, bridge-1710, bridge-1165, bridge-1201) :
   - `bridge-1122`: `Lwjgl2Backend` implements pure `GlBackend` (LWJGL 2 GL11, GL15, GL20, GL30, GL31, GL33) ;
     `InstancedMeshRenderer` client renderer (@SideOnly) compiles GLSL 3.30 shaders, sets up static box mesh VBO and dynamic instance VBO,
