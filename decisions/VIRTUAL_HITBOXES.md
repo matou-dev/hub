@@ -299,8 +299,60 @@ OpenJDK 1.8.0_502):
   first try (teleport, aim, genuine strike, event delivery,
   `HitTester` entry) ; crash-fast killed the run in seconds.
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
-  `live | live | live | TODO` (1201 stays the last TODO cell, never
-  silent).
+  `live | live | live | e0`.
+
+## Addendum — port E0, bridge-1201 (2026-09-11)
+
+`bridge-1201` `198e83e` ports the hook version-native, E0-green
+(stages 1-2, live proof TODO — same bar as the 1122 lead E0 and the
+1165 port E0): the same 11-file shape (hook + autoplay `COMBAT=` leg +
+stubs + narrow map + pins + verdict), plus the owner-discipline fix
+landed upfront instead of red-crashed first.
+
+- 47.2.0-native shapes (server.txt + joined.tsrg v2 + javap measured,
+  never ported blind): the hurt entity behind `LivingEvent.getEntity()`
+  as `LivingEntity` (the 1.16.5 `getEntityLiving` shape does not port),
+  the source behind `LivingHurtEvent.getSource()`, the true attacker
+  behind `DamageSource.getEntity()` (the direct entity is the
+  projectile, not the author — the same-descriptor sibling trap of the
+  older `getTrueSource` ports, hence the Mojmap-name anchor); eye/look
+  through the declaring `Entity` as `Vec3` (`getEyePosition` no-arg
+  `()Vec3`, `getLookAngle` no-arg `()Vec3` — 1.20.1-native, no height
+  arithmetic, the eye position is direct); the look/eye components on
+  the declaring `Vec3` fields (`x/y/z` doubles — the same-named
+  `x()/y()/z()` methods are NOT this, hence the field anchor; the 1.12
+  `Vec3d` owner does not port); the dim gate stays the `OVERWORLD` key;
+  `LivingHurtEvent(LivingEntity, DamageSource, float)` +
+  `getSource`/`getAmount`/`setAmount` presence-pinned against the 47.2.0
+  universal (Forge-added, never obfuscated).
+- Narrow map 48 -> 54 rows (combat tranche, hub `tools/live-derive.sh`
+  era-1.20 assert bumped in the same tranche): the 6 new rows derive
+  clean against the pinned bytes with the first 48 byte-identical
+  (append-only, no reorder — `getEyePosition` is `m_146892_`,
+  `getLookAngle` `m_20154_`, `getEntity` `m_7639_`, `Vec3/x/y/z`
+  `f_82479_/f_82480_/f_82481_`); `E_MAP_COVER` covers the new refs
+  automatically; the server refusal grep rides `E_HIT`.
+- Autoplay `COMBAT=` leg mirrors the lead (teleport 2.2 east, head aim
+  from the pure-parsed geo, genuine strike, exact-2.0 poll):
+  47.2.0-native player list (`ServerLevel.players`, same shape as the
+  loot/spike helpers) and coords (`getX/Y/Z`); the teleport through
+  `Entity.moveTo(DDDFF)V` (the 1.12 `setPositionAndRotation` shape does
+  not port — already pinned in the live map, SRG `m_7678_` both sides);
+  the strike through `Player.attack(Entity)V` (declared on `Player`,
+  SRG `m_5706_` — not the same-named `ServerPlayer` row); the wound
+  poll through `LivingEntity.getHealth` (SRG `m_21223_` — not the
+  same-descriptor max-health sibling); the aim eye through
+  `Entity.getEyeHeight` (SRG `m_20192_`, all four SRG-anchored in
+  autoplay `want.txt`, 24 -> 28 rows green). Mojmap autoplay derive
+  pins methods only, so the companion never reads `Vec3` fields (the
+  bridge hook owns that surface).
+- Owner discipline upfront (`MatouEntity.hitBoxes` through a
+  declaring-`Entity`-typed self, citing `840507c` + `605b623`): the
+  1201 port lands WITH the fix the 1122/1165 ports each red-crashed
+  into — same bare-`getX` shape, same vanilla `Pig` link death, refused
+  before the first live run instead of after.
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `live | live | live | e0`.
 
 ## Error catalog — completion (same tranche)
 
