@@ -944,6 +944,23 @@
   §3 amended) : blank lines and comments never count against design alerts ;
   `code_part` + `effective_sloc` state machine with 6 self-test cases wired
   into `tools/check.sh` ; `ExamplePack` sits at 297 eSLOC (341 raw).
+- 2026-09-11 : item registration tranche live-proven on Forge 1614
+  (example1 `26fb206` ItemSpec pure + unit tests, hub `729d7c4`
+  `decisions/ITEM_REGISTRATION.md` spec + PORT_QUEUE row, shells in
+  1122 `3508d4b` / 1165 `4e3fb09` / 1201 `9e9def3`, bridge-1710 `d436185`
+  MatouItem + preInit GameRegistry + loot drop resolution, host OpenJDK
+  1.8.0_502) : second @Mod `example1` preInit-registers `example1:my_gem`
+  from `owned.matou` (stack 64, label "shiny"), init verifies
+  `registered-item <example1:my_gem> id 4096` dynamic from the boot log ;
+  `wireLoot` resolves drop items through `GameRegistry` instead of
+  `Items.diamond` placeholder (`E_LOOT_ITEM:unknown <item>` tripwire) ;
+  `dropCarrier` drops the registered item stack ; server run-live.sh
+  bind clean, ticks clean, world == pure union (1922 cells, ids 1,165).
+  Companion autoplay updated to poll `example1:my_gem`. Two tooling fixes:
+  `run-live.sh` feeds `< /dev/null` to the server JVM (prevents `SIGTTIN`
+  terminal suspension when backgrounded), and `normjar` deprecation
+  warning eliminated via `datetime.timezone.utc`. Parity green over 4
+  bridges (PORT_QUEUE item registration row live on 1710, shells on 3).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
