@@ -267,6 +267,41 @@ map + pins + verdict).
 - `PORT_QUEUE` row `Combat weakspot hook` flips to
   `live | live | e0 | TODO`.
 
+## Addendum — port live, bridge-1165 (2026-09-11)
+
+`bridge-1165` `531799c` (E0) + `605b623` (live fix) proves the hook
+live on Forge 36.2.42 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host
+OpenJDK 1.8.0_502):
+
+- Server re-proof green with the 54-line map (bind clean, ticks
+  clean, world == pure union 1922 cells — hook dormant, zero `E_HIT`,
+  zero combat lines on the playerless dedicated server).
+- Client: census 1→4 at worldTicks 2..5, then `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>` at worldTick 500,
+  `[MatouAutoplay] combat struck <head hp=20.0>` the same tick,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x head 2x),
+  spawn kill at 1000 → gem carrier the same bridge tick → polled at
+  1001 (elapsed 1, chain intact on the wounded beast), clean
+  shutdown ; `verify-client-save.sh` world == pure union (1274 cells,
+  stone) ; zero `E_*` / linkage lines in `game.log`.
+- Trouvaille (owner-discipline class, same as the 1122 `posX`
+  `NoSuchFieldError` fixed in `840507c`): the first play run died
+  with `NoSuchMethodError: MatouEntity.getPosX()D` in
+  `MatouEntity.hitBoxes` — the 1165 port called the `getPosX/Y/Z`
+  getters on the `MatouEntity`-typed `this`, whose reobf walk dies at
+  the vanilla `PigEntity` link (the E0 claim "rides the 1122 fix by
+  construction" was wrong for this one call site — every other hook
+  call already read through the declaring `Entity`). Fix
+  (`605b623`): `Entity self = this`, read through `self`, mirroring
+  the 1122 spelling. The crash itself proved the rest of the path
+  first try (teleport, aim, genuine strike, event delivery,
+  `HitTester` entry) ; crash-fast killed the run in seconds.
+- `PORT_QUEUE` row `Combat weakspot hook` flips to
+  `live | live | live | TODO` (1201 stays the last TODO cell, never
+  silent).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

@@ -1,5 +1,20 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat weakspot hook live on bridge-1165
+  (bridge-1165 `531799c` E0 + `605b623` owner-discipline fix, hub
+  `decisions/VIRTUAL_HITBOXES.md` live addendum, `PORT_QUEUE`
+  `live | live | live | TODO`) : 150 s Forge 36.2.42 server green
+  with the 54-line map (bind clean, world == pure union 1922, hook
+  dormant, zero `E_HIT`) ; headless direct-client `SPAWN=1 COMBAT=1`
+  (exit 0) — `[MatouBridge] combat resolved <bone=head mult=2.0
+  dmg=1.0->2.0>` at worldTick 500, autoplay exact-2.0 wound (20.0 →
+  18.0, elapsed 1), kill 1000 → carrier → polled 1001 (elapsed 1,
+  chain intact), client save world == pure union (1274 cells), zero
+  `E_*` / linkage. Trouvaille: `hitBoxes` called `getPosX/Y/Z` on
+  the `MatouEntity`-typed `this` (`NoSuchMethodError` first play run
+  — same owner-discipline class as the 1122 `posX` trap, fixed
+  through declaring `Entity`, crash-fast killed it in seconds).
+  1201 port stays the last TODO cell, never silent.
 - 2026-09-11 : Combat weakspot hook E0 on bridge-1165
   (bridge-1165 `531799c`, hub `decisions/VIRTUAL_HITBOXES.md` E0
   addendum + era-1.16 derive 48→54, `PORT_QUEUE`
