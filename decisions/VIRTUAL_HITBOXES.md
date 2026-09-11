@@ -1107,6 +1107,41 @@ file, no new `E_FORGE_*`.
   (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live, three
   ports TODO).
 
+## Addendum — per-mob operator override ports, 1710/1165/1201 (2026-09-11)
+
+Three parallel port tranches, all live-green first try, zero live
+fixes — the per-mob operator vocabulary confirmed era-blind on each
+(lead `OperatorPolicy.java` + checks byte-identical, wire hunks
+identical, applied as the exact lead diff; no SPI change, no narrow-map
+delta, no autoplay change, no shell change):
+
+- `bridge-1710` `bd547ad` (Forge 1614) : 150 s server green (world ==
+  pure union 1922, default wire lines, zero `E_*`, no bind-race) ;
+  client default leg exact-2.0 + exact-3.0 ; client override leg
+  (`combat.reach.my_brute=6.0`) `reach <{my_beast=4.0},{my_brute=6.0}>
+  overridden <combat.reach.my_brute>` with identical exacts ; both
+  saves pure union, zero `E_*`. Trouvaille: the 1710 `wireCombat` doc
+  wrap differs by one line from the lead, which refused `git apply` on
+  the doc hunk while body hunks passed — future ports should expect
+  doc-only hunks to refuse on context.
+- `bridge-1165` `353ffc9` (Forge 36.2.42) : 150 s server green (one
+  25565 wait-retry, pure union 1922, zero `E_*`) ; default leg
+  exact-2.0 (hp 18.0 @501) + exact-3.0 (hp 10.0 @601 — pre-wounded
+  brute, drop exact) ; override leg identical exacts with the win
+  named ; both saves pure union, zero `E_*` / `Caused by`. Trouvaille:
+  the sole 1165-native delta in the whole port is the 5-line weakspot
+  content check — both forge wire bodies ported byte-identical.
+- `bridge-1201` `1de261f` (Forge 47.2.0, Temurin 17) : 150 s server
+  green (one bind-race retry, pure union 1922, zero `E_*`) ; default
+  leg census 8, hp 20+30, exact-2.0/3.0 ; override leg with the win
+  named, identical exacts ; both saves pure union, zero `E_*` (one
+  benign flite `Caused by`). `run-live.sh` untouched at 449/450 eSLOC.
+  Trouvaille: the staged `packs.cfg` is write-once-kept, so the
+  override leg is a pure operator act (append, play, delete, re-stage)
+  with zero script edits.
+- `PORT_QUEUE` row `Per-mob operator override` flips to
+  `live | live | live | live` (four ports live, 0 `TODO` remaining).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog

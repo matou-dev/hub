@@ -1,5 +1,15 @@
 # STATE.md — présent
 
+- 2026-09-11 : Per-mob operator override ports live x4 (bridge-1710
+  `bd547ad`, bridge-1165 `353ffc9`, bridge-1201 `1de261f`, zero live
+  fixes, hub `decisions/VIRTUAL_HITBOXES.md` port addenda,
+  `PORT_QUEUE` `live | live | live | live`) : 150 s servers green each
+  (pure union 1922, zero `E_*`, 25565 races retried green) ; two
+  headless direct-client legs each (default + `combat.reach.my_brute`
+  override, exit 0 each) — identical exact-2.0 + exact-3.0 both legs,
+  saves pure union, zero `E_*`. Era-blind confirmed (lead pure files
+  byte-identical). 0 `TODO` remaining on the row, never silent.
+
 - 2026-09-11 : Per-mob operator override E0+live, lead bridge-1122
   (bridge-1122 `823cda5`, zero live fixes, hub
   `decisions/VIRTUAL_HITBOXES.md` addendum, `PORT_QUEUE`
