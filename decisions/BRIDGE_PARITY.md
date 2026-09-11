@@ -104,7 +104,7 @@ never with the code copy.
 | Second beast class, per-mob spawn+dispatch (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Second beast registration, one generic beast (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
 | Per-mob operator override, `E_SPAWN_WIRE`/`E_COMBAT_WIRE` (`VIRTUAL_HITBOXES.md`) | live | live | live | live |
-| Distinct per-mob drops (`LOOT.md`) | TODO | e0 | TODO | TODO |
+| Distinct per-mob drops (`LOOT.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

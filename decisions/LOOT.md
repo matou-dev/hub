@@ -282,3 +282,36 @@ every lead E0.
   + per-mob kill proof legs — beast pays 1 gem, brute pays 2 brute
   gems, ore pays 1 gem); three dispatch ports; qualified
   `PolicyPack` mob view.
+
+## Addendum — distinct per-mob drops, lead live (2026-09-11)
+
+Closes the live follow-up above on the lead (bridge-1122 `8aebc3b`,
+zero forge change — the E0 wire is untouched, zero WANT change —
+`setMob` is bridge-owned, `getByNameOrId` reused for both gems).
+
+- Server 150 s green (bind clean, world == pure union 1922, zero
+  `E_*`): `loot wired <{ore=gem, beast.my_beast=gem,
+  beast.my_brute=brute_gem}> count <{ore=1, beast.my_beast=1,
+  beast.my_brute=2}> ore <[example1:my_ore]>`, both items registered
+  (`my_gem`, `my_brute_gem`).
+- `LOOT=1` direct-client leg (exit 0, structured ore-wire packs, union
+  1274 `1,253` via `NUMERIC_IDS`): ore harvested 1000 → gem 1001,
+  `my_beast` killed 1005 → gem 1006, `my_brute` killed 1010 →
+  `my_brute_gem` x2 at 1011 (elapsed 1 each, same triple as the
+  etage-1 gate). The autoplay kills carry explicit mob identities
+  (never the silent first-mob adoption) and the brute poll counts two
+  carriers, not one presence.
+- `SPAWN=1 COMBAT=1` regression leg (exit 0, same packs, union 1274):
+  census 2→8 balanced (beast=brute), hp 20.0 + 30.0, exact-2.0 at
+  500→501 then exact-3.0 at 600→601, spawn kill pins the first
+  `my_beast` (a brute-only census would pay brute-gem — it fails
+  loudly instead of killing one silently) → gem 1001 elapsed 1.
+- `PORT_QUEUE` flips the row to `TODO | live | TODO | TODO`.
+- Trouvaille (client-verdict scope): `verify-client-save.sh` reads
+  y=63..65 only (stone-proof contract) — an ore-wire client leg with
+  `veinFile` computes 1922 but the world read holds 1274 (the 648
+  vein cells live on y=60..61, outside the read), so loot client legs
+  wire ore with no vein file and the union verdict takes the dynamic
+  ore id via `NUMERIC_IDS` (253 here, from the game log).
+- Staying open (not silent): three dispatch ports, qualified
+  `PolicyPack` mob view.
