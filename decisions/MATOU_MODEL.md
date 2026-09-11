@@ -1,7 +1,7 @@
 ---
 type: spec
 status: active
-maturity: prototype
+maturity: standard
 scope: spi
 roadmap: -
 ---
@@ -341,7 +341,9 @@ game alive rendering; the full 600 s run exited 0 by itself):
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and
-   feed `boneBoxes` to the entity `Hittable` (lead bridge first, then
-   PORT_QUEUE ports).
+   feed `boneBoxes` to the entity `Hittable` — DONE live x4 (1122
+   `34ed5b6`..`6988515`, 1710 `f3ef9f6` + `41c3c33`, 1165 `628f849` +
+   `c6e15b7`, 1201 `8d7b0d8` ; `PORT_QUEUE` `live | live | live |
+   live`, closed by the standard promotion).
 2. Per-face `uv` + texture sampling in the instancing shader (V2).
 3. Bind-pose rotation/pivot bake and animation tables (later tranche).

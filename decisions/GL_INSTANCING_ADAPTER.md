@@ -1,7 +1,7 @@
 ---
 type: spec
 status: active
-maturity: prototype
+maturity: standard
 scope: shared
 roadmap: -
 ---
@@ -138,3 +138,18 @@ No stub or naming fix was needed (the 1165 `com/` strip and
 `glUniformMatrix4fv` lessons already ride the shared E0 shape).
 `PORT_QUEUE` row `GL Instancing Renderer` flips to `live | live |
 live | live` (0 `e0` remaining).
+
+## What would re-open it
+
+- V2 texture sampling: per-face `uv` unwrap + sampler in the
+  instancing shader (`MATOU_MODEL.md` "What remains" item 2 — the V1
+  shader tints and ignores UVs by the Decision above).
+- Proof-standard tightening: pixel proof stays refused (autoplay never
+  aims the camera — the chain closes via `ModelWireCheck` + `ready` +
+  `drew`, `MATOU_MODEL.md` protocol) ; asserting on vanilla `GlDebug`
+  / flite lines re-opens as its own spec (current standard: never
+  asserted, drain-then-judged `E_GL_DRAW` only).
+- A fifth runtime or third backend spelling: its own live addendum
+  plus `PORT_QUEUE` column (`BRIDGE_PARITY.md` fifth-bridge
+  re-opener) ; any third backend basename still fails the file-set
+  gate.

@@ -4,6 +4,21 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Decision maturity promotion to standard (hub `decisions/`) :
+  - 2 decisions promoted from `prototype` to `standard`:
+    `MATOU_MODEL.md` and `GL_INSTANCING_ADAPTER.md`.
+  - Quality justification: both systems live-proven version-native on
+    4/4 Forge runtimes (1710/1122 LWJGL2, 1165/1201 LWJGL3 — `ready
+    mesh=72 verts stride=8`, `drew instances=4`, `E_GL_DRAW` silent,
+    zero `E_*` / linkage, world == pure union on both legs) with 0
+    shells and 0 local codes on all bridges, all gates green.
+  - `MATOU_MODEL.md` "What remains" item 1 closed (consumer live x4),
+    items 2-3 stay named reopeners ; `GL_INSTANCING_ADAPTER.md` gains
+    "What would re-open it" (V2 sampling, proof-standard, fifth
+    runtime).
+  - `DECISIONS_INDEX_AND_STATUS.md` regenerated via `tools/check.sh
+    --fix` ; `check.sh` passes green.
+
 - 2026-09-11 : Beast model + GL renderer port live on bridge-1201
   (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
   addenda, bridge-1201 `8d7b0d8` E0, zero live fixes, host Temurin
