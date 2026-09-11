@@ -93,3 +93,14 @@ compile, the VAO/VBO upload succeeds, and GL accepts the instanced
 draw (`[MatouRenderer] drew instances=4`, `E_GL_DRAW:failed` silent).
 `PORT_QUEUE` row `GL Instancing Renderer` flips to `shell | live |
 shell | shell` — one run, two cells, each recorded at its decision.
+
+## Addendum — port live, bridge-1710 (2026-09-11)
+
+The same run that proves `MATOU_MODEL.md` 1710 (bridge-1710
+`f3ef9f6` + `41c3c33`, `run-client-direct.sh` under Xvfb/llvmpipe,
+host OpenJDK 1.8.0_502) proves this backend live on 1614: identical
+`Lwjgl2Backend` (LWJGL 2 API, no version delta), GLSL 3.30 shaders
+compile and link (`program=3`), the VAO/VBO upload succeeds, and GL
+accepts the instanced draw (`[MatouRenderer] drew instances=4`,
+`E_GL_DRAW:failed` silent). `PORT_QUEUE` row `GL Instancing Renderer`
+flips to `live | live | shell | shell`.

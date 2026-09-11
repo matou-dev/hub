@@ -4,6 +4,23 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model + GL renderer port live on bridge-1710
+  (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
+  addenda, bridge-1710 `f3ef9f6` + `41c3c33`, host OpenJDK 1.8.0_502) :
+  server green first try with 8 renderer SRG pins (bind clean, ticks
+  clean, world == pure union 1922 cells, ids 1,165 — same T4 union,
+  geo byte-identical, zero `E_MODEL_*`) ; launcher-free headless
+  client (`run-client-direct.sh`, `SPAWN=1`, Xvfb/llvmpipe, exit 0) —
+  `[MatouRenderer] ready mesh=72 verts` (the SPI bake, `program=3`),
+  `[MatouRenderer] drew instances=4` (`E_GL_DRAW` silent), zero `E_*` /
+  linkage, spawn proof alongside, verdict world == pure union (1274
+  cells). 1614-native: `theWorld` / `renderViewEntity` /
+  `partialTicks` FIELDS, single-Minecraft stub merged, `autoplay/stub`
+  deleted. Trouvaille: `renderViewEntity` is EntityLivingBase-typed
+  (`bao.i` is `sv`, javap-measured — one 600 s timeout, renderer casts
+  to Entity). `PORT_QUEUE` flips both rows 1710 to `live` (`live |
+  live | TODO | TODO` and `live | live | shell | shell`).
+
 - 2026-09-11 : Beast model client-visual live on bridge-1122
   (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
   addenda, bridge-1122 `34ed5b6`..`6988515`, host OpenJDK 1.8.0_502) :

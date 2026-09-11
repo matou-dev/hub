@@ -209,6 +209,43 @@ OpenJDK 1.8.0_502 for the game):
 - `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `TODO |
   live | TODO | TODO`.
 
+## Addendum — port live, bridge-1710 (2026-09-11)
+
+`bridge-1710` `f3ef9f6` (E0) + `41c3c33` (descriptor fix) ports the
+consumer + renderer version-native, proven live the same day
+(`LIVE=1` server + launcher-free headless client, host OpenJDK
+1.8.0_502 for the game):
+
+- Server green first try with the 8 renderer pins (bind clean, ticks
+  clean, world == pure union 1922 cells, ids 1,165 — same T4 union,
+  zero content regression). `my_beast.geo.json` deployed byte-identical
+  (`6577bfaf...`), zero `E_MODEL_*` server-side.
+- Client (`run-client-direct.sh`, `SPAWN=1`, Xvfb/llvmpipe, exit 0):
+  `[MatouRenderer] ready mesh=72 verts stride=8 program=3` (the SPI
+  bake), `[MatouRenderer] drew instances=4 mesh=72 verts` (GL accepted,
+  `E_GL_DRAW` silent), zero `E_*` / linkage errors, spawn proof
+  alongside (census 1→4, hp 20.0, kill + carrier).
+- `verify-client-save.sh` replays world == pure union (1274 cells,
+  stone id 1) — same stone-proof default as the 1122 visual run.
+- 1614-native shapes (srg-mcp.srg-derived, full-map era — no narrow map
+  needed, the complete SRG already covers client classes; Forge members
+  stay universal-pinned): `theWorld` field (`field_71441_e`,
+  WorldClient-typed), `renderViewEntity` FIELD (`field_71451_h` — the
+  1122 getter does not exist here), event `partialTicks` FIELD (same).
+  Single-Minecraft stub merged into `tools/live/stub` (`autoplay/stub`
+  deleted — same duplicate-class trouvaille as 1122).
+- Trouvaille (descriptor-truth class, one 600 s timeout): the stub
+  typed `renderViewEntity` as `Entity`, but the 1614 runtime field
+  (`bao.i`) is `sv` = `EntityLivingBase` (javap on the pinned vanilla
+  primary + `CL` row of the runtime `deobfuscation_data-1.7.10.lzma` —
+  SRG `field_71451_h` was right, the DESCRIPTOR was recalled). The
+  renderer narrows to `Entity` by cast (all reads are Entity-declared,
+  Reobf hits directly). Corroborated in passing: `bao/f` = WorldClient
+  (`theWorld`), `bao/g` = RenderGlobal (`field_71438_f`), `bao/h` =
+  player (`field_71439_g` — the exact 1122 trap, not repeated).
+- `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `live |
+  live | TODO | TODO`.
+
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and
