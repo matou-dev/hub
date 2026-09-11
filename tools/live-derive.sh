@@ -158,7 +158,7 @@ for row in WANT:
         hits = [m for m in members if len(m) == 2 and m[0] == flds[0]]
         assert len(hits) == 1, "E_SRG_DERIVE:no tsrg field <%s %s>" % (owner, mcp)
         lines.append("FD: %s/%s %s/%s" % (owner, hits[0][1], owner, mcp))
-assert len(lines) == 42, "E_SRG_DERIVE:want 42 lines, got %d" % len(lines)
+assert len(lines) == 48, "E_SRG_DERIVE:want 48 lines, got %d" % len(lines)
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok %s : narrow SRG derived (%d lines)" % (tag, len(lines)))
 EOF

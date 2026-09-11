@@ -1,5 +1,20 @@
 # STATE.md — présent
 
+- 2026-09-11 : Combat weakspot hook E0 on bridge-1122 (hub
+  `decisions/VIRTUAL_HITBOXES.md` addendum + catalog completion,
+  `BRIDGE_PARITY.md` `PORT_QUEUE` row `TODO | e0 | TODO | TODO`, hub
+  `tools/live-derive.sh` era-1.12 42 → 48) : `MatouBridgeMod.onHurt`
+  (server-side dim-0 LivingHurt on the registered beast → pure
+  `HitTester` bone resolve → weakspot scaling, head 2x,
+  `COMBAT_REACH = 4.0` eye-to-hitVec) with version-native eye/look
+  (`Entity.getLookVec/getEyeHeight`, `DamageSource.getTrueSource`,
+  `Vec3d/x/y/z` — javap-measured on the pinned 2860 bytes, Forge
+  `LivingHurtEvent` presence-pinned) ; autoplay `COMBAT=1` leg rides
+  `SPAWN=1` (teleport 2.2 east, SPI-parsed head aim with dot > 0.999
+  self-check, genuine `attackTargetEntityWithCurrentItem`, exact-2.0
+  wound assert). E0 stages 1-2 green, live proof TODO (next tranche
+  before any standard promotion).
+
 > **Archives historiques :**
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
