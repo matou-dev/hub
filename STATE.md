@@ -957,10 +957,28 @@
   `dropCarrier` drops the registered item stack ; server run-live.sh
   bind clean, ticks clean, world == pure union (1922 cells, ids 1,165).
   Companion autoplay updated to poll `example1:my_gem`. Two tooling fixes:
-  `run-live.sh` feeds `< /dev/null` to the server JVM (prevents `SIGTTIN`
-  terminal suspension when backgrounded), and `normjar` deprecation
-  warning eliminated via `datetime.timezone.utc`. Parity green over 4
-  bridges (PORT_QUEUE item registration row live on 1710, shells on 3).
+- 2026-09-11 : item registration tranche ported and live-proven across
+  the 3 sibling bridges (bridge-1122 `b1e8bdd`, bridge-1165 `2d5bdd6`,
+  bridge-1201 `b3be749`) :
+  - `bridge-1122`: native `RegistryEvent.Register<Item>` on mod event bus,
+    `MatouItem(shortName, stackSize)` with unlocalized name and max stack size,
+    `registered-item <example1:my_gem> id 4096` dynamic from boot log ;
+    `wireLoot` validates drop items via `resolveItem` (`E_LOOT_ITEM:unknown <ref>`),
+    `dropCarrier` drops carrier with resolved `Item` ; live server proof clean
+    (60 s, world == pure union 1922 cells).
+  - `bridge-1165`: native `DeferredRegister<Item>` on mod event bus,
+    `MatouItem(stackSize)` via `Properties.maxStackSize`,
+    `registered-item <example1:my_gem> id 976` dynamic from boot log ;
+    `wireLoot` validates drop items via `resolveItem`, `dropCarrier` drops
+    resolved `Item` ; live server proof clean (60 s, world == pure union 1922 cells).
+  - `bridge-1201`: native `DeferredRegister<Item>` on mod event bus,
+    `MatouItem(stackSize)` via `Properties.stacksTo`,
+    `registered-item <example1:my_gem> id example1:my_gem` dynamic from boot log ;
+    `wireLoot` validates drop items via `resolveItem`, `dropCarrier` drops
+    resolved `Item` ; docker runner proof clean (150 s, world == pure union 1922 cells).
+  - Autoplay companion updated across all bridges to resolve and poll `example1:my_gem`.
+  - `decisions/BRIDGE_PARITY.md` `PORT_QUEUE`: Item registration row promoted
+    from `live | shell | shell | shell` to `live | live | live | live` (0 shells remaining).
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09

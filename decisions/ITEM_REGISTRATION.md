@@ -28,31 +28,36 @@ on hardcoded vanilla placeholder items.
    with `E_EXAMPLE_ITEMSPEC:*`.
 
 2. **MatouItem (Forge)**:
-   A generic item class extending `net.minecraft.item.Item` that sets the unlocalized
-   name and max stack size (`setMaxStackSize`).
+   A generic item class extending `net.minecraft.item.Item` (or `net.minecraft.world.item.Item`
+   on 1.20.1) setting version-native unlocalized names and max stack sizes.
 
 3. **Item Registration Seam**:
-   - In `Example1Mod` (modid `example1`), during `preInit`, any items declared in
-     the content file referenced by `ownedFile` are registered via
-     `GameRegistry.registerItem(new MatouItem(...), shortName)`.
-   - During `init`, registration is verified via `GameRegistry.findItem("example1", shortName)`
-     and announced: `[MatouBridge] registered-item <example1:my_gem> id <ID>`.
+   - 1.7.10: `GameRegistry.registerItem(new MatouItem(...), shortName)` in `preInit`;
+     `init` verifies via `GameRegistry.findItem("example1", shortName)` and announces
+     `[MatouBridge] registered-item <example1:my_gem> id <ID>`.
+   - 1.12.2: `@SubscribeEvent registerItems(RegistryEvent.Register<Item>)` in
+     `@Mod.EventBusSubscriber`; `init` verifies via `Item.getByNameOrId` and announces
+     `[MatouBridge] registered-item <example1:my_gem> id <ID>`.
+   - 1.16.5: `DeferredRegister<Item>` on mod event bus; common setup verifies via
+     `ForgeRegistries.ITEMS.getValue` and announces
+     `[MatouBridge] registered-item <example1:my_gem> id <ID>`.
+   - 1.20.1: `DeferredRegister<Item>` on mod event bus; common setup verifies via
+     `ForgeRegistries.ITEMS.getValue` and announces
+     `[MatouBridge] registered-item <example1:my_gem> id <ID>`.
    - Refusal errors on item registration use `E_REG_ITEM:*`.
 
 4. **Loot Table Gem Resolution**:
    - In `MatouBridgeMod.wireLoot`, instead of checking `Items.diamond`, the bridge
      resolves the drop items defined in the loot table (`policy.lootDrops()`)
-     through the Forge item registry.
+     through the version-native item registry via `resolveItem(ref)`.
    - If an item is unresolvable, the bridge fails fast with `E_LOOT_ITEM:unknown <item>`.
-   - In `dropCarrier`, the spawned `EntityItem` carries the resolved `Item`:
+   - In `dropCarrier`, the spawned carrier entity carries the resolved `Item`:
      `new ItemStack(resolvedItem, 1)`.
 
 5. **Parity Across Bridges**:
-   - `MatouItem.java` is introduced in `bridge-1710/forge/src/fr/iamacat/bridge/forge/`.
-   - Parity shells pointing at `decisions/ITEM_REGISTRATION.md` are added to
-     `bridge-1122`, `bridge-1165`, and `bridge-1201` to maintain identical Forge
-     file sets.
-   - The queue row in `decisions/BRIDGE_PARITY.md` tracks the port across bridges.
+   - `MatouItem.java` is version-native across all four bridges:
+     `bridge-1710`, `bridge-1122`, `bridge-1165`, and `bridge-1201`.
+   - The queue row in `decisions/BRIDGE_PARITY.md` is fully `live` across all 4 bridges.
 
 ## Refusal Catalog
 
