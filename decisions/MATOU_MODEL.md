@@ -246,6 +246,54 @@ consumer + renderer version-native, proven live the same day
 - `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `live |
   live | TODO | TODO`.
 
+## Addendum — port live, bridge-1165 (2026-09-11)
+
+`bridge-1165` `628f849` (E0) + `c6e15b7` (live fixes) ports the
+consumer + renderer version-native, proven live the same day (`LIVE=1`
+server + launcher-free headless client, host OpenJDK 1.8.0_502 for the
+game):
+
+- Server green with the 48-line map (bind clean, ticks clean, world ==
+  pure union 1922 cells, my_ore + stone — same T4 union, zero content
+  regression). `my_beast.geo.json` deployed byte-identical
+  (`6577bfaf...`), zero `E_MODEL_*` server-side. `E_MAP_COVER` scans
+  the built jar (ported from 1122, extended to `com/mojang/` owners,
+  SRG-spelled refs passing through by construction, one ALLOW row for
+  the MCP-named `EntityClassification/CREATURE` enum constant every
+  server run executes).
+- Client (`run-client-direct.sh`, `SPAWN=1`, Xvfb/llvmpipe, exit 0):
+  `[MatouRenderer] ready mesh=72 verts stride=8 program=12` (the SPI
+  bake on the first LWJGL3 driver), `[MatouRenderer] drew instances=4
+  mesh=72 verts` (GL accepted, `E_GL_DRAW` silent), zero `E_*` /
+  linkage errors, spawn proof alongside (census 1→4, hp 20.0).
+- `verify-client-save.sh` replays world == pure union (1274 cells,
+  stone) — same stone-proof default as the 1122/1710 visual runs.
+- 1165-native shapes (snapshot+tsrg+javap-derived, narrow-map era with
+  a client-jar leg): `getInstance` (the 1122 `getMinecraft` does not
+  exist here), `world` field ClientWorld-typed (the 1122 WorldClient
+  trap in 1.16.5 spelling), `getRenderViewEntity` METHOD
+  Entity-typed (the 1710 EntityLivingBase trap is absent here — the
+  same-sounding `func_216773_g` lives on ActiveRenderInfo),
+  iteration rides `ClientWorld.getAllEntities` (the 1.12
+  `loadedEntityList` field is gone; same-sounding `func_217369_A` is
+  players-only), interpolation rides `prevPos + (getPos - prevPos) *
+  pt`, matrices ride the event MatrixStack top + projection via
+  `Matrix4f.write` (no `glGetFloat` on blaze3d). Single-Minecraft stub
+  merged into `tools/live/stub` (`autoplay/stub` deleted — same
+  duplicate-class trouvaille as 1122/1710).
+- Trouvailles (two timeouts, crash-fast killed both in seconds once
+  the markers landed): the stub strip covered `net/` (+`org/` client
+  side) but not `com/` — the fake `MatrixStack` shipped in the DEV
+  bridge jar and the loading overlay died deterministically
+  (`AbstractGui.fill` NPE; fixed both strips, the hub one in
+  `run-client.sh`); the `*C` stub copied the LWJGL2 name
+  `glUniformMatrix4`, but LWJGL 3.2.2 only declares
+  `glUniformMatrix4fv` (javap on the provisioned game libraries — the
+  full `*C` surface verified the same way, all other names hold).
+  Same class as trouvaille #3 (recalled descriptor), LWJGL-side.
+- `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `live |
+  live | live | TODO`.
+
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and

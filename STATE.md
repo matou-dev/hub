@@ -4,6 +4,30 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model + GL renderer port live on bridge-1165
+  (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
+  addenda, bridge-1165 `628f849` + `c6e15b7`, host OpenJDK 1.8.0_502) :
+  server green with the 48-line narrow map (12 renderer rows, client-jar
+  javap leg, `E_MAP_COVER` extended to `com/mojang/` — bind clean, ticks
+  clean, world == pure union 1922 cells, my_ore + stone, geo
+  byte-identical `6577bfaf`, zero `E_MODEL_*`) ; launcher-free headless
+  client (`run-client-direct.sh`, `SPAWN=1`, Xvfb/llvmpipe, exit 0) —
+  `[MatouRenderer] ready mesh=72 verts` (the SPI bake on the first
+  LWJGL3 `Lwjgl3Backend`, `program=12`), `[MatouRenderer] drew
+  instances=4` (`E_GL_DRAW` silent), zero `E_*` / linkage, spawn proof
+  alongside, verdict world == pure union (1274 cells, stone).
+  1165-native: `getInstance` / ClientWorld-typed `world` /
+  `getRenderViewEntity` method (Entity — no 1710 trap) /
+  `getAllEntities` Iterable (no `loadedEntityList`) / event-fed
+  matrices via `Matrix4f.write` (no `glGetFloat`) ; single-Minecraft
+  stub merged, `autoplay/stub` deleted. Trouvailles: `com/` stub leak
+  (fake MatrixStack shipped, overlay NPE — both strips fixed, the hub
+  one in `run-client.sh`) + recalled `glUniformMatrix4` (LWJGL 3.2.2
+  wants `glUniformMatrix4fv`, full `*C` surface javap-verified) ;
+  crash-fast killed both live failures in seconds.
+  `PORT_QUEUE` flips both rows 1165 to `live` (`live | live | live |
+  TODO` and `live | live | live | shell`).
+
 - 2026-09-11 : Beast model + GL renderer port live on bridge-1710
   (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
   addenda, bridge-1710 `f3ef9f6` + `41c3c33`, host OpenJDK 1.8.0_502) :

@@ -104,3 +104,21 @@ compile and link (`program=3`), the VAO/VBO upload succeeds, and GL
 accepts the instanced draw (`[MatouRenderer] drew instances=4`,
 `E_GL_DRAW:failed` silent). `PORT_QUEUE` row `GL Instancing Renderer`
 flips to `live | live | shell | shell`.
+
+## Addendum — port live, bridge-1165 (2026-09-11)
+
+The same run that proves `MATOU_MODEL.md` 1165 (bridge-1165
+`628f849` + `c6e15b7`, `run-client-direct.sh` under Xvfb/llvmpipe,
+host OpenJDK 1.8.0_502) proves the first LWJGL3 driver live: the
+`Lwjgl3Backend` (`GL*C` bindings, same call-for-call shape as the
+LWJGL2 driver — era-native basename per the parity tolerance, never a
+misnomer) compiles GLSL 3.30 shaders and links (`program=12`), the
+VAO/VBO upload succeeds with event-fed matrices
+(`MatrixStack.getLast/getMatrix/Matrix4f.write`, no fixed-function
+reads), and GL accepts the instanced draw (`[MatouRenderer] drew
+instances=4`, `E_GL_DRAW:failed` silent). Live fixes: the stub strip
+now covers `com/` (fake Mojang stubs shipped once), and the backend
+calls the measured `glUniformMatrix4fv` (the recalled LWJGL2 name died
+with `NoSuchMethodError` on the first draw — crash-fast killed it in
+seconds). `PORT_QUEUE` row `GL Instancing Renderer` flips to `live |
+live | live | shell`.
