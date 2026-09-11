@@ -122,3 +122,19 @@ calls the measured `glUniformMatrix4fv` (the recalled LWJGL2 name died
 with `NoSuchMethodError` on the first draw — crash-fast killed it in
 seconds). `PORT_QUEUE` row `GL Instancing Renderer` flips to `live |
 live | live | shell`.
+
+## Addendum — port live, bridge-1201 (2026-09-11)
+
+The same run that proves `MATOU_MODEL.md` 1201 (bridge-1201
+`8d7b0d8` E0, zero live fixes, `run-client-direct.sh` under Xvfb,
+host Temurin 17.0.20) proves the second LWJGL3 driver live: the
+`Lwjgl3Backend` (same call-for-call shape as the 1165 driver —
+era-native basename per the parity tolerance) compiles GLSL 3.30
+shaders and links (`program=15`), the VAO/VBO upload succeeds with
+event-fed matrices (`PoseStack.last/pose` plus the event
+projection matrix, JOML direct), and GL accepts the instanced draw
+(`[MatouRenderer] drew instances=4`, `E_GL_DRAW:failed` silent).
+No stub or naming fix was needed (the 1165 `com/` strip and
+`glUniformMatrix4fv` lessons already ride the shared E0 shape).
+`PORT_QUEUE` row `GL Instancing Renderer` flips to `live | live |
+live | live` (0 `e0` remaining).

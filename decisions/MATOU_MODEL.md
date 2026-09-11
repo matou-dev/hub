@@ -294,6 +294,50 @@ game):
 - `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `live |
   live | live | TODO`.
 
+## Addendum — port live, bridge-1201 (2026-09-11)
+
+`bridge-1201` `8d7b0d8` (E0) ports the consumer + renderer
+version-native, proven live the same week with zero live fixes
+(`run-client-direct.sh`, `SPAWN=1`, Xvfb, exit 0, host Temurin
+17.0.20 for the game — the 180 s probe timed out on budget only,
+game alive rendering; the full 600 s run exited 0 by itself):
+
+- Server green with the 48-line narrow map on the thin wrapper +
+  shared derive lib (bind clean, ticks clean, world == pure union
+  1922 cells, `my_ore` + `my_gem` registered — recorded in hub
+  `decisions/LIVE_SHELL_COMMON.md`, never duplicated here).
+- Client: `[MatouRenderer] ready mesh=72 verts stride=8
+  program=15` (the SPI bake on the second LWJGL3 driver),
+  `[MatouRenderer] drew instances=4 mesh=72 verts` (GL accepted,
+  `E_GL_DRAW` silent), zero `E_*` / linkage errors, spawn proof
+  alongside (census 1→4 at worldTicks 2..5, kill at 1000, gem drop
+  at 1001 elapsed 1, immediate).
+- `verify-client-save.sh` replays world == pure union (1274 cells,
+  stone) — same stone-proof default as the sibling visual runs.
+- 1201-native shapes (triple-lock derived, server+client txt plus
+  dual-javap): `getInstance` static, `level` field
+  ClientLevel-typed, `getCameraEntity` Entity-typed, matrices ride
+  `PoseStack.last/pose` plus the event projection matrix (JOML
+  direct, no Mojang-math write), iteration names no ClientLevel
+  member (polls the already-mapped
+  `EntityGetter.getEntitiesOfClass`), frame event is
+  `RenderLevelStageEvent` gated on `AFTER_ENTITIES` (no
+  `RenderWorldLastEvent` here), join rides official
+  `--quickPlaySingleplayer` (no programmatic join surface), game jar
+  is the installer client-extra (never the vanilla primary —
+  split-package `ResolutionException`, measured).
+- Trouvaille (vanilla noise, never asserted): Mojang `GlDebug`
+  `GL_INVALID_OPERATION in glDrawElements` spam under Xvfb/swrast
+  starting ~50 s after our draw, at the tick-999/1000 kill+drop
+  legs (the dropped-gem item entity begins rendering) — our draw is
+  drain-then-judged per frame with VAO/program/buffer unbound
+  after, and `E_GL_DRAW` stays silent throughout ; same proof
+  standard as the siblings (no verdict ever asserted on vanilla
+  `GlDebug` lines). Vanilla flite narrator `UnsatisfiedLinkError`
+  at boot is non-fatal (game continues, narrator dead headless).
+- `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `live |
+  live | live | live` (0 `e0` remaining).
+
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and

@@ -4,6 +4,31 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model + GL renderer port live on bridge-1201
+  (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
+  addenda, bridge-1201 `8d7b0d8` E0, zero live fixes, host Temurin
+  17.0.20) : server green with the 48-line narrow map (bind clean,
+  ticks clean, world == pure union 1922 cells, my_ore + my_gem
+  registered — first live run on the thin wrapper + shared derive
+  lib) ; launcher-free headless client (`run-client-direct.sh`,
+  `SPAWN=1`, Xvfb, exit 0) — `[MatouRenderer] ready mesh=72 verts
+  stride=8` (the SPI bake on the second LWJGL3 `Lwjgl3Backend`,
+  `program=15`), `[MatouRenderer] drew instances=4` (`E_GL_DRAW`
+  silent), zero `E_*` / linkage, spawn proof alongside (census 1→4
+  at worldTicks 2..5, kill at 1000, gem drop at 1001 elapsed 1),
+  `verify-client-save.sh` world == pure union (1274 cells, stone).
+  1201-native: static `getInstance` / ClientLevel-typed `level` /
+  Entity-typed `getCameraEntity` / `PoseStack.last/pose` matrices
+  (JOML direct) / `EntityGetter.getEntitiesOfClass` iteration /
+  `RenderLevelStageEvent` on `AFTER_ENTITIES` / quickplay join /
+  installer client-extra game jar. Trouvailles: 180 s probe timed
+  out on budget only (game alive rendering, full 600 s run exited
+  0) ; vanilla `GlDebug` glDrawElements spam under swrast from the
+  tick-1000 drop legs (~50 s after our draw, tripwire silent) +
+  vanilla flite narrator `UnsatisfiedLinkError` (non-fatal).
+  `PORT_QUEUE` flips both rows 1201 to `live` (live x4 everywhere,
+  0 `e0` remaining).
+
 - 2026-09-11 : Beast model + GL renderer port live on bridge-1165
   (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
   addenda, bridge-1165 `628f849` + `c6e15b7`, host OpenJDK 1.8.0_502) :
