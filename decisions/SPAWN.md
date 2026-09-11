@@ -751,4 +751,29 @@ file namespace off the loot drop refs.
   string end to end), clean shutdown at 4600 ticks, save pure union
   1274 (id 253 via `NUMERIC_IDS`, pre-flattening era), zero `E_*` /
   linkage (benign gem-model `Caused by` only, same as every 1122
-  proof). Sibling live TODO (same legs, byte-identical hunk).
+  proof). Sibling live 1710 done (same legs, byte-identical hunk,
+  zero live fixes — bridge stays `5dc3a2a`, SPI pin `f1499ee`
+  untouched, host OpenJDK 1.8.0_502 on the server side): `B3_OFFLINE=1
+  sh tools/run-live.sh` exit 0 first try (150 s Forge 1614 run, world
+  == pure union 1922 cells ids 1,165 with `my_ore` id 165 dynamic off
+  the boot log, per-mob spawn wire `{my_beast hp <20> cap <4> budget
+  <1> y <66..68>},{my_brute hp <30> cap <4> budget <1> y <66..68>}` plus
+  `registered-entity <example1.content:my_beast,
+  example1.content:my_brute>`, zero `E_*` — sole `Caused by` is Forge's
+  own offline version check, benign) ; headless direct-client
+  `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` exit 0 end to end
+  (internal `ok verify-client : world == pure union (1274 cells, 1,165
+  only)`) — census 2→8 balanced at worldTicks 2..5, hp 20.0 + 30.0 at
+  tick 2, beast head x2 → 18.0 at 501 then brute head x3 with drop=3.0
+  exact at 601 (elapsed 1 each), spawn kill at 1000 → gem at 1001
+  (elapsed 1), replacement joined the same tick 999 under the qualified
+  ref `example1.content:my_beast`, clean shutdown at 4600 ticks, zero
+  `E_*` / linkage. Trouvailles: the struck-brute baseline reads
+  ambient-damaged (18.0 then 19.0 across two runs — deterministic brute
+  churn `loot recorded <…:beast.my_brute>` at ticks 308/324 with adopted
+  replacements, same class as the 1201 ambient-falls note ; the drop
+  stays exact either way, so the weakspot proof holds) ; the internal
+  verdict inherits `NUMERIC_IDS` from env, so the era-native id rides
+  the direct-client invocation itself (omitting it leaves the game legs
+  green and fails only the replay — same shape as every 1710 proof).
+  1165+1201 sibling live TODO.

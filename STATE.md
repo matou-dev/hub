@@ -1,5 +1,21 @@
 # STATE.md — présent
 
+- 2026-09-12 : Qualified mob view sibling live, bridge-1710
+  (`5dc3a2a`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
+  150 s server green (world == pure union 1922 ids 1,165, zero
+  `E_*`) ; headless direct-client `NUMERIC_IDS=example1:my_ore=165
+  SPAWN=1 COMBAT=1` (exit 0 end to end) — census 2→8, hp 20.0 +
+  30.0, beast head x2 → 18.0 at 501 then brute head x3 (drop=3.0
+  exact, elapsed 1 each), kill 1000 → gem 1001 (elapsed 1) with the
+  replacement joining under `example1.content:my_beast`, clean
+  shutdown at 4600 ticks, save pure union 1274, zero `E_*` /
+  linkage. Trouvailles: struck-brute baseline reads ambient-damaged
+  (18.0/19.0 across runs, churn at ticks 308/324 — drop stays
+  exact) ; the internal verdict inherits `NUMERIC_IDS` from env, so
+  the era-native id rides the invocation (same as every 1710
+  proof). 1165+1201 sibling live stays TODO — last open item on
+  the row.
+
 - 2026-09-11 : Qualified mob view lead live, bridge-1122
   (`3338075`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
   150 s server green (world == pure union 1922, zero `E_*`) ;
@@ -8,8 +24,8 @@
   (elapsed 1 each), kill 1000 → gem 1001 (elapsed 1) with the
   replacement joining under `example1.content:my_beast`, clean
   shutdown at 4600 ticks, save pure union 1274, zero `E_*` /
-  linkage. Sibling live stays TODO (same legs, byte-identical
-  hunk) — last open item on the row.
+  linkage. Sibling live 1710 done 2026-09-12, 1165+1201 TODO —
+  last open item on the row.
 
 - 2026-09-11 : Qualified PolicyPack mob view E0, all bridges (spi
   `f1499ee` `PolicyPack.spawnMobRef`, example1 `63ff7b7`
