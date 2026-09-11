@@ -1,5 +1,21 @@
 # STATE.md — présent
 
+- 2026-09-11 : Distinct per-mob drops E0, lead bridge-1122 (spi
+  `f48d37e` per-mob loot views, example1 `9a874a6` `my_brute_gem`
+  x2 + per-mob `LootTable`/`LootJob`, bridge-1122 `b6a3959` per-mob
+  loot wire, hub `decisions/LOOT.md` addendum, `PORT_QUEUE`
+  `TODO | e0 | TODO | TODO`) : stages 1-2 green (example1 534 ok,
+  bridge-1122 per-mob batteries, forge + autoplay compile), live
+  proof TODO — same bar as every lead E0. `my_beast` pays
+  `my_gem` x1, `my_brute` pays `my_brute_gem` x2, ore pays the first
+  sealed mob ; the `E_EXAMPLE_LOOT:diverged` refusal is retired
+  (divergent content seals per mob). Siblings oracle-backported only
+  (1710 `fc5fce6`, 1165 `a24d888`, 1201 `dcd5a1c` — oracles read
+  per-mob, seals stay single-kind, sole-view multi refusal pinned as
+  the dispatch-port rationale), E0 green each, zero forge dispatch.
+  Live (150 s server + per-mob kill legs) and the qualified mob view
+  stay named follow-ups.
+
 - 2026-09-11 : Per-mob operator override ports live x4 (bridge-1710
   `bd547ad`, bridge-1165 `353ffc9`, bridge-1201 `1de261f`, zero live
   fixes, hub `decisions/VIRTUAL_HITBOXES.md` port addenda,

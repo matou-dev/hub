@@ -1166,8 +1166,10 @@ state and stay inside the declared set.
   change); second beast class + registration live x4 (rows above —
   two mobs sealed, one generic registration, NBT identity, exact-2.0 +
   exact-3.0 on 4/4 runtimes, 0 `TODO` remaining);
-  per-mob operator override and distinct per-mob loot/spawn drops stay
-  named follow-ups (single-table scope holds there); MC-`AttributeInstance`
+  per-mob operator override live x4 (rows above, both closed);
+  distinct per-mob loot drops E0 on the lead (hub `decisions/LOOT.md`
+  row above — per-mob tables sealed, sole-view multi refusal pins the
+  dispatch ports, live proof TODO); MC-`AttributeInstance`
   reach stays refused — the content `reach` field IS the
   attribute-driven reading (one SPI number per mob, four identical
   wires, no per-version attribute call-site to drift).

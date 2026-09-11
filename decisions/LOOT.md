@@ -229,3 +229,56 @@ any disagreement refuses `E_EXAMPLE_LOOT:diverged` naming the mobs,
 never a quiet pick. Distinct per-mob drops stay a named follow-up
 (harvest cells would need the mob identity the kill hook does not
 record yet).
+
+## Addendum — distinct per-mob drops, lead E0 (2026-09-11)
+
+Retires the agree-or-refuse row above: every sealed mob funds its own
+drop (example1 `9a874a6`, `owned.matou` gains `item my_brute_gem`
+— `my_beast` pays `my_gem` x1, `my_brute` pays `my_brute_gem` x2).
+The `E_EXAMPLE_LOOT:diverged` refusal is gone (no quiet pick was ever
+taken through it — both second-beast mobs agreed until this tranche);
+divergent content now seals per mob. Live proof TODO — same bar as
+every lead E0.
+
+- Language (spi `f48d37e`): `PolicyPack` gains the per-mob loot views
+  (`lootMobs()` + `lootDrop/lootCount/lootBeastKind(mob)`, short names
+  in file order like `spawnMobs()`/`combatMobs()`); the legacy
+  `lootDrops()`/`lootBeastKind()`/`lootCount()` are sole-mob views
+  (they refuse on multi, never a quiet pick). `LootStates` documents
+  the per-kind shapes (table: ore + one `beast.<mob>` kind per mob;
+  count: one positive entry per table kind). No new error-code
+  families, zero MC.
+- Content (example1 `9a874a6`): `LootTable` seals per-mob
+  `(drop, drop_count)` maps (`mobs()` file order, `drop/count(mob)`
+  readers, `dropsPerKind()`/`countsPerKind()` kind builders — the ore
+  kind pays the first sealed mob, sole-views refuse multi mirroring
+  `SpawnTable`/`CombatTable`); `LootJob` decides per kind (the
+  `beast.<mob>` join spelled once in `LootJob.beastKind`, counts read
+  per harvest kind under the kept `E_LOOT_COUNT` code, single-mob
+  tables decide byte-identical cells); `ExamplePolicy`/`ExamplePack`
+  serve the four new accessors; `ExampleCheck` battery (owned
+  distinct drops+counts, kind builders, per-mob decide, sole-view
+  multi refusals, single-mob back-compat, per-mob policy on every
+  wiring path).
+- Lead bridge (bridge-1122 `b6a3959`): `LootSeal` seals the per-kind
+  counts map (copy-isolated, positive entries); `OperatorPolicy`
+  gains `effectiveLootCounts` (the global `loot.count` wins uniformly
+  per kind, else content per kind — per-kind loot operator keys stay
+  a named follow-up); `wireLoot` builds the per-mob table from the
+  policy primitives (ore pays the first sealed mob); `onKill`
+  records the victim's `beast.<mob>` kind through its NBT identity
+  (non-beasts pay the first mob — the T1 any-kill-pays scope survives
+  per-mob); `lootTick`/`expandClaim` read per-harvest counts. Stages
+  1-2 green (per-mob batteries, forge + autoplay compile), live proof
+  TODO.
+- Siblings oracle-backported only (1710 `fc5fce6`, 1165 `a24d888`,
+  1201 `dcd5a1c` — oracles read per-mob, seals stay single-kind, the
+  sole-view multi refusal pinned as the dispatch-port rationale),
+  E0 green each, zero forge dispatch. Mechanical SPI pin bump
+  everywhere.
+- `PORT_QUEUE` new row `Distinct per-mob drops` (`BRIDGE_PARITY.md`):
+  `TODO | e0 | TODO | TODO` (lead E0, three ports TODO, live TODO).
+- Named follow-ups staying open (not silent): lead live (150 s server
+  + per-mob kill proof legs — beast pays 1 gem, brute pays 2 brute
+  gems, ore pays 1 gem); three dispatch ports; qualified
+  `PolicyPack` mob view.
