@@ -773,7 +773,29 @@ file namespace off the loot drop refs.
   churn `loot recorded <…:beast.my_brute>` at ticks 308/324 with adopted
   replacements, same class as the 1201 ambient-falls note ; the drop
   stays exact either way, so the weakspot proof holds) ; the internal
-  verdict inherits `NUMERIC_IDS` from env, so the era-native id rides
-  the direct-client invocation itself (omitting it leaves the game legs
-  green and fails only the replay — same shape as every 1710 proof).
-  1165+1201 sibling live TODO.
+   verdict inherits `NUMERIC_IDS` from env, so the era-native id rides
+   the direct-client invocation itself (omitting it leaves the game legs
+   green and fails only the replay — same shape as every 1710 proof).
+   Sibling live 1165 done (same legs, byte-identical hunk, zero live
+   fixes — bridge stays `417b5f5`, SPI pin `f1499ee` untouched, host
+   OpenJDK 1.8.0_502): `E3_OFFLINE=1 sh tools/run-live.sh` exit 0
+   first try (150 s Forge 36.2.42 run, world == pure union 1922 cells
+   `example1:my_ore` + `minecraft:stone`, per-mob spawn wire `{my_beast
+   hp <20> cap <4> budget <1> y <66..68>},{my_brute hp <30> cap <4>
+   budget <1> y <66..68>}` plus `registered-entity
+   <example1.content:my_beast, example1.content:my_brute>`, zero `E_*`
+   — no `Caused by` at all) ; headless direct-client `SPAWN=1
+   COMBAT=1` exit 0 end to end (internal `ok verify-client : world ==
+   pure union (1274 cells, example1:my_ore,minecraft:stone only)`, no
+   `NUMERIC_IDS` on this flattening era) — census 2→8 balanced at
+   worldTicks 1..4 (flattening-era timing), hp 20.0 + 30.0 at tick 1,
+   beast head x2 → 18.0 at 501 then brute head x3 with drop=3.0 exact
+   at 601 (elapsed 1 each, struck-brute baseline 19.0 ambient-damaged),
+   spawn kill at 1000 → gem at 1001 (elapsed 1), replacement joined the
+   same tick 1000 under the qualified ref
+   `example1.content:my_beast`, clean shutdown (game exited 0, save
+   verified), zero `E_*` / linkage / `Caused by`. Trouvaille: the same
+   deterministic brute churn as the 1710 runs at the same ticks 308/324
+   (`loot dropped 2 carrier(s)` with adopted replacements — the drop
+   stays exact either way, so the weakspot proof holds). 1201 sibling
+   live TODO — last open item on the row.

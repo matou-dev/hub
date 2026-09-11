@@ -1,5 +1,19 @@
 # STATE.md — présent
 
+- 2026-09-12 : Qualified mob view sibling live, bridge-1165
+  (`417b5f5`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
+  150 s server green (world == pure union 1922
+  `example1:my_ore`+stone, per-mob spawn+combat wire, zero `E_*`, no
+  `Caused by`) ; headless direct-client `SPAWN=1 COMBAT=1` (exit 0 end
+  to end, no `NUMERIC_IDS` flattening era) — census 2→8 at worldTicks
+  1..4, hp 20.0 + 30.0, beast head x2 → 18.0 at 501 then brute head x3
+  (drop=3.0 exact at 601, baseline 19.0 ambient-damaged — same
+  deterministic churn at ticks 308/324 as the 1710 runs), kill 1000 →
+  gem 1001 (elapsed 1) with the replacement joining the same tick 1000
+  under `example1.content:my_beast`, clean shutdown (game exited 0,
+  save pure union 1274), zero `E_*` / linkage / `Caused by`. 1201
+  sibling live stays TODO — last open item on the row.
+
 - 2026-09-12 : Qualified mob view sibling live, bridge-1710
   (`5dc3a2a`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
   150 s server green (world == pure union 1922 ids 1,165, zero
