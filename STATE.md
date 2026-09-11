@@ -4,6 +4,15 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model server no-regression live on bridge-1122
+  (hub `decisions/MATOU_MODEL.md` addendum, bridge-1122 `393c020`) :
+  150 s Forge 2860 run, bind clean, world == pure union (1922 cells,
+  ids 1,253 — the exact T4 union) ; `my_beast.geo.json` deployed
+  byte-identical beside packs.cfg, zero `E_MODEL_*` server-side, step
+  6 refusal grep now trips on `E_MODEL` ; `PORT_QUEUE` stays
+  `TODO | e0 | TODO | TODO` (client-visual half still TODO, GL
+  precedent).
+
 - 2026-09-11 : Beast model consumer live on bridge-1122 e0 (hub
   `decisions/MATOU_MODEL.md` addendum, spi `e52c0d3`, bridge-1122
   `3fe9c6c`) :

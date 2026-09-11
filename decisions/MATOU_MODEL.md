@@ -122,6 +122,27 @@ call-sites, E0 (stages 1-2 green, live proof TODO):
   TODO`. Live proof (client visual + server no-regression) rides the
   next live tranche, never silently.
 
+## Addendum — server no-regression live half, bridge-1122 (2026-09-11)
+
+`bridge-1122` `393c020` proves the server half live, E0 stages 1-3
+green (`LIVE=1`, host OpenJDK 1.8.0_502):
+
+- 150 s Forge 2860 run, bind clean (no `NoSuchMethodError` /
+  `NoSuchFieldError`, no `E_*` refusal, mod loaded), world == pure
+  union (1922 cells, ids 1,253 — the exact T4 union, zero content
+  regression from the model wiring).
+- `my_beast.geo.json` deployed beside packs.cfg byte-identical to the
+  shipped asset (`sha256 6577bfaf...eefbb`), zero `E_MODEL_*` on both
+  server logs (the model path is client-only; the server ignores it
+  cleanly). Step 6 refusal grep now trips on `E_MODEL` too, so any
+  future server-side model refusal fails loudly instead of passing
+  silently.
+- `PORT_QUEUE` stays `TODO | e0 | TODO | TODO`: the client-visual half
+  (Prism/XVFB proof that the baked VBO actually draws) is still TODO.
+  Precedent: the GL row stayed `e0` after its server-only proof for
+  the same reason — `e0` means live proof incomplete, never
+  server-proven.
+
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and
