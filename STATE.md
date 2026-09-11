@@ -129,6 +129,17 @@
   - Mechanical SPI pin bump across all 4 bridges (bridge-1710 `9d29347`,
     bridge-1122 `5c0b797`, bridge-1165 `ce6c4d9`, bridge-1201 `0d21260` to
     `2e8d17b`) ; `tools/check-bridges.sh` green with 0 shells and 0 gap.
+- 2026-09-11 : GL Instancing Adapter two-tier spec + GlBackend pure contract
+  landed in SPI (hub `f4570e6`, spi `9c438e5`) :
+  - `decisions/GL_INSTANCING_ADAPTER.md` spec: specifies two-tier cross-version
+    architecture (pure planning/contracts in SPI, thin LWJGL2 vs LWJGL3 drivers in
+    bridges, Core Profile 3.1+ compatible).
+  - `spi`: `fr.iamacat.spi.render.GlBackend` pure interface (zero LWJGL, zero MC,
+    Java 8) + `InstanceFormat` (12-float packed layout with NaN/overflow guards) ;
+    test suite `GlBackendCheck` green (packing fidelity, mock backend workflow).
+  - Mechanical SPI pin bump across all 4 bridges (bridge-1710 `856d2c6`,
+    bridge-1122 `865e890`, bridge-1165 `d128dae`, bridge-1201 `320b43f` to
+    `9c438e5`) ; `tools/check-bridges.sh` green with 0 shells and 0 gap.
 <!-- GENERATED:phases ROADMAP.md -> STATE.md | do not hand-edit | tools/check.sh --fix -->
 - F0 fondation : done 2026-09-09
 - F1 hub : done 2026-09-09
