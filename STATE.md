@@ -1,5 +1,16 @@
 # STATE.md — présent
 
+- 2026-09-11 : Qualified mob view lead live, bridge-1122
+  (`3338075`, zero live fixes, hub `decisions/SPAWN.md` addendum) :
+  150 s server green (world == pure union 1922, zero `E_*`) ;
+  headless direct-client `SPAWN=1 COMBAT=1` (exit 0) — census 2→8,
+  hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0 at 600→601
+  (elapsed 1 each), kill 1000 → gem 1001 (elapsed 1) with the
+  replacement joining under `example1.content:my_beast`, clean
+  shutdown at 4600 ticks, save pure union 1274, zero `E_*` /
+  linkage. Sibling live stays TODO (same legs, byte-identical
+  hunk) — last open item on the row.
+
 - 2026-09-11 : Qualified PolicyPack mob view E0, all bridges (spi
   `f1499ee` `PolicyPack.spawnMobRef`, example1 `63ff7b7`
   `SpawnTable.mobRef` + delegates + battery, bridges 1710 `5dc3a2a`

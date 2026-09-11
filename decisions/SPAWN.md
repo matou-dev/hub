@@ -739,5 +739,16 @@ file namespace off the loot drop refs.
   `example1.content:my_brute`) — the same maps land under the same
   keys. Stages 1-2 green everywhere (spi checks, example1 535 oks,
   4 bridge gates incl. forge + autoplay compile).
-- Live proof TODO — same bar as every E0 (lead 150 s server +
-  `SPAWN=1 COMBAT=1` legs, then ports).
+- Lead live (bridge-1122 `3338075`, zero live fixes — host OpenJDK
+  1.8.0_502): 150 s Forge 2860 server green (world == pure union
+  1922 cells, ids 1,253, per-mob spawn wire lines, zero `E_*`) ;
+  headless direct-client `SPAWN=1 COMBAT=1` (exit 0) — census 2→8
+  balanced at worldTicks 2..5, hp 20.0 + 30.0, beast head x2 → 18.0
+  at 501 then brute head x3 → 27.0 at 601 (elapsed 1 each), spawn
+  kill pins `<13,66,9:my_beast>` at 1000 → carrier tick 999 → gem
+  polled at 1001 (elapsed 1), replacement joined the same tick under
+  the qualified ref `example1.content:my_beast` (the new view's
+  string end to end), clean shutdown at 4600 ticks, save pure union
+  1274 (id 253 via `NUMERIC_IDS`, pre-flattening era), zero `E_*` /
+  linkage (benign gem-model `Caused by` only, same as every 1122
+  proof). Sibling live TODO (same legs, byte-identical hunk).
