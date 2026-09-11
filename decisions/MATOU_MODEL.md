@@ -143,6 +143,27 @@ green (`LIVE=1`, host OpenJDK 1.8.0_502):
   the same reason — `e0` means live proof incomplete, never
   server-proven.
 
+## Addendum — client-visual proof protocol, bridge-1122 (2026-09-11)
+
+The `e0` flips to `live` on a Prism/XVFB run (`hub/tools/run-client.sh`
+`AUTOPLAY=1 SPAWN=1 XVFB=1 AUTOVERIFY=1`), never on code alone:
+
+- `SPAWN=1` loads bridge-landed beasts into the client's
+  `loadedEntityList` — the exact list the renderer packs — so at least
+  one frame draws `count >= 1` (a never-loaded beast proves no pixels).
+- The instance log shows `[MatouRenderer] drew instances=<n>` with
+  `n >= 1`, and zero `E_*` (the `E_GL_DRAW:failed` tripwire in
+  `GL_INSTANCING_ADAPTER.md` fails a GL-rejected draw loudly instead of
+  logging a lying `drew`).
+- `verify-client-save.sh` still replays world == pure union (the
+  renderer is client-only; a content drift fails there, never here).
+
+Pixel proof (screenshot with the beast in frame) is refused: autoplay
+never aims the camera, so framing would be luck. The chain closes
+without it: `ModelWireCheck` proves bake == shipped asset,
+`[MatouRenderer] ready` proves the VBO upload is that bake
+(`mesh=<N> verts`), `drew` proves GL accepted the instanced draw.
+
 ## What remains (re-opens as spec, not silently)
 
 1. Bridge consumer: replace `BOX_VERTICES` with `bakeMesh` output and

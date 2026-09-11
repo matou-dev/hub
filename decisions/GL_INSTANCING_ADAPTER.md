@@ -69,6 +69,10 @@ rather than legacy immediate mode or display lists:
 - `E_GL_SHADER:compile`: Shader compilation failed.
 - `E_GL_PROGRAM:link`: Program linking failed.
 - `E_GL_SHELL:unwired`: Parity shell called before bridge port.
+- `E_GL_DRAW:failed`: instanced draw issued but rejected by GL.
+  Pre-draw errors are drained (the shared context may carry MC's own),
+  the post-draw error is judged — the draw-proof log line below prints
+  only on an accepted draw, never on a rejected one.
 - `E_INSTANCE_DATA:nan`: Instance transform or lightmap value is NaN.
 - `E_INSTANCE_DATA:shape`: Invalid packing array dimensions.
 
