@@ -648,6 +648,44 @@ on Forge 2860 (150 s server + two launcher-free headless direct-client
   `TODO | live | TODO | TODO` (lead live, three ports TODO, the
   `E_COMBAT_WIRE` local-code gap names them).
 
+## Addendum — combat reach override ports, 1710/1165/1201 (2026-09-11)
+
+Three parallel port tranches, all live-green first try, zero live
+fixes — the policy wire confirmed era-blind on each (lead
+pre-tranche `OperatorPolicy.java` + `ModelWireCheck.java`
+byte-identical, `wireCombat` hunk identical, applied as the exact lead
+diff; no narrow-map delta, no SPI change, no re-pin, no new
+`forge/src` file, no new `E_FORGE_*`):
+
+- `bridge-1710` `3e6338e` (Forge 1614, Java 8 host, `B3_OFFLINE=1`) :
+  150 s server green (`combat wired <{head=2.0}> reach <4.0>`, world
+  == pure union 1922 cells, ids 1,165, zero `E_*`/linkage) ; client
+  default leg exact-2.0 (500→501, elapsed 1) ; client override leg
+  (`combat.reach=5.0` appended to the staged `packs.cfg`) `reach
+  <5.0> overridden <combat.reach>` with identical exact-2.0 ; both
+  saves pure union 1274 cells. Single benign `Caused by` (offline
+  Forge Version Check fetch, non-fatal — same signature as the policy
+  proof).
+- `bridge-1165` `d07caeb` (Forge 36.2.42, `E3_OFFLINE=1`) : 150 s
+  server green (`reach <4.0>`, 1922 cells ore + stone, zero
+  `E_*`/linkage) ; default leg exact-2.0 with census 1→4 at ticks
+  2..5 ; override leg `reach <5.0> overridden <combat.reach>` with
+  identical exact-2.0 ; both saves 1274 cells, zero `E_*`/linkage/
+  `Caused by`.
+- `bridge-1201` `bf3d865` (Forge 47.2.0, Temurin 17 host) : 150 s
+  server green (`reach <4.0>`, 1922 cells, zero `E_*`/linkage) ;
+  default leg exact-2.0 with census 1→4 at ticks 2..5 ; override leg
+  `reach <5.0> overridden <combat.reach>` with identical exact-2.0 ;
+  both saves 1274 cells, zero `E_*`/linkage (single benign vanilla
+  flite-narrator `Caused by`, same signature as prior 1201 proofs).
+- Trouvaille (live ops, no code impact): all four Forge servers bind
+  the same 25565 port, so parallel port runs serialize on the server
+  leg — the 1710/1165 agents each waited out a sibling bind and
+  stayed green. Ports stay parallel-safe on code, sequential on boot.
+- `PORT_QUEUE` row `Combat reach override` flips to
+  `live | live | live | live` (four ports live, 0 `TODO` remaining —
+  the `E_COMBAT_WIRE` local-code gap is closed).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -666,9 +704,8 @@ state and stay inside the declared set.
   only refines delivered hurts).
 - Client prediction + attack packet with server re-ray-test and
   tolerance check (the §3 lifecycle as specified above).
-- Combat policy follow-ups (not silent): policy live x4 (row above,
-  closed); reach override E0 on the lead, live proof plus the three
-  ports TODO (`PORT_QUEUE` row `Combat reach override`); per-mob tables
+- Combat policy follow-ups (not silent): policy live x4 and reach
+  override live x4 (rows above, both closed); per-mob tables
   (single-table scope holds); MC-`AttributeInstance` reach stays
   refused — the content `reach` field IS the attribute-driven
   reading (one SPI number, four identical wires, no per-version
