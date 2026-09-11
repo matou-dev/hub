@@ -686,6 +686,55 @@ diff; no narrow-map delta, no SPI change, no re-pin, no new
   `live | live | live | live` (four ports live, 0 `TODO` remaining —
   the `E_COMBAT_WIRE` local-code gap is closed).
 
+## Addendum — combat per-mob tables, lead bridge-1122 E0 (2026-09-11)
+
+Opens the per-mob line of the third re-opener below (loot/spawn
+keep their co-location single-mob joins, the second beast class
+stays a follow-up): every combat weakspot now funds one
+`(mob, bone)` pair end to end. Stages 1-2 green on the lead, live
+proof TODO — same bar as every lead E0.
+
+- Language (spi `bb8c9f5`): `spec/SYNTAX-V6.md` delta (frozen after
+  gate) — `Weakspot` gains required `mob : mob_ref` (a V1-valid
+  type, so no new genre, type or code); v6 weakspot duplicates key
+  on `(mob, bone)` at decide time (every beast has a `head`), so
+  the header-time `(decl, name)` check is skipped for v6 weakspots
+  in both parsers (symmetric py+java). V5 files keep the
+  co-location single-mob path (multi still refuses, a
+  `mob`-carrying weakspot in v5 refuses); a mob-less weakspot in
+  v6 refuses. Goldens: `valid_v6_weakspot` (two mobs sharing
+  `head`), `err_version` bumped 6→7 (the V5 tranche's own
+  mechanical share).
+- SPI contract: `PolicyPack.combatMobs()` (insertion-ordered, never
+  empty) + `combatWeakspots(mob)` / `combatReach(mob)` (loud on
+  null/unknown mob); `combatWeakspots()` / `combatReach()` stay as
+  sole-mob views (loud unless exactly one mob is sealed — never a
+  quiet pick). Only implementer is `ExamplePack` (audited by grep,
+  not assumed).
+- Content (example1 `1917963`): `CombatTable` seals per-mob maps
+  (short mob names, insertion-ordered, two passes so forward refs
+  resolve) with the V5 path intact; V6 refusals (`no mob`,
+  `unknown mob`, `lonely mob`, `(mob, bone)` dupe) stay under the
+  kept `E_EXAMPLE_COMBAT` family. `content/owned.matou` bumped
+  `syntax 5`→`6` with `mob = example1.content:my_beast` on the head
+  row — the exact sealed values (reach 4.0, head 2.0, zero
+  behaviour change for the live proof). `ExamplePolicy` plus pack
+  delegates; `ExampleCheck` gains the per-mob battery (two-mob tmp
+  seals, V5 compat, all V6 refusals).
+- Lead bridge (bridge-1122 `50af816`): `BeastModel.sealCombat`
+  replaces `sealWeakspots` (one seal truth, per-mob maps
+  re-validated under the kept `E_COMBAT_POLICY` family, no new
+  `forge/src` file, no new `E_FORGE_*`); the legacy
+  `combatWeakspots()` derives the sole entry. `wireCombat` seals
+  per-mob from the policy mobs and keeps the effective sole reach
+  plus the byte-identical `combat wired <{head=2.0}> reach <4.0>`
+  line; `onHurt`, `MatouEntity`, `OperatorPolicy` untouched (no
+  narrow-map delta: the policy wire stays era-blind). Mechanical
+  SPI re-pin on the three siblings (additive, E0 green each, no
+  live re-proof).
+- `PORT_QUEUE` row `Combat per-mob tables` (`BRIDGE_PARITY.md`):
+  `TODO | e0 | TODO | TODO`.
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
@@ -705,8 +754,11 @@ state and stay inside the declared set.
 - Client prediction + attack packet with server re-ray-test and
   tolerance check (the §3 lifecycle as specified above).
 - Combat policy follow-ups (not silent): policy live x4 and reach
-  override live x4 (rows above, both closed); per-mob tables
-  (single-table scope holds); MC-`AttributeInstance` reach stays
+  override live x4 (rows above, both closed); per-mob tables E0 on
+  the lead (row above — single mob sealed, live proof TODO, three
+  ports TODO); second beast class, per-mob operator override and
+  loot/spawn per-mob stay named follow-ups (single-table scope
+  holds there); MC-`AttributeInstance` reach stays
   refused — the content `reach` field IS the attribute-driven
   reading (one SPI number, four identical wires, no per-version
   attribute call-site to drift).
