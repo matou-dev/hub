@@ -31,6 +31,12 @@
 #   GAME_TIMEOUT  internal game watchdog in seconds (default 600): past the
 #              deadline the game is killed and the run FAILs with a log
 #              tail — never hangs to the outer timeout silently.
+#              A crash-fast watcher (needs pgrep, else watchdog only) kills
+#              the game stack as soon as a fatal marker lands in game.log,
+#              so a first-frame crash costs seconds, not the full budget.
+#              First try of a new port runs GAME_TIMEOUT=180 (probe budget:
+#              a green run needs ~4 min, so 180 only bounds silent hangs);
+#              the proof itself stays at the 600 default.
 #   ALSOFT_DRIVERS  OpenAL driver (default null: no audio device headless;
 #              override explicitly if a sounding box ever wants real sound).
 # Fails loudly (never silently): unstaged instance, installer sha1 drift
@@ -449,7 +455,54 @@ case "$GAME_TIMEOUT" in
   ""|*[!0-9]*) echo "FAIL run-direct : GAME_TIMEOUT=<$GAME_TIMEOUT> (want seconds, digits)"; exit 1;;
 esac
 rc=0
-printf '%s\n' "$LAUNCH_LINE" | timeout "$GAME_TIMEOUT" xvfb-run -a xargs -d '\n' "$JB/java" >"$UP/game.log" 2>&1 || rc=$?
+: >"$UP/game.log"
+printf '%s\n' "$LAUNCH_LINE" | timeout "$GAME_TIMEOUT" xvfb-run -a xargs -d '\n' "$JB/java" >"$UP/game.log" 2>&1 &
+GAME_PID=$!
+# Crash-fast (measured on 1710: a first-frame renderer crash logged its
+# crash report, then the JVM lingered to the 600 s watchdog — xargs waits
+# for a process that will never exit). A background watcher polls the log
+# for fatal-only markers and kills the whole game stack as soon as one
+# lands: 600 s -> seconds per trouvaille of this class. Markers are the
+# crash-report header plus linkage errors — never the E_* refusal
+# vocabulary (the verdict's job; a mentioned code is not a crash).
+if command -v pgrep >/dev/null 2>&1; then
+  ( while kill -0 "$GAME_PID" 2>/dev/null; do
+      if grep -a -q -e "---- Minecraft Crash Report ----" -e "#@!@# Game crashed!" -e "Encountered an unexpected exception" -e "NoSuchMethodError" -e "NoSuchFieldError" -e "NoClassDefFoundError" "$UP/game.log" 2>/dev/null; then
+        echo "note run-direct : crash-fast trip (fatal marker in game log, killing the game stack early)"
+        # Kill the whole stack leaves-first (timeout -> xvfb-run -> Xvfb +
+        # xargs -> java): killing timeout alone would orphan the lingered
+        # JVM, which is exactly the measured hang. No recursion (plain
+        # sh has no locals): breadth-first collect, then reversed kill.
+        _tree="$GAME_PID"
+        _changed=1
+        while [ "$_changed" = "1" ]; do
+          _changed=0
+          for _p in $_tree; do
+            for _k in $(pgrep -P "$_p" 2>/dev/null || true); do
+              case " $_tree " in
+                *" $_k "*) ;;
+                *) _tree="$_tree $_k"; _changed=1;;
+              esac
+            done
+          done
+        done
+        _rev=""
+        for _p in $_tree; do _rev="$_p $_rev"; done
+        for _p in $_rev; do kill "$_p" 2>/dev/null || true; done
+        break
+      fi
+      sleep 5
+    done ) &
+  WATCHER=$!
+else
+  echo "note run-direct : pgrep absent, crash-fast disabled (watchdog only)"
+  WATCHER=""
+fi
+wait "$GAME_PID" || rc=$?
+if [ -n "$WATCHER" ]; then
+  kill "$WATCHER" 2>/dev/null || true
+  wait "$WATCHER" 2>/dev/null || true
+fi
 if [ "$rc" = "124" ]; then
   echo "FAIL run-direct : game timed out after ${GAME_TIMEOUT}s (verdict lines + byte-bounded tail of $UP/game.log):"
   # Verdict-first, then a byte-bounded tail: the log can carry single
@@ -461,6 +514,10 @@ if [ "$rc" = "124" ]; then
   exit 1
 fi
 echo "note run-direct : game exited ($rc), full log at $UP/game.log"
+if grep -a -q -e "---- Minecraft Crash Report ----" -e "#@!@# Game crashed!" -e "Encountered an unexpected exception" "$UP/game.log" 2>/dev/null; then
+  echo "note run-direct : game log carries a crash report (verdict lines):"
+  grep -a -m20 -e "NoSuchMethodError" -e "NoSuchFieldError" -e "NoClassDefFoundError" -e "E_FORGE" -e "E_BRIDGE" -e "E_EXAMPLE" -e "E_REG" -e "E_LOOT" -e "E_SPAWN" -e "Encountered an unexpected exception" -e "Caused by" "$UP/game.log" | cut -c1-300 || true
+fi
 if [ "${VERIFY:-}" = "0" ]; then
   echo "note run-direct : VERIFY=0, skipping verdict (game rc=$rc)"
   exit "$rc"

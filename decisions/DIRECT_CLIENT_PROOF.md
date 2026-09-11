@@ -120,6 +120,23 @@ lacked pack.mcmeta, modern Forge held the "loading mods" warning screen
 never fired, the run died by timeout (found via screenshot + jstack —
 Render thread idle in glfwWaitEventsTimeout).
 
+Crash-fast + first-try probe budget (measured on the 1710 renderer port,
+bridge-1710 `41c3c33`): a first-frame client crash logged its crash report
+and the JVM lingered to the 600 s watchdog — one full budget burned on a
+one-line descriptor fix. `run-client-direct.sh` now polls `game.log` from
+a background watcher for fatal-only markers (crash-report header,
+`#@!@# Game crashed!`, unexpected exception, linkage errors — never the
+`E_*` refusal vocabulary, which is the verdict's job) and kills the whole
+game stack leaves-first as soon as one lands (killing `timeout` alone
+would orphan the lingered JVM — the measured hang). `pgrep` absent
+degrades to watchdog-only with a note, never silently. A crash in the log
+is reported verdict-first after play, whatever the exit code. First try of
+a new port additionally runs `GAME_TIMEOUT=180`: crash-fast already bounds
+the crashing class, 180 bounds the silent class (a companion on the wrong
+bus sits quiet to the watchdog with no marker — the 1710 `e4eff69`
+precedent); a green run needs ~4 min, so 180 is a probe budget and the
+proof itself stays at the 600 default.
+
 ## Gates
 
 - Green runs (1165, 1122, 1201, 1710): world == pure union (1274 cells,
