@@ -442,6 +442,36 @@ live proof TODO — same bar as every lead E0.
 - `PORT_QUEUE` row `Combat policy weakspots+reach` (`BRIDGE_PARITY.md`):
   `TODO | e0 | TODO | TODO`.
 
+## Addendum — combat policy live, lead bridge-1122 (2026-09-11)
+
+`bridge-1122` `c1378a1` (E0, zero live fixes) proves the sealed policy
+live on Forge 2860 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, Xvfb/llvmpipe, exit 0, host
+OpenJDK 1.8.0_502): the exact-2.0 proof now reads through content,
+not constants.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells — hook present but dormant, zero `E_HIT`, zero combat lines
+  on the playerless dedicated server) with `combat wired
+  <{head=2.0}> reach <4.0>` sealed from the owned file at wire time.
+- Client: `combat wired <{head=2.0}> reach <4.0>`, census 1→4 at
+  worldTicks 2..5, `spawn hp <20.0>`, then `[MatouBridge] combat
+  resolved <bone=head mult=2.0 dmg=1.0->2.0>`,
+  `[MatouAutoplay] combat struck <head hp=20.0>` at worldTick 500,
+  `[MatouAutoplay] combat resolved <drop=2.0 hp=18.0>` at worldTick
+  501 (elapsed 1 — the exact-2.0 assert, bare-hand 1.0 x sealed head
+  2x, no crit, no fallback), natural adopt/sweep/replacement at 69
+  (same signature as the T4 proofs), spawn kill at 1000 → gem
+  carrier at tick 999 → polled at 1001 (elapsed 1, chain intact),
+  clean shutdown at 4600 ticks ; `verify-client-save.sh` world ==
+  pure union (1274 cells) ; zero `E_*` / linkage lines in `game.log`
+  (two benign client model-bake `Caused by` for the registered gem
+  item — missing `models/item/my_gem.json`, non-fatal, game runs to
+  clean shutdown and the verdict stays green).
+- `PORT_QUEUE` row `Combat policy weakspots+reach` flips to
+  `TODO | live | TODO | TODO` (lead live, three ports TODO, the
+  `E_COMBAT_POLICY` local-code gap names them).
+
 ## Error catalog — completion (same tranche)
 
 The SPI `HitCheck` suite already proves refusals the original catalog
