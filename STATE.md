@@ -4,6 +4,13 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : GL Instancing adapter live driver on bridge-1122 + parity shells (hub, bridge-1122, bridge-1710, bridge-1165, bridge-1201) :
+  - `bridge-1122`: `Lwjgl2Backend` implements pure `GlBackend` (LWJGL 2 GL11, GL15, GL20, GL30, GL31, GL33) ;
+    `InstancedMeshRenderer` client renderer (@SideOnly) compiles GLSL 3.30 shaders, sets up static box mesh VBO and dynamic instance VBO,
+    subscribes to `RenderWorldLastEvent`, packs visible `MatouEntity` (`my_beast`) instances with `InstanceFormat.pack`, and flushes instanced draw ;
+    live server proof clean (30s, bind clean, ticks clean, world == pure union 1922 cells).
+  - `bridge-1710`, `bridge-1165`, `bridge-1201`: parity shells for `Lwjgl2Backend.java` and `InstancedMeshRenderer.java` pointing at `decisions/GL_INSTANCING_ADAPTER.md` (`E_GL_SHELL:unwired`).
+  - `decisions/GL_INSTANCING_ADAPTER.md` updated with `E_GL_SHELL:unwired` ; `decisions/BRIDGE_PARITY.md` `PORT_QUEUE` updated with `GL Instancing Renderer` row (`shell | e0 | shell | shell`) ; all gates 100% green.
 - 2026-09-11 : T4 PolicyPack live-proven on Forge 2860 (bridge-1122
   `326dc1d` E0, zero fix — green first try, host OpenJDK 1.8.0_502) :
   second boot of the policy path. Server `run-live.sh` 150s

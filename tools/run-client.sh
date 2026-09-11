@@ -225,8 +225,8 @@ cp -r "$BLD/forge/"* "$BLD/bridgemod/"
 # Stubs are compile-only: they must never ship (a fake Block on the
 # runtime classpath would shadow vanilla). Refuse loudly if leaked.
 # META-INF is re-stamped below (a raw @VERSION@ template must never ship).
-rm -rf "$BLD/bridgemod/net" "$BLD/bridgemod/cpw" "$BLD/bridgemod/META-INF"
-[ -e "$BLD/bridgemod/net" ] || [ -e "$BLD/bridgemod/cpw" ] \
+rm -rf "$BLD/bridgemod/net" "$BLD/bridgemod/cpw" "$BLD/bridgemod/org" "$BLD/bridgemod/META-INF"
+[ -e "$BLD/bridgemod/net" ] || [ -e "$BLD/bridgemod/cpw" ] || [ -e "$BLD/bridgemod/org" ] \
   && { echo "FAIL run-client : stub leak into mod jar"; exit 1; }
 if [ "$FAT" = "1" ]; then
   # ModLauncher/securejarhandler isolates every mods/ jar (found live in

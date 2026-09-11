@@ -68,6 +68,7 @@ rather than legacy immediate mode or display lists:
 - `E_GL_BUFFER:overflow`: Instance buffer capacity exceeded.
 - `E_GL_SHADER:compile`: Shader compilation failed.
 - `E_GL_PROGRAM:link`: Program linking failed.
+- `E_GL_SHELL:unwired`: Parity shell called before bridge port.
 - `E_INSTANCE_DATA:nan`: Instance transform or lightmap value is NaN.
 - `E_INSTANCE_DATA:shape`: Invalid packing array dimensions.
 
