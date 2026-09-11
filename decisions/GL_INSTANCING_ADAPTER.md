@@ -83,3 +83,13 @@ rather than legacy immediate mode or display lists:
   - `GlBackendCheck` unit test verifies instance packing fidelity and mock backend call sequence.
 - Parity maintained:
   - Bridge parity gate `tools/check-bridges.sh` remains green with uniform pins and declared error codes.
+
+## Addendum — live driver proof, bridge-1122 (2026-09-11)
+
+The same run that proves `MATOU_MODEL.md` visual (bridge-1122
+`34ed5b6`..`6988515`, `run-client-direct.sh` under Xvfb/llvmpipe,
+host OpenJDK 1.8.0_502) proves this backend live: GLSL 3.30 shaders
+compile, the VAO/VBO upload succeeds, and GL accepts the instanced
+draw (`[MatouRenderer] drew instances=4`, `E_GL_DRAW:failed` silent).
+`PORT_QUEUE` row `GL Instancing Renderer` flips to `shell | live |
+shell | shell` — one run, two cells, each recorded at its decision.

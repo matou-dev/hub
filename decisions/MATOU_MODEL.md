@@ -143,10 +143,20 @@ green (`LIVE=1`, host OpenJDK 1.8.0_502):
   the same reason — `e0` means live proof incomplete, never
   server-proven.
 
-## Addendum — client-visual proof protocol, bridge-1122 (2026-09-11)
+## Addendum — client-visual proof protocol, bridge-1122 (2026-09-11,
+corrected same day)
 
-The `e0` flips to `live` on a Prism/XVFB run (`hub/tools/run-client.sh`
-`AUTOPLAY=1 SPAWN=1 XVFB=1 AUTOVERIFY=1`), never on code alone:
+The `e0` flips to `live` on a launcher-free headless run
+(`hub/tools/run-client-direct.sh --bridge ../bridge-1122` after
+`AUTOPLAY=1 SPAWN=1` staging, `SPAWN=1` at play — same GL, same mods,
+same world as Prism, no launcher), never on code alone. Correction:
+this protocol first prescribed the Prism path (`run-client.sh XVFB=1`)
+and the tranche re-measured why `DIRECT_CLIENT_PROOF.md` refuses it
+for automation — the isolated Prism root stalls on its first-run
+wizard (fixed reproducibly by seeding `Language`), then on the
+missing `accounts.json` (Critical, then idle black screen with
+`--launch` ignored). Prism stays manual-dev; the proof rides the
+direct path the org already owns.
 
 - `SPAWN=1` loads bridge-landed beasts into the client's
   `loadedEntityList` — the exact list the renderer packs — so at least
@@ -163,6 +173,41 @@ never aims the camera, so framing would be luck. The chain closes
 without it: `ModelWireCheck` proves bake == shipped asset,
 `[MatouRenderer] ready` proves the VBO upload is that bake
 (`mesh=<N> verts`), `drew` proves GL accepted the instanced draw.
+
+## Addendum — client-visual proof live, bridge-1122 (2026-09-11)
+
+`bridge-1122` `34ed5b6`..`6988515` proves the visual half live
+(`LIVE=1` server re-proof + launcher-free headless client, host
+OpenJDK 1.8.0_502 for the game):
+
+- Server re-proof green with the 42-line map (bind clean, ticks
+  clean, world == pure union 1922 cells, ids 1,253 — same T4 union,
+  zero content regression from the renderer/mapping tranche).
+- Client (`run-client-direct.sh`, `SPAWN=1`, Xvfb/llvmpipe, exit 0):
+  `[MatouRenderer] ready mesh=72 verts stride=8` (2 cubes x 36 — the
+  SPI bake, never the placeholder box), `[MatouRenderer] drew
+  instances=4 mesh=72 verts` (GL accepted the instanced draw of all 4
+  census beasts; the `E_GL_DRAW:failed` tripwire stayed silent, i.e.
+  green), zero `E_*` and zero linkage errors in `game.log`, spawn
+  proof alongside (census 1→4, hp 20.0, kill + carrier).
+- `verify-client-save.sh` replays world == pure union (1274 cells,
+  stone id 1) on the client save — the renderer draws, it never
+  places.
+- Observed nonfatal: `example1:models/item/my_gem.json`
+  `FileNotFoundException`/`MissingVariantException` (the registered
+  gem ships no client item model yet — item-model JSON is its own
+  tranche; Forge substitutes the missing model, exit stays 0).
+- Tranche findings (same silent class as last tranche's `E_MODEL`
+  grep): the autoplay companion had not compiled since the item
+  tranche (missing `Item` import + duplicate `Minecraft` stub — no
+  gate built it; `check.sh` now compiles it as `ok
+  (autoplay-compile)`, stubs merged single), and the live narrow map
+  covered server refs only (first `RenderWorldLastEvent` crashed the
+  client on unmapped `getMinecraft`; the map is 42 lines now, and
+  step 3b scans the built MCP jar's constant pool against it —
+  `E_MAP_COVER` fails the next gap at build time, never live).
+- `PORT_QUEUE` row `Beast model mesh+hitboxes` flips to `TODO |
+  live | TODO | TODO`.
 
 ## What remains (re-opens as spec, not silently)
 

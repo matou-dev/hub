@@ -4,6 +4,23 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Beast model client-visual live on bridge-1122
+  (hub `decisions/MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`
+  addenda, bridge-1122 `34ed5b6`..`6988515`, host OpenJDK 1.8.0_502) :
+  launcher-free headless client (`run-client-direct.sh`, `SPAWN=1`,
+  Xvfb/llvmpipe, exit 0) — `[MatouRenderer] ready mesh=72 verts`
+  (the SPI bake), `[MatouRenderer] drew instances=4` (GL accepted,
+  `E_GL_DRAW` silent), zero `E_*` / linkage errors, spawn proof
+  alongside, `verify-client-save.sh` world == pure union (1274 cells).
+  Server re-proof green with the 42-line narrow map (1922 cells, same
+  T4 union). `PORT_QUEUE` flips `Beast model` to `TODO | live | TODO
+  | TODO` and `GL Instancing Renderer` to `shell | live | shell |
+  shell`. Tranche findings: companion unbuildable since the item
+  tranche (now `ok (autoplay-compile)` in `check.sh`), live map
+  covered server refs only (now 42 lines + `E_MAP_COVER` constant-pool
+  scan), Prism automation re-refused (wizard + account stall —
+  protocol corrected to the direct path).
+
 - 2026-09-11 : Beast model server no-regression live on bridge-1122
   (hub `decisions/MATOU_MODEL.md` addendum, bridge-1122 `393c020`) :
   150 s Forge 2860 run, bind clean, world == pure union (1922 cells,
