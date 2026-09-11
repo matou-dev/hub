@@ -4,6 +4,21 @@
 > - 2026-09-09 (fondation, syntaxe S1-S4, scaffolding 4 bridges, v1.1.0) : [docs/archive/STATE_2026_09_09.md](docs/archive/STATE_2026_09_09.md)
 > - 2026-09-10 (parité 4 bridges : blocs, veines, loot, spawn, entités, repop, T4 lead) : [docs/archive/STATE_2026_09_10.md](docs/archive/STATE_2026_09_10.md)
 
+- 2026-09-11 : Declarative Bedrock model landed in SPI (hub
+  `decisions/MATOU_MODEL.md` spec, spi `4831e5d`) :
+  - `spi`: `fr.iamacat.spi.model` pure Java 8, zero dep (minimal
+    `JsonParser`, `ModelCube`/`ModelBone`/`MatouModel`,
+    `MatouModelParser` frozen Blockbench subset) ; single derivation
+    point : `bakeMesh` emits 36 stride-8 vertices per cube (pos block
+    units px/16, box-anchored UVs, outward CCW normals mirroring the
+    live box) for the renderer VBO, `boneBoxes` derives one bind-pose
+    union `BoneBox` per non-empty bone for `HitTester`.
+  - Test suite `ModelCheck` covers parse goldens, bake fidelity,
+    cross-product winding comparateur (24/24 triangles outward),
+    bone resolution (front ray -> body, high ray -> head) and the
+    `E_MODEL_*` refusal battery.
+  - Mechanical SPI pin bump across all 4 bridges (to `4831e5d`) ;
+    `tools/check-bridges.sh` green with 0 shells and 0 gap.
 - 2026-09-11 : Decision maturity promotion to standard (hub `decisions/`) :
   - 8 decisions promoted from `prototype` to `standard`: `ITEM_REGISTRATION.md`, `REGISTRATION.md`, `LOOT.md`, `SPAWN.md`, `VEIN_V4.md`, `SPI_STATE_VOCABULARY.md`, `STRUCTURES_CROSS_FILE.md`, and `REPOP_SPIKE.md`.
   - Quality justification: every promoted system has live-proven consumers across 4/4 Forge runtimes (1.7.10, 1.12.2, 1.16.5, 1.20.1) with 0 shells and all gates 100% green.

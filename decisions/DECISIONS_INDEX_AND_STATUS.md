@@ -106,6 +106,7 @@ is the same lie class as the Problem above.
 - GL_INSTANCING_ADAPTER.md : active (maturity prototype, scope shared, roadmap -)
 - ITEM_REGISTRATION.md : active (maturity standard, scope shared, roadmap -)
 - LOOT.md : active (maturity standard, scope shared, roadmap -)
+- MATOU_MODEL.md : active (maturity prototype, scope spi, roadmap -)
 - REGISTRATION.md : active (maturity standard, scope shared, roadmap -)
 - SHARED_APPLY_SEAM_V1_1_0.md : active (maturity standard, scope shared, roadmap -)
 - SPAWN.md : active (maturity standard, scope shared, roadmap -)
