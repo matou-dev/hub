@@ -1,5 +1,24 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation live proof, bridge-1201 (E0
+  `c28e1d5`, zero live code fixes, hub live-proof addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `TODO | live | live | live`) : 150 s server green (world == pure
+  union 1922, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed animation
+  byte-identical, zero `E_*`) ; headless direct-client `SPAWN=1
+  COMBAT=1` (exit 0, no `NUMERIC_IDS` flattening era) — `ready
+  mesh=72 verts stride=9 texture=64x64 program=15` + `drew
+  instances=3 mesh=72 verts buckets=1` through the seal (the skinned
+  bake draws, `E_GL_DRAW` silent ; three visible beasts this run —
+  the documented visibility lottery, never a code fix), census
+  2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 → 18.0 full-health)
+  then exact-3.0 at 601 (30.0 → 27.0 full-health, no ambient churn
+  this run), kill 1000 → gem 1001 (elapsed 1), save pure union
+  1274, zero `E_*` (single benign flite-narrator `Caused by`,
+  same as every 1201 proof). Named follow-ups: 1710 (last port),
+  then walk-phase driver, generic palette, multi-clip.
+
 - 2026-09-12 : Beast animation dispatch E0, bridge-1201 (`c28e1d5`,
   stages 1-2 green, live proof TODO, hub dispatch-port addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row

@@ -574,6 +574,47 @@ already shared — no re-pin).
   walk-phase driver, generic bone palette, multi-clip layering stay
   later tranches.
 
+## Addendum — beast animation live proof, bridge-1201 (2026-09-12)
+
+`bridge-1201` `c28e1d5` (E0) proves the skinned draw + posed hit
+live on Forge 47.2.0 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, no `NUMERIC_IDS`
+flattening era, Xvfb/llvmpipe, exit 0, host Temurin 17.0.20
+machine-local `/tmp/jdk17`) — zero live code fixes.
+
+- Server green (`JAVA17_HOME=/tmp/jdk17 D3_OFFLINE=1 sh
+  tools/run-live.sh`, bind clean, ticks clean, world == pure union
+  1922 cells, `example1:my_ore`+stone — renderer client-only,
+  regression leg only, zero `E_*`) ; `[MatouBridge] animation
+  wired <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time — the deploy path is proven, never assumed).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=15`
+  (the skinned bake draws — same counts, UV/texture path intact,
+  `program=15` is the 1201-native GL program, same as the rotation
+  tranche) then `drew instances=3 mesh=72 verts buckets=1` — the
+  first skinned sampled draw through the seal on 1201 (GL accepted,
+  `E_GL_DRAW` silent ; three visible beasts this run — the
+  documented visibility lottery, never a code fix) ; census 2→8
+  balanced (`beast=brute`, cap 8) at worldTicks 1..4
+  (flattening-era timing), `spawn hp <my_beast 20.0>` + `spawn hp
+  <my_brute 30.0>`, exact-2.0 at 501 (20.0 → 18.0 full-health)
+  then exact-3.0 at 601 (30.0 → 27.0 full-health, no ambient churn
+  this run — the drop stays exact either way, same run-dependent
+  class as the qualified-mob-view trouvaille ; the head
+  `mult=2.0/3.0` resolves off the POSED head, zero autoplay
+  change) ; spawn kill at 1000 → gem polled at 1001 (elapsed 1) ;
+  `verify-client-save.sh` world == pure union (1274 cells, native
+  names, no `NUMERIC_IDS`) ; zero `E_*` / linkage (single benign
+  `Caused by` = vanilla flite narrator, same as every 1201 proof).
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `TODO | live | live | live` (second
+  dispatch cell live, one port TODO — same bar as the lead live,
+  each with its era-native anchors). Named follow-ups (unchanged
+  order): 1710 (the last port); walk-phase driver, generic bone
+  palette, multi-clip layering stay later tranches.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
