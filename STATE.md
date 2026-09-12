@@ -1,5 +1,19 @@
 # STATE.md — présent
 
+- 2026-09-12 : GPU_INSTANCING promoted prototype → standard (hub
+  `decisions/GPU_INSTANCING.md` : front-matter flip, `What remains`
+  items 1-2 closed live x4, item 3 stays the named non-goal — engine
+  GL 4.5 path never ported) :
+  - Quality justification: render plan adapter live-proven
+    version-native on 4/4 Forge runtimes (1710/1122 LWJGL2, 1165/1201
+    LWJGL3 — `ready mesh=72 verts stride=8`, `drew instances=1
+    buckets=1` through the seal, `E_GL_DRAW` silent, worlds == pure
+    union 1922, saves pure union 1274, zero `E_*` / linkage, all
+    gates green), 0 shells, parity gap declared (1165/1201
+    join-transient guard reuses cited `E_RENDER_FRUSTUM`, 1 local
+    code each, gate green).
+  - `DECISIONS_INDEX_AND_STATUS.md` regenerated via `tools/check.sh
+    --fix` ; `check.sh` passes green.
 - 2026-09-12 : Render plan adapter dispatch live, siblings
   1710/1165/1201 (1710 `4e25e2a` zero live fixes, 1165 `6c248e7` +
   `01470b6` rewind + join-transient guard, 1201 `ac31b4c` +

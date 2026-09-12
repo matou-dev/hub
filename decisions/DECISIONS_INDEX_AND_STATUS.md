@@ -117,7 +117,7 @@ is the same lie class as the Problem above.
 - VEIN_V4.md : active (maturity standard, scope shared, roadmap -)
 - VIRTUAL_HITBOXES.md : active (maturity standard, scope spi, roadmap -)
 ### direction
-- GPU_INSTANCING.md : active (maturity prototype, scope spi, roadmap -)
+- GPU_INSTANCING.md : active (maturity standard, scope spi, roadmap -)
 - REPOP_SPIKE.md : done (maturity standard, scope bridge, roadmap -)
 ### note
 - SCALING_AUDIT_STRUCTURAL_FIX.md : active (maturity unrated, scope shared, roadmap -)

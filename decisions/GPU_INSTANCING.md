@@ -1,7 +1,7 @@
 ---
 type: direction
 status: active
-maturity: prototype
+maturity: standard
 scope: spi
 roadmap: -
 ---
@@ -83,13 +83,14 @@ zero GL, no live proof:
 
 ## What remains (re-opens as spec, not silently)
 
-1. 1122 GL adapter: `render:*` snapshot states + vocab, 2860-native hook
-    (same GL era as the derived path — cheapest live proof), live proof on
-    Forge 2860. E0 LANDED 2026-09-11 (stages 1-2 green, live proof TODO —
-    same bar as every lead E0).
-2. 1165/1201 adapters after the first green (`RenderSystem`,
-    `RenderLevelStageEvent` rewrites — hook only, the pure plan is untouched).
-3. The engine GL 4.5 path is explicitly NOT ported (needs its own context).
+1. 1122 GL adapter — DONE live 2026-09-11 (lead E0 + lead live addenda
+    below, zero live fixes, `PORT_QUEUE` lead cell `live`), closed by
+    the standard promotion.
+2. 1710/1165/1201 adapters — DONE live x4 2026-09-12 (dispatch E0 +
+    dispatch live addenda below, `PORT_QUEUE`
+    `live | live | live | live`), closed by the standard promotion.
+3. The engine GL 4.5 path is explicitly NOT ported (needs its own context)
+    — stays the named non-goal.
 
 ## Addendum — render plan adapter E0, lead bridge-1122 (2026-09-11)
 
