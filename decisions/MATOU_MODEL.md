@@ -467,3 +467,38 @@ Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
 - `PORT_QUEUE` row `Beast texture V2` flips to
   `TODO | live | TODO | TODO` (lead live, three dispatch ports TODO —
   the `E_MODEL_TEX` dim-4 gap names them).
+
+## Addendum — beast texture V2 dispatch E0, siblings 1710/1165/1201 (2026-09-12)
+
+Stages 1-2 green on all three siblings, live proof TODO — same bar
+as the lead E0. The shared pieces ride verbatim (byte-identical
+`BeastTexture` holder — `BeastModel` is identical on all four
+bridges — byte-identical `my_beast.png`
+`851079978ed0d8cf…`, same `testShippedTexture` battery, same GLSL) ;
+only the placement is version-native:
+
+- 1710 `79fdf1d` (LWJGL2/cup): V2 hunks at the 1614 anchors
+  (`theWorld` / `(Entity) renderViewEntity` / `partialTicks`
+  field untouched), `GL11` backend spelling from the conformance
+  tranche.
+- 1165 `d8543d5` (LWJGL3/blaze3d): V2 hunks at the 36.2.42 anchors
+  (`getInstance` / `MatrixStack` event / `getAllEntities` /
+  `Matrix4f.write` feed untouched), `GL11C` backend spelling ;
+  the 5 extra content-weakspot battery lines kept.
+- 1201 `c455a3b` (LWJGL3/JOML): V2 hunks at the 47.2.0 anchors
+  (`AFTER_ENTITIES` gate / `EntityGetter` / JOML feed /
+  join-transient guard untouched), `GL11C` backend spelling.
+
+Zero new MC surface on all three (no stub or narrow-map delta —
+every member read was already pinned ; the added refs are
+bridge/SPI/JDK only — the renderer additions speak the `GlBackend`
+interface alone). The `E_MODEL_TEX` dim-4 gap is retired
+(`BeastTexture` now rides all four bridges — hub parity gap
+`1122 local-codes=5` reads 0) ; the remaining gap names only the
+three live proofs. Named follow-up (not silent): one 150 s server +
+`SPAWN=1 COMBAT=1` textured-draw leg per sibling (same bar as the
+lead live — `texture=64x64` in the `ready` line, `drew instances=`
+with buckets, census, exact-2.0 + exact-3.0, pure-union saves,
+zero `E_*`).
+- `PORT_QUEUE` row `Beast texture V2` (`BRIDGE_PARITY.md`):
+  `e0 | live | e0 | e0`.

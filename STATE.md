@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast texture V2 dispatch E0, siblings 1710/1165/1201
+  (1710 `79fdf1d`, 1165 `d8543d5`, 1201 `c455a3b`, hub
+  `decisions/MATOU_MODEL.md` dispatch addendum, `PORT_QUEUE`
+  `e0 | live | e0 | e0`) : stages 1-2 green each (bridge gates incl.
+  `ModelWireCheck` texture battery + forge-stub + autoplay-compile,
+  SPI pin `806411d` untouched, parity catalog unchanged) ; shared
+  pieces byte-identical (holder, 64x64 png `85107997…`, battery,
+  GLSL), era hooks untouched, zero new MC surface. `E_MODEL_TEX`
+  dim-4 gap retired (holder on 4/4, parity `1122 local-codes` 5→0).
+  Live proof TODO — same bar as the lead live, one 150 s server +
+  `SPAWN=1 COMBAT=1` textured-draw leg per sibling. Last open item
+  on the row.
 - 2026-09-12 : Beast texture V2 live, lead bridge-1122 (`00f9ce4`
   E0, zero live fixes, hub `decisions/MATOU_MODEL.md` +
   `decisions/GL_INSTANCING_ADAPTER.md` live addenda, `PORT_QUEUE`
