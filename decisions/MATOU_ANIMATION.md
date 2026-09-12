@@ -671,6 +671,46 @@ already shared — no re-pin).
   row); walk-phase driver, generic bone palette, multi-clip
   layering stay later tranches.
 
+## Addendum — beast animation live proof, bridge-1710 (2026-09-12)
+
+`bridge-1710` `f953070` (E0) proves the skinned draw + posed hit
+live on Forge 1614 (150 s server + launcher-free headless
+direct-client `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1`
+run, Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live
+code fixes.
+
+- Server green (`B3_OFFLINE=1 sh tools/run-live.sh`, bind clean,
+  ticks clean, world == pure union 1922 cells, ids 1,165 —
+  renderer client-only, regression leg only, zero `E_*`) ;
+  `[MatouBridge] animation wired
+  <{my_beast=animation.beast.walk, my_brute=animation.beast.walk}>`
+  in the boot log ; the deployed animation is byte-identical to
+  the proof asset (`cmp` at proof time — the deploy path is
+  proven, never assumed).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=3`
+  (the skinned bake draws — same counts, UV/texture path intact,
+  `program=3` is the 1710-native GL program, same as the rotation
+  tranche) then `drew instances=1 mesh=72 verts buckets=1` — the
+  first skinned sampled draw through the seal on 1710 (GL accepted,
+  `E_GL_DRAW` silent ; one visible beast this run — the documented
+  visibility lottery, never a code fix) ; census 2→8 balanced
+  (`beast=brute`, cap 8) at worldTicks 2..5 (1710-era timing),
+  `spawn hp <my_beast 20.0>` + `spawn hp <my_brute 30.0>`,
+  exact-2.0 at 501 (20.0 → 18.0 full-health) then exact-3.0 at 601
+  (15.0 → 12.0 ambient-damaged baseline, drop exact — the known
+  1710 churn class, same as every 1710 proof ; the head
+  `mult=2.0/3.0` resolves off the POSED head, zero autoplay
+  change) ; spawn kill at 1000 → gem polled at 1001 (elapsed 1) ;
+  `verify-client-save.sh` world == pure union (1274 cells, `1,165`
+  via `NUMERIC_IDS`) ; zero `E_*` / linkage (single benign
+  `Caused by` = offline Forge Version Check, same as every 1710
+  proof).
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `live | live | live | live` — row closed
+  (skinned animation live on 4/4 Forge runtimes). Named
+  follow-ups: walk-phase driver, generic bone palette,
+  multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

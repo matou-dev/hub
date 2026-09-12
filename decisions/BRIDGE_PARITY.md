@@ -109,7 +109,7 @@ never with the code copy.
 | Render plan adapter, per-bucket draw (`GPU_INSTANCING.md`) | live | live | live | live |
 | Beast texture V2, per-face uv + sampling (`MATOU_MODEL.md`) | live | live | live | live |
 | Beast rotation bake+proof (`MATOU_MODEL.md`) | live | live | live | live |
-| Beast animation, skinned pose (`MATOU_ANIMATION.md`) | e0 | live | live | live |
+| Beast animation, skinned pose (`MATOU_ANIMATION.md`) | live | live | live | live |
 
 ## Gates
 
