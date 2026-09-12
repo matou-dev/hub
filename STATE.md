@@ -1,9 +1,25 @@
 # STATE.md — présent
 
+- 2026-09-12 : Generic bone palette dispatch E0+live, bridge-1165
+  (`1220e9c`, stages 1-2 green, zero live code fixes, hub
+  dispatch addendum in `decisions/MATOU_ANIMATION.md`,
+  `PORT_QUEUE` `live | live | live | TODO`) : holder verbatim +
+  `testBonePalette` text-identical, skinned stride-9 shader over the
+  1165-native LWJGL3 path (bone texture unit 1, event projection +
+  rebuilt camera untouched), renderer eSLOC 444 → 438 (no compaction
+  needed) ; 150 s server green (world == pure union 1922, animation
+  wired, byte-identical, zero `E_*`) ; headless direct-client
+  `SPAWN=1 COMBAT=1` (exit 0) — `ready mesh=72 verts stride=9
+  texture=64x64 program=12` + `drew instances=1 mesh=72 verts
+  buckets=1`, census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 then
+  exact-3.0 at 601 (full-health baselines, no churn), kill 1000 →
+  gem 1001, save pure union 1274, zero `E_*` / linkage / `Caused
+  by`. Named follow-ups: 1201, 3-bone live asset, multi-clip.
+
 - 2026-09-12 : Generic bone palette dispatch E0+live, bridge-1710
   (`b5b9509`, stages 1-2 green, zero live code fixes, hub
   dispatch addendum in `decisions/MATOU_ANIMATION.md`,
-  `PORT_QUEUE` `e0 | live | TODO | TODO`) : holder verbatim +
+  `PORT_QUEUE` `live | live | TODO | TODO`) : holder verbatim +
   `testBonePalette` text-identical, skinned stride-9 shader over the
   1710-native LWJGL2 path (bone texture unit 1, Pre-captured
   matrices untouched), renderer eSLOC 391 → 385 ; 150 s server

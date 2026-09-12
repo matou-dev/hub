@@ -1161,10 +1161,47 @@ upload beside the instance repack ; no new `E_*`, no new
   same as every 1710 proof), deployed animation byte-identical
   post-run.
 - `PORT_QUEUE` row `Beast animation, generic palette`
-  (`BRIDGE_PARITY.md`): `e0 | live | TODO | TODO` (first dispatch
-  port E0+live). Named follow-ups: 1165 then 1201 (same bar, era
+  (`BRIDGE_PARITY.md`): `live | live | TODO | TODO` (first dispatch
+  port E0+live — the cell flips on the live proof, never the code
+  copy). Named follow-ups: 1165 then 1201 (same bar, era
   anchors — 1165 watches its renderer ceiling), a 3-bone live asset
   proving the index-2 fetch, multi-clip layering.
+
+## Addendum — generic bone palette dispatch E0+live, bridge-1165 (2026-09-12)
+
+Port of the 1122 lead palette to era-native 1165 anchors
+(`bridge-1165` `1220e9c`, stages 1-2 green, then live-proven here —
+zero live code fixes): holder verbatim (`MAX_BONES` + admission +
+`packPaletteInto`, byte-identical to the lead) + `testBonePalette`
+battery text-identical ; skinned stride-9 shader over the
+1165-native LWJGL3 path (bone texture 4xN RGBA32F on unit 1,
+`texelFetch` by file-order index, event projection + rebuilt camera
+untouched) ; `initGl` guard becomes the 1..8 range
+(`E_ANIM_SKIN:bones`, same code, new dims) ; per-bucket STREAM
+upload beside the instance repack ; no new `E_*`, no new
+`forge/src` file, pin `605d393` shared ; eSLOC renderer 444 → 438
+(the feared 450 ceiling needs no compaction — the palette shrinks
+the renderer by 6, same as the lead).
+
+- Server green (150 s, world == pure union 1922 cells,
+  `animation wired <{my_beast,my_brute=animation.beast.walk}>`,
+  deployed animation byte-identical, zero `E_*` / `Caused by`).
+- Headless direct-client `SPAWN=1 COMBAT=1` (exit 0, no
+  `NUMERIC_IDS` flattening era, host OpenJDK 1.8.0_502) — `ready
+  mesh=72 verts stride=9 texture=64x64 program=12` + `drew
+  instances=1 mesh=72 verts buckets=1` through the seal (the shipped
+  2-bone beast draws through the palette path, `E_GL_DRAW` silent ;
+  one visible beast this run — the documented visibility lottery,
+  never a code fix), census 2→8, hp 20.0 + 30.0, exact-2.0 at 501
+  (20.0 → 18.0 full-health) then exact-3.0 at 601 (30.0 → 27.0
+  full-health, no churn this run), kill 1000 → gem 1001 (elapsed
+  1), save pure union 1274, zero `E_*` / linkage / `Caused by`,
+  deployed animation byte-identical post-run.
+- `PORT_QUEUE` row `Beast animation, generic palette`
+  (`BRIDGE_PARITY.md`): `live | live | live | TODO` (second dispatch
+  port E0+live — the cell flips on the live proof, never the code
+  copy). Named follow-ups: 1201 (same bar, era anchors), a 3-bone
+  live asset proving the index-2 fetch, multi-clip layering.
 
 ## Non-goals (explicit)
 
