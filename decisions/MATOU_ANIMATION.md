@@ -977,6 +977,47 @@ clip is untouched.
   1614 era anchors). Named follow-ups: 1710 live proof (closes the
   row), generic bone palette, multi-clip layering.
 
+## Addendum — walk-phase driver live proof, bridge-1710 (2026-09-12)
+
+`bridge-1710` `e46c538` (E0) proves the distance clock live on
+Forge 1614 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` run,
+Xvfb, exit 0, host OpenJDK 1.8.0_502) — zero live code fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,165 — renderer client-only, regression leg only,
+  zero `E_*`) ; `[MatouBridge] animation wired
+  <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time ; single benign offline Version-Check `Caused by`, same as
+  every 1710 proof).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=3`
+  then `drew instances=4 mesh=72 verts buckets=1` through the seal
+  (the interpolated distance feeds the same skinned draw, GL
+  accepted, `E_GL_DRAW` silent ; four visible beasts this run —
+  the documented visibility lottery, never a code fix) ; census
+  2→8 balanced at worldTicks 2..5, `spawn hp <my_beast 20.0>` +
+  `spawn hp <my_brute 30.0>`, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (9.0 → 6.0
+  ambient-damaged baseline, drop exact — the known 1710 churn
+  class ; the head resolves off the posed head, zero autoplay
+  change ; the walked distance stays ~0 for the standing mobs, so
+  the wiring-only clip poses exactly as the E0 legs), spawn kill
+  at 1000 → gem polled at 1001 (elapsed 1) ;
+  `verify-client-save.sh` world == pure union (1274 cells, `1,165`
+  via `NUMERIC_IDS`) ; zero `E_*` (single benign offline
+  Version-Check `Caused by` plus the benign missing gem-icon
+  `TEXTURE ERRORS`, same classes as every 1710 proof ; the
+  SplashProgress crash-report header only, zero `#@!@# Game
+  crashed!` / unexpected exception) ; the deployed animation is
+  byte-identical to the proof asset (`cmp` at proof time,
+  post-run).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `live | live | live | live` (row closed —
+  distance clock live on 4/4 runtimes). Named follow-ups
+  (unchanged order): generic bone palette, multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

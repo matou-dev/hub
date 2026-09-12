@@ -1,5 +1,29 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver live proof, bridge-1710 (E0
+  `e46c538`, zero live code fixes, hub live-proof addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `live | live | live | live` — row closed) : 150 s server green
+  (world == pure union 1922 ids 1,165, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed animation
+  byte-identical, zero `E_*` ; single benign offline
+  Version-Check `Caused by`, same as every 1710 proof) ; headless
+  direct-client `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1`
+  (exit 0, Xvfb, host OpenJDK 1.8.0_502) — `ready mesh=72 verts
+  stride=9 texture=64x64 program=3` + `drew instances=4 mesh=72
+  verts buckets=1` through the seal (the interpolated distance
+  feeds the same skinned draw, `E_GL_DRAW` silent ; four visible
+  beasts this run — the documented visibility lottery, never a
+  code fix), census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 →
+  18.0 full-health) then exact-3.0 at 601 (9.0 → 6.0
+  ambient-damaged baseline, drop exact — the known 1710 churn
+  class), kill 1000 → gem 1001 (elapsed 1), save pure union 1274,
+  zero `E_*` (benign missing gem-icon `TEXTURE ERRORS` plus the
+  SplashProgress header only — zero `#@!@# Game crashed!` /
+  unexpected exception), deployed animation byte-identical
+  post-run. Distance clock now live on 4/4 runtimes. Named
+  follow-ups: generic palette, multi-clip.
+
 - 2026-09-12 : Walk-phase driver dispatch E0, bridge-1710 (`e46c538`,
   stages 1-2 green, live proof TODO, hub dispatch addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE`
