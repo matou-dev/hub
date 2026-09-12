@@ -111,7 +111,7 @@ never with the code copy.
 | Beast rotation bake+proof (`MATOU_MODEL.md`) | live | live | live | live |
 | Beast animation, skinned pose (`MATOU_ANIMATION.md`) | live | live | live | live |
 | Beast animation, walk-phase driver (`MATOU_ANIMATION.md`) | live | live | live | live |
-| Beast animation, generic palette (`MATOU_ANIMATION.md`) | TODO | e0 | TODO | TODO |
+| Beast animation, generic palette (`MATOU_ANIMATION.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

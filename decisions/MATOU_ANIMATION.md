@@ -1091,6 +1091,43 @@ scales past 8 without a new channel).
   (same bar per sibling, era-native anchors — 1165 watches its
   444/450 renderer ceiling), multi-clip layering.
 
+## Addendum — generic bone palette live proof, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `462ca53` (E0) proves the palette path live on Forge
+2860 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run, Xvfb,
+exit 0) — zero live code fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  zero `E_*`, zero `Caused by`) ; `[MatouBridge] animation wired
+  <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time, pre- and post-run).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=12`
+  then `drew instances=4 mesh=72 verts buckets=1` through the seal
+  (the shipped 2-bone beast now draws through the bone texture on
+  unit 1, `E_GL_DRAW` silent ; four visible beasts this run — the
+  documented visibility lottery, never a code fix) ; census 2→8
+  balanced at worldTicks 2..5, `spawn hp <my_beast 20.0>` +
+  `spawn hp <my_brute 30.0>`, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (30.0 → 27.0 full-health, no
+  churn this run — the head resolves off the posed head, zero
+  autoplay change), spawn kill at 1000 → gem polled at 1001
+  (elapsed 1) ; `verify-client-save.sh` world == pure union (1274
+  cells, `1,253` via `NUMERIC_IDS`) ; zero `E_*` (benign gem-model
+  `Caused by` only, same as every 1122 proof) ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time, post-run).
+- `PORT_QUEUE` row `Beast animation, generic palette`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live,
+  three dispatch ports TODO). Named follow-ups (unchanged order):
+  sibling dispatch E0+live (same bar per sibling, era-native
+  anchors — 1165 watches its 444/450 renderer ceiling), a 3-bone
+  live asset proving the index-2 fetch through the seal,
+  multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

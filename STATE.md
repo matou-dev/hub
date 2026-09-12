@@ -1,5 +1,27 @@
 # STATE.md — présent
 
+- 2026-09-12 : Generic bone palette live proof, lead bridge-1122 (E0
+  `462ca53`, zero live code fixes, hub live-proof addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `TODO | live | TODO | TODO`) : 150 s server green (world == pure
+  union 1922 ids 1,253, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed animation
+  byte-identical, zero `E_*` / `Caused by`) ; headless
+  direct-client `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1`
+  (exit 0, Xvfb) — `ready mesh=72 verts stride=9 texture=64x64
+  program=12` + `drew instances=4 mesh=72 verts buckets=1` through
+  the seal (the shipped 2-bone beast now draws through the bone
+  texture on unit 1, `E_GL_DRAW` silent ; four visible beasts this
+  run — the documented visibility lottery, never a code fix),
+  census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (30.0 → 27.0 full-health, no
+  churn this run), kill 1000 → gem 1001 (elapsed 1), save pure
+  union 1274, zero `E_*` (benign gem-model `Caused by` only),
+  deployed animation byte-identical post-run. Named follow-ups:
+  sibling dispatch E0+live (1165 watches its 444/450 renderer
+  ceiling), a 3-bone live asset proving the index-2 fetch through
+  the seal, multi-clip layering.
+
 - 2026-09-12 : Generic bone palette E0, lead bridge-1122 (`462ca53`
   over SPI `605d393`, stages 1-2 green, live proof TODO, hub E0
   addendum in `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` new row
