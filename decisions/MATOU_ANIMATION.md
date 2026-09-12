@@ -826,6 +826,45 @@ fallback — wiring-only, the shipped walk clip is untouched.
   its era-native distance anchors). Named follow-ups: 1165 live
   proof, then 1201, 1710, generic bone palette, multi-clip layering.
 
+## Addendum — walk-phase driver live proof, bridge-1165 (2026-09-12)
+
+`bridge-1165` `6ad3e52` (E0) proves the distance clock live on
+Forge 36.2.42 (150 s server + launcher-free headless direct-client
+`SPAWN=1 COMBAT=1` run, no `NUMERIC_IDS` flattening era,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live code
+fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, `example1:my_ore`+stone — renderer client-only,
+  regression leg only, zero `E_*` / `Caused by`) ;
+  `[MatouBridge] animation wired <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=12`
+  then `drew instances=1 mesh=72 verts buckets=1` through the seal
+  (the interpolated distance feeds the same skinned draw, GL
+  accepted, `E_GL_DRAW` silent ; first leg drew 0, second drew 1 —
+  the documented visibility lottery, never a code fix) ; census
+  2→8 balanced at worldTicks 2..5, `spawn hp <my_beast 20.0>` +
+  `spawn hp <my_brute 30.0>`, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (29.0 → 26.0
+  ambient-damaged baseline, drop exact — the known 1165 churn at
+  ticks 308/324, same as every 1165 proof ; the head resolves off
+  the posed head, zero autoplay change ; the walked distance stays
+  ~0 for the standing mobs, so the wiring-only clip poses exactly
+  as the E0 legs), spawn kill at 1000 → gem polled at 1001
+  (elapsed 1) ; `verify-client-save.sh` world == pure union (1274
+  cells, native names, no `NUMERIC_IDS`) ; zero `E_*` / linkage /
+  `Caused by` ; the deployed animation is byte-identical to the
+  proof asset (`cmp` at proof time).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `TODO | live | live | TODO` (first dispatch
+  cell live, two ports TODO — same bar as the lead live, each with
+  its era-native distance anchors). Named follow-ups (unchanged
+  order): then 1201, 1710, generic bone palette, multi-clip
+  layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
