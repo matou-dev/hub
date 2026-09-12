@@ -940,6 +940,43 @@ Xvfb/llvmpipe, exit 0, Temurin 17.0.20 via `JAVA17_HOME=/tmp/jdk17`)
   Named follow-ups (unchanged order): then 1710, generic bone
   palette, multi-clip layering.
 
+## Addendum — walk-phase driver dispatch E0, bridge-1710 (2026-09-12)
+
+`bridge-1710` `e46c538` ports the 1122 lead driver (`4473ee2`) as
+E0 (stages 1-2 green, live proof TODO):
+`query.modified_distance_moved` reads the per-mob vanilla distance
+clock instead of the `0.0` fallback — wiring-only, the shipped walk
+clip is untouched.
+
+- Holder `BeastAnimation` verbatim (zero MC, `diff` clean against
+  the lead) + `testWalkPhaseDriver` text-identical (pure battery
+  without MC): `animCtx` golden, interp goldens incl.
+  standing-hold, inline dist-driven strut rests at 0 and reaches
+  +30 at pi/6.
+- Forge call-sites era-native 1614 (owner discipline, reads through
+  declaring `Entity`): `MatouEntity.hitBoxes` feeds the current-tick
+  `distanceWalkedModified` (server tick) ; `InstancedMeshRenderer`
+  feeds the partialTicks interpolation of
+  `prevDistanceWalkedModified` → `distanceWalkedModified` (client
+  frame smoothing, same shape as the `lastTickPos` interpolation
+  beside it).
+- Harness: full-map era pin pair (`pin_field
+  net/minecraft/entity/Entity/distanceWalkedModified` +
+  `pin_field
+  net/minecraft/entity/Entity/prevDistanceWalkedModified` beside
+  the `ticksExisted` row — no `want.tsv` exists on 1710, the pins
+  ARE the map, same searge discipline) + shape-only stub fields
+  (non-final floats). Both `FD` rows verified pre-commit against
+  the pinned 1614 SRG (`field_70140_Q` + `field_70141_P`).
+- Gate `bridge-1710/tools/check.sh` green, no new `E_*` code, no new
+  `forge/src` file, no SPI change (pin `170bb28` shared ; shell
+  `run-live.sh` 256/450).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `e0 | live | live | live` (last dispatch
+  port E0, live proof TODO — same bar as the lead live, with the
+  1614 era anchors). Named follow-ups: 1710 live proof (closes the
+  row), generic bone palette, multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
