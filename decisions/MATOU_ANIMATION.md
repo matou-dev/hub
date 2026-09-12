@@ -1247,6 +1247,74 @@ no new `forge/src` file, pin `605d393` shared ; eSLOC renderer
   live asset proving the index-2 fetch through the seal,
   multi-clip layering.
 
+## Addendum — triple-bone index-2 swap proof, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `6f381ac` proves the palette index-2 fetch live on Forge
+2860 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run, Xvfb,
+exit 0) — zero live code fixes (assets + file golden + harness
+overlays only; the shipped 2-bone beast, holder, shader and seals
+are untouched).
+
+- Why a swap, not a third mob (operator decision, evidence
+  `bridge-1122/forge/src/.../InstancedMeshRenderer.java:199-214,404-407`):
+  the renderer bakes ONE shared static mesh (single VBO/vertexCount,
+  every bucket draws it — per-mob meshes plug into the same keys
+  one day, comment `:332-334`). A heterogeneous third mob therefore
+  needs per-bucket mesh VBO + vertexCount + texture + bone-N plus
+  example1 mob/loot/weakspot/spawn plus seals plus a new live bar —
+  its own multi-mesh tranche, named below. The swap proves the
+  index-2 fetch through the seal with zero content/renderer change.
+- Proof-only file pair `bridge-1122/tools/live/my_beast_triple.geo.json`
+  + `my_beast_triple.animation.json` (never shipped in `dist/` —
+  the `ROTATED_GEO` precedent): the shipped beast plus an `arm`
+  child of `body` (pivot `[8,16,0]`, cube `[8,12,-2]` `4x8x4` uv
+  `[40,16]` — the inline `TRIPLE` numbers, now files), same clip
+  name `animation.beast.walk` (`loop: true`, head `+30` + body bob
+  untouched) with an arm rotation channel
+  (`math.sin(query.life_time * 3.0) * 20.0` — wiring-only, no
+  driver change).
+- Harness: `TRIPLE_GEO`/`TRIPLE_ANIM` overlays in `run-live.sh`
+  (mirror `ROTATED_GEO`) ; the client swap overwrites the staged
+  instance files post-stage (`client-prism.sh` keeps existing
+  files, so the overwrite is explicit — always fresh-stage first,
+  the 1201 re-stage trouvaille).
+- Gate `ModelWireCheck.testTripleFiles`: file pair loads
+  (identifier `geometry.my_beast`, bones `body+head+arm` file
+  order, admission 3, skinned cubes x 36 stride-9, indices 0/1/2),
+  clip carries 3 bones under the same name (length `0.5`, head
+  keeps shipped `+30` at life pi/6, arm reaches `+20`), the seal
+  serves the arm pose, three deltas flow (arm moves) + three posed
+  boxes — and the shipped 2-bone mesh refuses the triple pose
+  `E_ANIM_BONE:unknown` (the pair swaps together, never half).
+  No new `E_*`, no new `forge/src` file, pin `605d393` shared.
+- Server green (`C3_OFFLINE=1`, 150 s, world == pure union 1922
+  cells ids 1,253, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed triple pair
+  byte-identical, zero `E_*` / `Caused by`).
+- Headless direct-client `NUMERIC_IDS=example1:my_ore=253 SPAWN=1
+  COMBAT=1` (exit 0, Xvfb) — `ready mesh=108 verts stride=9
+  texture=64x64 program=12` + `drew instances=1 mesh=108 verts
+  buckets=1` through the seal (the 3-bone mesh draws through the
+  palette path, `E_GL_DRAW` silent ; first leg drew — no lottery
+  this run), census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 →
+  18.0 full-health) then exact-3.0 at 601 (30.0 → 27.0
+  full-health, no churn this run), kill 1000 → gem 1001 (elapsed
+  1), save pure union 1274, zero `E_*` (benign gem-model `Caused
+  by` only, same as every 1122 proof), deployed triple animation
+  byte-identical post-run.
+- Honest division (stated, never oversold): index-2 fetch
+  *correctness* (the right matrix, not just a valid fetch) is
+  gate-proven (file index-2 golden + arm-moves delta + three posed
+  boxes) ; live proves the N=3 palette upload + draw through the
+  seal with zero refusal or fallback (`mesh=108` + `drew` +
+  silent `E_GL_DRAW`).
+- No `PORT_QUEUE` row (proof-only pair, no shipped behaviour —
+  siblings keep their green 2-bone live, zero gap, nothing uncited).
+  Named follow-ups: sibling swap legs (same bar, era anchors),
+  heterogeneous multi-mesh third mob (own tranche), multi-clip
+  layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

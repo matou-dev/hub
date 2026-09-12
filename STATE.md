@@ -1,5 +1,26 @@
 # STATE.md — présent
 
+- 2026-09-12 : Triple-bone index-2 swap proof, lead bridge-1122
+  (`6f381ac`, stages 1-2 green, zero live code fixes, hub swap-proof
+  addendum in `decisions/MATOU_ANIMATION.md`, no `PORT_QUEUE` row —
+  proof-only pair, siblings stay green on the shipped 2-bone) :
+  proof-only `my_beast_triple.geo.json` + `.animation.json` (shipped
+  beast + arm child of body, same walk clip name + arm channel,
+  `TRIPLE_GEO`/`TRIPLE_ANIM` harness overlays) + `testTripleFiles`
+  golden (file-order index 2, sealed arm pose, 3 deltas/boxes,
+  shipped 2-bone refuses the triple pose `E_ANIM_BONE:unknown`,
+  pin `605d393` shared) ; 150 s server green (world == pure union
+  1922, animation wired, deployed triple pair byte-identical, zero
+  `E_*`) ; headless direct-client `NUMERIC_IDS=example1:my_ore=253
+  SPAWN=1 COMBAT=1` (exit 0, Xvfb) — `ready mesh=108 verts stride=9
+  texture=64x64 program=12` + `drew instances=1 mesh=108 verts
+  buckets=1` (first leg drew), census 2→8, hp 20.0 + 30.0,
+  exact-2.0 at 501 then exact-3.0 at 601 (full-health baselines, no
+  churn), kill 1000 → gem 1001, save pure union 1274, zero `E_*`
+  (benign gem-model `Caused by` only), deployed triple animation
+  byte-identical post-run. Named follow-ups: sibling swap legs,
+  heterogeneous multi-mesh third mob (own tranche), multi-clip.
+
 - 2026-09-12 : Generic bone palette dispatch E0+live, bridge-1201
   (`feb682a`, stages 1-2 green, zero live code fixes, hub
   dispatch addendum in `decisions/MATOU_ANIMATION.md`,
