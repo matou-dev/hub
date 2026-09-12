@@ -1,5 +1,22 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast rotated-content dispatch live, siblings
+  1710/1165/1201 (1710 `8ac24b4`, 1165 `0b03179`, 1201 `d61144a`,
+  zero live fixes each, hub `decisions/MATOU_MODEL.md` dispatch-live
+  addendum, `PORT_QUEUE` `live | live | live | live` — row closed) :
+  150 s servers green each (worlds == pure union 1922, zero `E_*`) ;
+  headless direct-clients `SPAWN=1 COMBAT=1` (exit 0 each,
+  `NUMERIC_IDS=example1:my_ore=165` on 1710) — `ready mesh=72
+  verts stride=8 texture=64x64` + `drew instances=` with buckets=1
+  through the seal each (`program=3/12/15`, `E_GL_DRAW` silent),
+  census 2→8, hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0
+  at 600→601 (drops exact each ; 1710/1165 struck baselines
+  ambient-damaged 13.0/11.0 — the known churn class, 1201
+  full-health), kill 1000 → gem 1001, saves pure union 1274, zero
+  `E_*` (benign per-runtime `Caused by` only). No new `E_*` family,
+  no stub or narrow-map delta. `drew` stays the visibility lottery
+  (6/1/3). No open item remaining on the row.
+
 - 2026-09-12 : Beast rotated-content live proof, lead bridge-1122
   (`a4a1651` E0, zero live fixes, hub
   `decisions/MATOU_MODEL.md` rotation live-proof addendum,

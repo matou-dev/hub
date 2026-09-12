@@ -369,10 +369,10 @@ game alive rendering; the full 600 s run exited 0 by itself):
    closed).
 3. Bind-pose rotation/pivot bake — DONE E0 2026-09-12 (SPI-only,
    rotation addendum below: bone + cube Euler, hierarchy, conservative
-   boxes, unrotated byte-identity, zero bridge change), lead live
-   2026-09-12 (rotation live-proof addendum below: rotated asset draws
-   + hits through the seal on 1122, `PORT_QUEUE`
-   `TODO | live | TODO | TODO` — three dispatch ports TODO).
+   boxes, unrotated byte-identity, zero bridge change), DONE live x4
+   2026-09-12 (lead + dispatch live-proof addenda below: rotated asset
+   draws + hits through the seal on all four runtimes, `PORT_QUEUE`
+   `live | live | live | live` — row closed).
 4. Animation tables (`animations` keyframes, controllers, MOLANG) —
    later tranche, own spec (needs a content expression subset + a
    tick-time pose evaluation — never smuggled into the bind-pose bake).
@@ -735,4 +735,62 @@ Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
   three dispatch ports TODO — this addendum is the dispatch-port
   rationale, never silent). Named follow-up: one 150 s server +
   `SPAWN=1 COMBAT=1` rotated-draw leg per sibling (same bar as the
-  lead live, each with its era-native anchors).
+  lead live, each with its era-native anchors) — landed below, row
+  closed.
+
+## Addendum — rotated-content dispatch live, siblings 1710/1165/1201 (2026-09-12)
+
+`PORT_QUEUE` row `Beast rotation bake+proof` flips to
+`live | live | live | live` (0 `TODO`, 0 `e0` remaining on the row —
+the rotation row is closed). Same bar as the lead live per sibling
+(150 s server + launcher-free headless direct-client `SPAWN=1
+COMBAT=1` run, exit 0, `texture=64x64` in the `ready` line, `drew
+instances=` with buckets, census, exact-2.0 + exact-3.0 off the
+yawed head, pure-union saves, zero `E_*`) — zero live fixes on all
+three (the V2-era hook/autoplay fixes ride untouched ; the autoplay
+aims at the `boneBoxes` head center on every bridge, so the yaw-45
+needs no per-bridge aim change) :
+
+- 1710 `8ac24b4` (LWJGL2/cup, host OpenJDK 1.8.0_502) : server bind
+  clean, world == pure union 1922 (ids 1,165), zero `E_*` (benign
+  Forge-version-check-offline `Caused by` only, same as every 1710
+  proof) ; direct-client `NUMERIC_IDS=example1:my_ore=165 SPAWN=1
+  COMBAT=1` — `ready mesh=72 verts stride=8 texture=64x64
+  program=3` then `drew instances=6 mesh=72 verts buckets=1`
+  through the seal (GL accepted, `E_GL_DRAW` silent), census 2→8,
+  hp 20.0 + 30.0, exact-2.0 at 500→501 (drop=2.0 hp=18.0) then
+  exact-3.0 at 600→601 (drop=3.0 exact, struck 13.0
+  ambient-damaged — the known 1710 churn class, drop stays exact),
+  kill 1000 → gem 1001, save pure union 1274 (1,165), zero `E_*`.
+- 1165 `0b03179` (LWJGL3/blaze3d, host OpenJDK 1.8.0_502) : server
+  bind clean, world == pure union 1922 (native names), zero `E_*` ;
+  direct-client `SPAWN=1 COMBAT=1` — `ready mesh=72 verts stride=8
+  texture=64x64` then `drew instances=1 mesh=72 verts buckets=1`
+  (GL accepted, `E_GL_DRAW` silent), census 2→8, hp 20.0 + 30.0,
+  exact-2.0 at 500→501 (drop=2.0 hp=18.0) then exact-3.0 at
+  600→601 (drop=3.0 exact, struck 11.0 ambient-damaged — same
+  churn class), kill 1000 → gem 1001, save pure union 1274, zero
+  `E_*` / `Caused by` / crash.
+- 1201 `d61144a` (LWJGL3/JOML, docker D3_OFFLINE warm cache,
+  machine-local Temurin 17.0.20) : server bind clean, world == pure
+  union 1922 (native names), zero `E_*` ; direct-client `SPAWN=1
+  COMBAT=1` (no `NUMERIC_IDS`, official quick-play join) — `ready
+  mesh=72 verts stride=8 texture=64x64 program=15` then `drew
+  instances=3 mesh=72 verts buckets=1` (GL accepted, `E_GL_DRAW`
+  silent), census 2→8, hp 20.0 + 30.0, exact-2.0 at 500→501 then
+  exact-3.0 at 600→601 (drop exact both, full-health baselines
+  this run), kill 1000 → gem 1001, save pure union 1274, zero
+  `E_*` (single benign vanilla-flite `Caused by`, same as every
+  1201 proof).
+- Parity note (declared here, gates green) : shared pieces ride
+  byte-identical (proof asset, `testRotatedAsset` battery, 64x64
+  png) ; only the placement is version-native (1614/36.2.42/47.2.0
+  anchors untouched, no stub or narrow-map delta, no new `E_*`).
+  The `drew` count stays the per-run visibility lottery by design
+  (6 on 1710, 1 on 1165, 3 on 1201 — same sampling as the lead's
+  4) ; struck baselines stay run-dependent ambient churn (drops
+  exact every leg).
+- Trouvaille (live ops, no code impact) : the 1201 client stage
+  needs `JAVA17_HOME=/tmp/jdk17` too (not just the server run —
+  `run-client.sh` fails loud on the absent system Java 17, same
+  machine-local JDK as every 1201 proof, never committed).
