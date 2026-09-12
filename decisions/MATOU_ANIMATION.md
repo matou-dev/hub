@@ -862,8 +862,40 @@ fixes.
   (`BRIDGE_PARITY.md`): `TODO | live | live | TODO` (first dispatch
   cell live, two ports TODO — same bar as the lead live, each with
   its era-native distance anchors). Named follow-ups (unchanged
-  order): then 1201, 1710, generic bone palette, multi-clip
-  layering.
+   order): then 1201, 1710, generic bone palette, multi-clip
+   layering.
+
+## Addendum — walk-phase driver dispatch E0, bridge-1201 (2026-09-12)
+
+`bridge-1201` `ef87cd2` ports the 1122 lead driver (`4473ee2`) as
+E0 (stages 1-2 green, live proof TODO):
+`query.modified_distance_moved` reads the per-mob vanilla distance
+clock instead of the `0.0` fallback — wiring-only, the shipped walk
+clip is untouched.
+
+- Holder `BeastAnimation` verbatim (zero MC) + `testWalkPhaseDriver`
+  text-identical (pure battery without MC): `animCtx` golden, interp
+  goldens incl. standing-hold, inline dist-driven strut rests at 0
+  and reaches +30 at pi/6.
+- Forge call-sites era-native Mojmap (owner discipline, reads through
+  declaring `Entity`): `MatouEntity.hitBoxes` feeds the current-tick
+  `walkDist` (server tick) ; `InstancedMeshRenderer` feeds the
+  partialTicks interpolation of `walkDistO` → `walkDist` (client
+  frame smoothing, same shape as the `xo` interpolation beside it).
+- Harness: narrow map 60→62 (`Entity/walkDist F` Mojmap `X` +
+  `Entity/walkDistO F` Mojmap `W`, shape-only stub fields,
+  loop-form `pin_field` pair) ; hub `tools/live-derive.sh` era-1.20
+  assert 60→62 (harness-only). The derive was proven pre-commit
+  against the pinned bytes (62 lines, both `FD` rows resolve:
+  `walkDist f_19787_` + `walkDistO f_19867_`).
+- Gate `bridge-1201/tools/check.sh` green, no new `E_*` code, no new
+  `forge/src` file, no SPI change (pin `170bb28` shared ; shell
+  `run-live.sh` 439/450, loop form).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `TODO | live | live | e0` (second dispatch
+  port E0, live proof TODO — same bar as the lead live, each with
+  its era-native distance anchors). Named follow-ups: 1201 live
+  proof, then 1710, generic bone palette, multi-clip layering.
 
 ## Non-goals (explicit)
 

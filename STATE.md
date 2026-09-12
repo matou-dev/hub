@@ -1,5 +1,22 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver dispatch E0, bridge-1201 (`ef87cd2`,
+  stages 1-2 green, live proof TODO, hub dispatch addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE`
+  `TODO | live | live | e0`) : port of the 1122 lead driver to
+  era-native Mojmap anchors (holder verbatim + battery
+  text-identical, `MatouEntity.hitBoxes` feeds `walkDist` cur via
+  declaring `Entity`, renderer interpolates prev `walkDistO` → cur
+  `walkDist` over partialTicks via pure
+  `BeastAnimation.animCtx/interpDistMoved`) ; wiring-only (shipped
+  clip untouched) ; narrow map 60→62 (derive proven pre-commit, 62
+  lines, both `FD` rows resolve — `walkDist f_19787_` +
+  `walkDistO f_19867_`, hub era-1.20 assert 60→62) ; gate green
+  incl. the ported `testWalkPhaseDriver` (no new `E_*`, pin
+  `170bb28` shared ; shell `run-live.sh` 439/450, loop form).
+  Named follow-ups: 1201 live proof, then 1710, generic palette,
+  multi-clip.
+
 - 2026-09-12 : Walk-phase driver live proof, bridge-1165 (E0
   `6ad3e52`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
