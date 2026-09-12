@@ -1,5 +1,34 @@
 # STATE.md — présent
 
+- 2026-09-12 : Triple-bone index-2 swap legs, siblings 1710/1165/1201
+  (`bc65a7e` / `54fe8be` / `ce9654b`, stages 1-2 green each, zero
+  live code fixes each, hub sibling-swap addendum in
+  `decisions/MATOU_ANIMATION.md`, no `PORT_QUEUE` row — proof-only
+  pair, index-2 now live on 4/4 runtimes) :
+  byte-identical triple pair + ported `testTripleFiles` golden
+  (file-order index 2, sealed arm pose, 3 deltas/boxes, shipped
+  2-bone refuses the triple pose `E_ANIM_BONE:unknown`, pin
+  `605d393` shared, no new `E_*` / `forge/src` file) +
+  `TRIPLE_GEO`/`TRIPLE_ANIM` harness overlays (mirror
+  `ROTATED_GEO`) ; 150 s servers green x3 (worlds == pure union
+  1922, animation wired, deployed triple pairs byte-identical,
+  zero `E_*` — 1710 benign Version-Check `Caused by` only, 1165 +
+  1201 zero `Caused by`) ; headless direct-clients `SPAWN=1
+  COMBAT=1` (exit 0 each, `NUMERIC_IDS=example1:my_ore=165` on
+  1710, `JAVA17_HOME=/tmp/jdk17` machine-local Temurin on 1201) —
+  `ready mesh=108 verts stride=9` + `drew instances=4/1/1
+  mesh=108 verts buckets=1` through the seal (`program=3/12/15`,
+  `E_GL_DRAW` silent ; 1201 drew on its 4th fresh leg — three
+  drew-0 legs first, the documented visibility lottery, never a
+  code fix), census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 then
+  exact-3.0 at 601 (drop exact each ; 1710/1165 baselines 8.0
+  ambient-damaged — the known 308/324 churn class, 1201 baseline
+  26.0 — the tick-73 falls class), kill 1000 → gem 1001, saves
+  pure union 1274, zero `E_*` (benign per-runtime `Caused by`
+  only), deployed triple animations byte-identical post-run.
+  Named follow-ups: heterogeneous multi-mesh third mob (own
+  tranche), multi-clip layering.
+
 - 2026-09-12 : Triple-bone index-2 swap proof, lead bridge-1122
   (`6f381ac`, stages 1-2 green, zero live code fixes, hub swap-proof
   addendum in `decisions/MATOU_ANIMATION.md`, no `PORT_QUEUE` row —

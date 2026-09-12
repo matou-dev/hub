@@ -1315,6 +1315,70 @@ are untouched).
   heterogeneous multi-mesh third mob (own tranche), multi-clip
   layering.
 
+## Addendum — triple-bone index-2 swap legs, siblings 1710/1165/1201 (2026-09-12)
+
+`bridge-1710` `bc65a7e`, `bridge-1165` `54fe8be` and `bridge-1201`
+`ce9654b` replay the lead swap proof era-native (same bar: 150 s
+server + launcher-free headless direct-client `SPAWN=1 COMBAT=1`
+run, exit 0) — zero live code fixes each (byte-identical proof-only
+pair + ported `testTripleFiles` + `TRIPLE_GEO`/`TRIPLE_ANIM`
+overlays mirroring `ROTATED_GEO`, holders verbatim, pin `605d393`
+shared, no new `E_*`, no new `forge/src` file ; shell stays under
+the 450 hard ceiling — 1710 ~261, 1165 ~443, 1201 ~442 eSLOC).
+
+- Pair byte-identical to the lead on all three (`diff` clean on
+  `my_beast_triple.geo.json` + `.animation.json` — shipped beast +
+  `arm` child of `body`, same walk clip name + arm `+20` channel).
+- Gate `testTripleFiles` ported from 1122 (comment names the port ;
+  battery otherwise identical): file-order index 2, sealed arm pose,
+  3 deltas/boxes, shipped 2-bone refuses the triple pose
+  `E_ANIM_BONE:unknown` — the pair swaps together on every runtime.
+- Server green x3 (worlds == pure union 1922 cells, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed triple pair
+  byte-identical post-stage, zero `E_*`): 1710 (`B3_OFFLINE=1`, ids
+  1,165, single benign offline Version-Check `Caused by`, same as
+  every 1710 proof) ; 1165 (`E3_OFFLINE=1`, namespaced names, zero
+  `Caused by`) ; 1201 (`D3_OFFLINE=1`, namespaced names, zero
+  `Caused by` ; `JAVA17_HOME=/tmp/jdk17` machine-local Temurin
+  17.0.20, never committed — the standing 1201 trouvaille).
+- Headless direct-clients (fresh-stage first, then explicit triple
+  overwrite of the staged instance files — `client-prism.sh` keeps
+  existing files, the 1201 re-stage trouvaille): 1710
+  `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` — `ready
+  mesh=108 verts stride=9 texture=64x64 program=3` + `drew
+  instances=4 mesh=108 verts buckets=1`, census 2→8, hp 20.0 +
+  30.0, exact-2.0 at 501 (20.0 → 18.0 full-health) then exact-3.0
+  at 601 (8.0 → 5.0 ambient-damaged baseline, drop exact — the
+  known 1710 churn at ticks 308/324), kill 1000 → gem 1001
+  (elapsed 1), save pure union 1274, zero `E_*` (benign
+  Version-Check `Caused by` only), deployed triple animation
+  byte-identical post-run ; 1165 `SPAWN=1 COMBAT=1` — `ready
+  mesh=108 verts stride=9 texture=64x64 program=12` + `drew
+  instances=1 mesh=108 verts buckets=1`, census 2→8, hp 20.0 +
+  30.0, exact-2.0 at 501 (20.0 → 18.0 full-health) then exact-3.0
+  at 601 (8.0 → 5.0 ambient-damaged baseline, drop exact — the
+  known 1165 churn), kill 1000 → gem 1001 (elapsed 1), save pure
+  union 1274, zero `E_*` / `Caused by`, deployed triple animation
+  byte-identical post-run ; 1201 `SPAWN=1 COMBAT=1`
+  (`JAVA17_HOME=/tmp/jdk17`) — `ready mesh=108 verts stride=9
+  texture=64x64 program=15` + `drew instances=1 mesh=108 verts
+  buckets=1` on the 4th fresh leg (first three drew 0 — the
+  documented visibility lottery, never a code fix ; same class as
+  the 1201 palette proof which drew on its 3rd leg), census 2→8
+  (ticks 1..4), hp 20.0 + 30.0, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (26.0 → 23.0
+  ambient-damaged baseline, drop exact — the 1201 tick-73 falls
+  class), kill 1000 → gem 1001 (elapsed 1), save pure union 1274,
+  zero `E_*` (benign flite `Caused by` only, same as every 1201
+  proof), deployed triple animation byte-identical post-run.
+- Same honest division as the lead (stated, never oversold):
+  index-2 *correctness* is gate-proven ; live proves the N=3
+  palette upload + draw through the seal on 4/4 runtimes.
+- No `PORT_QUEUE` row (proof-only pair, no shipped behaviour —
+  nothing uncited). Named follow-ups: heterogeneous multi-mesh
+  third mob (own tranche — per-bucket VBO/bone-N + content +
+  seals), multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
