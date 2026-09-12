@@ -1,5 +1,25 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast texture V2 dispatch live, siblings 1710/1165/1201
+  (1710 `79fdf1d` + `609b8ca` Pre matrix capture + camera follow,
+  1165 `d8543d5` + `571b987` camera-view rebuild + present pads,
+  1201 `c455a3b` + `a4092db` preseed SpawnY 66, hub
+  `decisions/MATOU_MODEL.md` dispatch-live addendum, `PORT_QUEUE`
+  `live | live | live | live` — row closed) : 150 s servers green
+  each (worlds == pure union 1922, zero `E_*`) ; headless
+  direct-clients `SPAWN=1 COMBAT=1` (exit 0 each,
+  `NUMERIC_IDS=example1:my_ore=165` on 1710) — `ready mesh=72
+  verts stride=8 texture=64x64` + `drew instances=` with buckets=1
+  through the seal each (`program=3/12/15`, `E_GL_DRAW` silent),
+  census 2→8, hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0
+  at 600→601 (elapsed 1 each, 1165 brute baseline 26.0
+  ambient-damaged — drop stays exact), kill 1000 → gem 1001
+  (elapsed 1), saves pure union 1274, zero `E_*` (benign
+  per-runtime `Caused by` only). No new `E_*` family (1710
+  local-codes 0, 1165/1201 1 each — the pre-existing guard
+  reuse) ; `drew` count stays the documented visibility lottery
+  (3/1/6). No open item remaining on the row.
+
 - 2026-09-12 : Beast texture V2 dispatch E0, siblings 1710/1165/1201
   (1710 `79fdf1d`, 1165 `d8543d5`, 1201 `c455a3b`, hub
   `decisions/MATOU_MODEL.md` dispatch addendum, `PORT_QUEUE`

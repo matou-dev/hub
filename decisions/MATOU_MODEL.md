@@ -502,3 +502,96 @@ with buckets, census, exact-2.0 + exact-3.0, pure-union saves,
 zero `E_*`).
 - `PORT_QUEUE` row `Beast texture V2` (`BRIDGE_PARITY.md`):
   `e0 | live | e0 | e0`.
+
+## Addendum — beast texture V2 dispatch live, siblings 1710/1165/1201 (2026-09-12)
+
+`PORT_QUEUE` row `Beast texture V2` flips to
+`live | live | live | live` (0 `TODO`, 0 `e0` remaining on the row —
+the V2 row is closed). Same bar as the lead live per sibling (150 s
+server + launcher-free headless direct-client `SPAWN=1 COMBAT=1` run,
+exit 0, `texture=64x64` in the `ready` line, `drew instances=` with
+buckets, census, exact-2.0 + exact-3.0, pure-union saves, zero `E_*`):
+
+- 1710 `79fdf1d` + `609b8ca`, two live fixes (forge hook +
+  DEV-only autoplay, SPI untouched, host OpenJDK 1.8.0_502) :
+  server bind clean, world == pure union 1922 (ids 1,165), zero
+  `E_*` (benign Forge-version-check-offline `Caused by` only, same
+  as every 1710 proof) ; direct-client
+  `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` — `ready
+  mesh=72 verts stride=8 texture=64x64 program=3` then `drew
+  instances=3 mesh=72 verts buckets=1` through the seal (GL
+  accepted, `E_GL_DRAW` silent), census 2→8, hp 20.0 + 30.0,
+  exact-2.0 at 500→501 (drop=2.0 hp=18.0) then exact-3.0 at
+  600→601 (drop=3.0 hp=27.0, elapsed 1 each), kill 1000 → gem
+  1001 (elapsed 1), save pure union 1274 (1,165), zero `E_*`.
+  Fix 1: matrix capture at `RenderWorldEvent.Pre` — by `Last`
+  time the 1614 modelview is dead (vestigial rotate, ~zero
+  translation — everything culled, measured live), so the chunk
+  pass captures both matrices while the camera transform is
+  still active and the `Last` draw consumes the stored pair
+  (same pure chain downstream, only the read point moves ; new
+  shape-only stub + pin row, no new member surface). Fix 2
+  (autoplay DEV-only): the combat strike follows the vanilla
+  `/tp` bytecode (`setPlayerLocation` moves the server player
+  AND delivers the S08 with eye height — a bare
+  `setPositionAndRotation` never self-syncs on 1614, verified
+  by javap — so the client camera rides to the struck head).
+- 1165 `d8543d5` + `571b987`, two live fixes (forge hook +
+  DEV-only autoplay, SPI untouched, narrow map stays 59) :
+  server bind clean, world == pure union 1922 (native names),
+  zero `E_*` ; direct-client `SPAWN=1 COMBAT=1` — `ready
+  mesh=72 verts stride=8 texture=64x64 program=12` then `drew
+  instances=1 mesh=72 verts buckets=1` (GL accepted, `E_GL_DRAW`
+  silent), census 2→8 (4+4), hp 20.0 + 30.0, exact-2.0 at
+  500→501 (drop=2.0 hp=18.0) then exact-3.0 at 600→601
+  (drop=3.0 hp=23.0, ambient-damaged 26.0 baseline — drop
+  stays exact, elapsed 1 each), kill 1000 → gem 1001 (elapsed
+  1), save pure union 1274, zero `E_*` / `Caused by` / crash.
+  Fix 1: camera view rebuilt bridge-side from the interpolated
+  eye + render-view yaw/pitch through vanilla's own
+  look-vector formula — the event MatrixStack top is a
+  leftover rotation (yaw ~180, never the camera, proven by an
+  offline replay: 8 recs, buckets=0), so it feeds nothing
+  anymore (projection still rides the event ; its rows stay
+  pinned but unreferenced until the next row rebalance).
+  Fix 2 (autoplay DEV-only): at tick 985 every living beast
+  walks onto a presentation pad around the spawn camera (four
+  cardinal pads ~7 blocks out — the headless camera never
+  moves, server teleports carry no look packet) ; the kill
+  leg still takes the first living beast at tick 1000
+  wherever it stands.
+- 1201 `c455a3b` + `a4092db`, one live fix (DEV-only preseed,
+  renderer + SPI untouched, docker D3_OFFLINE warm cache) :
+  server bind clean, world == pure union 1922, zero `E_*`
+  (`my_ore` + `my_gem` registered) ; direct-client `SPAWN=1
+  COMBAT=1` (no `NUMERIC_IDS`, official quick-play join) —
+  `ready mesh=72 verts stride=8 texture=64x64 program=15`
+  (one known join-transient guard frame) then `drew
+  instances=6 mesh=72 verts buckets=1` (GL accepted,
+  `E_GL_DRAW` silent), census 2→8, hp 20.0 + 30.0, exact-2.0
+  at 500→501 (drop=2.0) then exact-3.0 at 600→601 (drop=3.0,
+  elapsed 1 each), kill 1000 → gem 1001 (elapsed 1), save
+  pure union 1274 (stone), zero `E_*` (single benign
+  vanilla-flite `Caused by`, same as every 1201 proof ; the
+  known `GlDebug` post-draw spam stayed absent this run —
+  never asserted either way). Fix: preseed `SpawnY` 5 → 66 —
+  1.20 stacks the 4 flat layers from the world bottom
+  (-64..-61), so the pre-1.18 value dropped the player 66
+  blocks in the air and the join search raced floor-vs-wire
+  per run (measured: -60 one run, 66 the next, same bytes) ;
+  feet 66 stands on the proof cap beside the beast pads,
+  inside the renderer box every run.
+- Parity note (dim 4, declared here, gate green) : no new
+  `E_*` code family on any sibling (1710 local-codes 0, 1165
+  1 and 1201 1 — the pre-existing `E_RENDER_FRUSTUM` guard
+  reuse), no new `E_FORGE_*`, no stub or narrow-map delta
+  beyond the cited 1710 `Pre` pin (class-only, reads no
+  member). The `drew` count stays a per-run visibility
+  lottery by design (fixed camera + wandering beasts — 3 on
+  1710, 1 on 1165, 6 on 1201 — same sampling as the lead's
+  single visible beast on its first drawn frame).
+- Trouvaille (live ops, no code impact) : the 1710 + 1165
+  legs raced port 25565 twice (parallel sibling servers —
+  wait + retry, no conflict class) ; 1201 native server
+  impossible under the race, hence docker (documented
+  `Dockerfile` voie, never committed bytes).
