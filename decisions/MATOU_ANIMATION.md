@@ -517,6 +517,63 @@ zero live code fixes.
   order): 1201, then 1710; walk-phase driver, generic bone
   palette, multi-clip layering stay later tranches.
 
+## Addendum — beast animation dispatch E0, bridge-1201 (2026-09-12)
+
+Second dispatch port of the lead consumer (`bridge-1122` `1640914`):
+`bridge-1201` `c28e1d5` lands E0 (stages 1-2 green, live proof TODO),
+era-native 1.20.1 anchors throughout, zero SPI change (pin `170bb28`
+already shared — no re-pin).
+
+- Holder `java/src/fr/iamacat/bridge/model/BeastAnimation.java`
+  verbatim (zero MC, `diff` clean) ; proof asset
+  `tools/live/my_beast.animation.json` byte-identical (`cmp` clean
+  against both the lead and the 1165 port — hub
+  `tools/client-prism.sh` stages it with no script change, the
+  bridge file simply exists now).
+- Renderer `InstancedMeshRenderer` (1201-native shapes untouched):
+  skinned stride-9 static bake + `a_bone` at location 3, instance
+  slots shifted 3-6 to 4-7, bone deltas at 8-15 over `Lwjgl3Backend`
+  (its `vertexAttribDivisor` carries the second instanced VBO —
+  measured, never assumed); event `getPoseStack`/`getProjectionMatrix`
+  upload plus the JOML `Matrix4f.get` path stay exactly as the
+  rotation tranche left them; per-bucket bone pack with
+  transpose-once columns beside the eye-relative instance repack;
+  `ready` moves to `stride=9`. `E_ANIM_SKIN:bones` guards the 2-bone
+  ceiling at `initGl` like the lead.
+- Posed hitboxes ride `placedPosedBoxes` on the entity-age clock
+  (`tickCount / 20.0`, read through declaring `Entity`, never the
+  beast); the origin stays `getX/Y/Z` (Mojmap getters — the 1.12
+  `posX` field shape does not port, and the 1.16.5 `getPosX/Y/Z`
+  names do not port either). `wireCombat` seals the clip table
+  beside the combat tables with the same `animation wired <...>`
+  log line.
+- Harness: narrow map 59→60 (`Entity/tickCount` Mojmap row +
+  shape-only stub field + `pin_field`, the 1.20 equivalent of the
+  lead `ticksExisted` row) ; hub `tools/live-derive.sh` era-1.20
+  snapshot assert 59→60 (harness-only, fixed in this tranche) ;
+  `E_ANIM` joins the server refusal grep ; the animation ships in
+  `dist/` (`SHA256SUMS`) and deploys beside geo+png.
+- Gate `bridge-1201/tools/check.sh` green incl. the ported
+  `ModelWireCheck.testShippedAnimation` (battery text-identical to
+  the lead — proven, not just green: asset removed refuses
+  `E_ANIM_GEO:unreadable` out of the new battery, never silent).
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `TODO | live | live | e0` (second dispatch
+  cell, live proof TODO — same bar as the lead live: 150 s server +
+  `SPAWN=1 COMBAT=1` skinned-draw legs with the 1201 era anchors).
+- Parity gap (dim 4, current): `E_ANIM_GEO` + `E_ANIM_WIRE` +
+  `E_ANIM_SKIN` now exist on 1122+1165+1201, 1710 TODO ; no new
+  `E_FORGE_*`, no new `forge/src` file, no SPI change (pin
+  `170bb28` shared).
+- eSLOC note (advisory, never a gate): 1201
+  `InstancedMeshRenderer` 406 (44 under the 450 plafond ; lead 378,
+  1165 441 — the delta is the pre-existing JOML event path, not the
+  animation).
+- Named follow-ups (unchanged order): 1201 live proof, then 1710
+  (smallest era delta first is done — 1710 is the last port);
+  walk-phase driver, generic bone palette, multi-clip layering stay
+  later tranches.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

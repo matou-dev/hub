@@ -595,7 +595,7 @@ for owner, mcp, desc, want_static in WANT_SAM_CLIENT:
     # is documentary (an interface SAM is never static) and unchecked.
     sd = srg_desc(od, obf2srg)
     lines.append("MD: %s/%s %s %s/%s %s" % (obf2srg[obf_owner], tm[0]["srg"], sd, owner, mcp, desc))
-assert len(lines) == 59, "E_SRG_DERIVE:want 59 lines, got %d" % len(lines)
+assert len(lines) == 60, "E_SRG_DERIVE:want 60 lines, got %d" % len(lines)
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok %s : narrow SRG derived (%d lines)" % (tag, len(lines)))
 EOF
