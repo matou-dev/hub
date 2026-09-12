@@ -1128,6 +1128,44 @@ exit 0) — zero live code fixes.
   live asset proving the index-2 fetch through the seal,
   multi-clip layering.
 
+## Addendum — generic bone palette dispatch E0+live, bridge-1710 (2026-09-12)
+
+Port of the 1122 lead palette to era-native 1614 anchors
+(`bridge-1710` `b5b9509`, stages 1-2 green, then live-proven here —
+zero live code fixes): holder verbatim (`MAX_BONES` + admission +
+`packPaletteInto`, byte-identical to the lead) + `testBonePalette`
+battery text-identical ; skinned stride-9 shader over the
+1710-native LWJGL2 path (bone texture 4xN RGBA32F on unit 1,
+`texelFetch` by file-order index, Pre-captured matrices
+untouched) ; `initGl` guard becomes the 1..8 range
+(`E_ANIM_SKIN:bones`, same code, new dims) ; per-bucket STREAM
+upload beside the instance repack ; no new `E_*`, no new
+`forge/src` file, pin `605d393` shared ; eSLOC renderer 391 → 385
+(6 further under the 450 plafond).
+
+- Server green (150 s, world == pure union 1922 cells, ids 1,165,
+  `animation wired <{my_beast,my_brute=animation.beast.walk}>`,
+  deployed animation byte-identical, zero `E_*` ; single benign
+  offline Version-Check `Caused by`, same as every 1710 proof).
+- Headless direct-client `NUMERIC_IDS=example1:my_ore=165 SPAWN=1
+  COMBAT=1` (exit 0, Xvfb, host OpenJDK 1.8.0_502) — `ready mesh=72
+  verts stride=9 texture=64x64 program=3` + `drew instances=1
+  mesh=72 verts buckets=1` through the seal (the shipped 2-bone
+  beast draws through the palette path, `E_GL_DRAW` silent ; one
+  visible beast this run — the documented visibility lottery, never
+  a code fix), census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 →
+  18.0 full-health) then exact-3.0 at 601 (11.0 → 8.0
+  ambient-damaged baseline, drop exact — the known 1710 churn
+  class), kill 1000 → gem 1001 (elapsed 1), save pure union 1274,
+  zero `E_*` (single benign offline-Version-Check `Caused by`,
+  same as every 1710 proof), deployed animation byte-identical
+  post-run.
+- `PORT_QUEUE` row `Beast animation, generic palette`
+  (`BRIDGE_PARITY.md`): `e0 | live | TODO | TODO` (first dispatch
+  port E0+live). Named follow-ups: 1165 then 1201 (same bar, era
+  anchors — 1165 watches its renderer ceiling), a 3-bone live asset
+  proving the index-2 fetch, multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

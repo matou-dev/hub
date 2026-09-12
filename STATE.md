@@ -1,5 +1,22 @@
 # STATE.md — présent
 
+- 2026-09-12 : Generic bone palette dispatch E0+live, bridge-1710
+  (`b5b9509`, stages 1-2 green, zero live code fixes, hub
+  dispatch addendum in `decisions/MATOU_ANIMATION.md`,
+  `PORT_QUEUE` `e0 | live | TODO | TODO`) : holder verbatim +
+  `testBonePalette` text-identical, skinned stride-9 shader over the
+  1710-native LWJGL2 path (bone texture unit 1, Pre-captured
+  matrices untouched), renderer eSLOC 391 → 385 ; 150 s server
+  green (world == pure union 1922 ids 1,165, animation wired,
+  byte-identical, zero `E_*`) ; headless direct-client
+  `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` (exit 0) —
+  `ready mesh=72 verts stride=9 texture=64x64 program=3` + `drew
+  instances=1 mesh=72 verts buckets=1`, census 2→8, hp 20.0 + 30.0,
+  exact-2.0 at 501 then exact-3.0 at 601 (ambient-damaged baseline,
+  drop exact — known 1710 churn class), kill 1000 → gem 1001,
+  save pure union 1274, zero `E_*`. Named follow-ups: 1165, 1201,
+  3-bone live asset, multi-clip.
+
 - 2026-09-12 : Generic bone palette live proof, lead bridge-1122 (E0
   `462ca53`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
