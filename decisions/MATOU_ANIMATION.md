@@ -1203,6 +1203,50 @@ the renderer by 6, same as the lead).
   copy). Named follow-ups: 1201 (same bar, era anchors), a 3-bone
   live asset proving the index-2 fetch, multi-clip layering.
 
+## Addendum — generic bone palette dispatch E0+live, bridge-1201 (2026-09-12)
+
+Port of the 1122 lead palette to era-native 1201 anchors
+(`bridge-1201` `feb682a`, stages 1-2 green, then live-proven here —
+zero live code fixes): holder verbatim (`MAX_BONES` + admission +
+`packPaletteInto`, byte-identical to the lead) + `testBonePalette`
+battery text-identical ; skinned stride-9 shader over the
+1201-native path (bone texture 4xN RGBA32F on unit 1, `texelFetch`
+by file-order index, `Lwjgl3Backend` divisor, event
+getPoseStack/getProjectionMatrix untouched) ; `initGl` guard
+becomes the 1..8 range (`E_ANIM_SKIN:bones`, same code, new dims) ;
+per-bucket STREAM upload beside the instance repack ; no new `E_*`,
+no new `forge/src` file, pin `605d393` shared ; eSLOC renderer
+408 → 402 (6 further under the 450 plafond).
+
+- Server green (150 s, world == pure union 1922 cells,
+  `animation wired <{my_beast,my_brute=animation.beast.walk}>`,
+  deployed animation byte-identical, zero `E_*` / `Caused by` ;
+  machine-local Temurin 17.0.20 via `JAVA17_HOME=/tmp/jdk17`, same
+  bytes as every 1201 proof).
+- Headless direct-client `SPAWN=1 COMBAT=1` (exit 0, no
+  `NUMERIC_IDS` flattening era, Temurin 17.0.20) — `ready mesh=72
+  verts stride=9 texture=64x64 program=15` + `drew instances=1
+  mesh=72 verts buckets=1` through the seal (the shipped 2-bone
+  beast draws through the palette path, `E_GL_DRAW` silent ; one
+  visible beast this run — the documented visibility lottery, never
+  a code fix ; two prior fresh legs drew 0 with zero `E_*`, the
+  third drew — no NaN transient either run), census 2→8, hp 20.0 +
+  30.0, exact-2.0 at 501 (20.0 → 18.0 full-health) then exact-3.0
+  at 601 (24.0 → 21.0 ambient-damaged baseline, drop exact — the
+  1201 tick-73 falls class), kill 1000 → gem 1001 (elapsed 1), save
+  pure union 1274, zero `E_*` (single benign flite-narrator
+  `Caused by`, same as every 1201 proof), deployed animation
+  byte-identical post-run.
+- Trouvaille (harness, never a code fix): a direct re-run without
+  fresh staging replays on the previous `<matou>` world (census at
+  cap at tick 0, spawn-proof fails loudly on hp) — always re-stage
+  (`AUTOPLAY=1 run-client.sh`) before re-running the direct leg.
+- `PORT_QUEUE` row `Beast animation, generic palette`
+  (`BRIDGE_PARITY.md`): `live | live | live | live` — row closed
+  (palette path live on 4/4 runtimes). Named follow-ups: a 3-bone
+  live asset proving the index-2 fetch through the seal,
+  multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
