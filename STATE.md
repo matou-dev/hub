@@ -1,5 +1,17 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast texture V2 E0, lead bridge-1122 (spi `806411d`
+  per-face unwrap + `GlBackend` texture surface, bridge-1122 `00f9ce4`
+  textured renderer + `BeastTexture` + 64x64 asset, hub addenda in
+  `MATOU_MODEL.md` + `GL_INSTANCING_ADAPTER.md`, `PORT_QUEUE`
+  `TODO | e0 | TODO | TODO`) : stages 1-2 green (spi checks incl.
+  per-face goldens + `E_MODEL_FACE` battery + texture mock workflow,
+  lead `ModelWireCheck` texture battery + forge + autoplay compile,
+  sibling backend-conformance + pins `806411d` E0 green each, parity
+  catalog unchanged) ; box-uv assets bake byte-identical (existing
+  goldens unmodified) ; zero new MC surface (stub rows only). Live
+  proof TODO — same bar as every lead E0 (150 s server + `SPAWN=1
+  COMBAT=1` textured-draw legs). Siblings dispatch TODO.
 - 2026-09-12 : GPU_INSTANCING promoted prototype → standard (hub
   `decisions/GPU_INSTANCING.md` : front-matter flip, `What remains`
   items 1-2 closed live x4, item 3 stays the named non-goal — engine

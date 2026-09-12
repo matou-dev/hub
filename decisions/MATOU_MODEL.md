@@ -346,4 +346,84 @@ game alive rendering; the full 600 s run exited 0 by itself):
    `c6e15b7`, 1201 `8d7b0d8` ; `PORT_QUEUE` `live | live | live |
    live`, closed by the standard promotion).
 2. Per-face `uv` + texture sampling in the instancing shader (V2).
+   E0 LANDED 2026-09-12 (stages 1-2 green on the lead, live proof
+   TODO — same bar as every lead E0 ; siblings hold backend
+   conformance only, see the addendum below).
 3. Bind-pose rotation/pivot bake and animation tables (later tranche).
+
+## Addendum — beast texture V2 E0, lead bridge-1122 (2026-09-12)
+
+Lands the V2 the frozen subset promised: per-face unwrap in the SPI
+bake plus a sampled texture on the lead renderer. Stages 1-2 green on
+the lead, live proof TODO — same bar as every lead E0.
+
+- Frozen-subset extension (the box `uv` array is untouched): a cube
+  `uv` may instead be an object mapping face names (`north`/`south`/
+  `east`/`west`/`up`/`down`, bedrock.dev + Microsoft Learn geometry
+  schema) to `{uv [u, v] required, uv_size [w, h] optional defaulting
+  to the face box dims (south/north `(sx,sy)`, up/down `(sx,sz)`,
+  east/west `(sz,sy)`), uv_rotation optional default 0,
+  material_instance accepted and ignored — no bake effect}. A non-zero
+  `uv_rotation` refuses (`E_MODEL_FACE:rotation` — never a silent
+  unrotated bake) ; unknown face names or face keys refuse
+  (`E_MODEL_FACE:shape` — never a silent drop) ; negative origins,
+  non-positive sizes and grid overhangs refuse (`E_MODEL_FACE:uv` /
+  `E_MODEL_FACE:size` — the sampler clamps, an overhang would smear
+  silently). An omitted face bakes nothing (vanilla parity).
+- Bake rules (spi `806411d`): `ModelCube` carries `faceUv` (null = box
+  mode, the old constructor delegates untouched) ; `emitCube` reads
+  each present face from its own rect with the Bedrock upper-left
+  convention (v = 0 at the texture top, matching the top-row-first
+  upload the bridges perform — never flipped): five faces share the
+  corner pattern a→`(u0,v0+h)` b→`(u0+w,v0+h)` c→`(u0+w,v0)`
+  d→`(u0,v0)`, down anchors `(u0,v0)` at b per bedrock.dev. Box-anchor
+  cubes bake byte-identical V1 (the existing `ModelCheck` goldens pass
+  unmodified — the compat comparateur) ; `bakeMesh` sizes dynamically
+  (a per-face cube emits 6 vertices per present face only).
+- Thrown-set addition (SPI-owned, cited here so no bridge redefines
+  it): `E_MODEL_FACE:shape/uv/size/rotation`.
+- Gate `ModelCheck` gains the per-face battery (5-face fixture with an
+  omitted face, `uv_size` default, top-left goldens per face, the
+  winding comparateur over both meshes, the full refusal battery).
+- Bridge harness, lead only (bridge-1122 `00f9ce4`): `BeastTexture`
+  holder (`java/src`, zero MC — loads `config/matoubridge/my_beast.png`
+  via ImageIO, RGBA top-row-first with no flip, dims must equal the
+  model grid or `E_MODEL_TEX:dims`) ; renderer V2 shaders (`v_uv`
+  varying — `a_uv` was bound since V1, never read — `sampler2D u_tex`
+  on unit 0, `col = texture * tint * diffuse`, no tint-only fallback
+  switch) ; upload once at `initGl` (NEAREST + CLAMP_TO_EDGE, no
+  mipmaps — NPOT-safe), the `ready` line gains `texture=64x64` (the
+  live leg greps it — an untextured draw cannot pass silently) ;
+  per-bucket bind beside the repack (one shared texture today,
+  per-mob textures plug the same call — named follow-up). The bucket
+  key stays `tint` (single mesh + texture — `InstanceFormat`/`Rec`
+  untouched). A missing or broken texture refuses at `initGl`,
+  loudly, before the first frame.
+- Asset: `bridge-1122/tools/live/my_beast.png` (64x64 RGBA, sha256
+  `851079978ed0d8cf479f91a06c1d34065738a504035e0ba1fa4c30195d69557f`,
+  stdlib-generated: body rect `x[0,16) y[0,16)` green, head rect
+  `x[32,41) y[0,9)` orange over magenta backfill — unmapped texels
+  scream). `run-live.sh` deploys it (dist + `SHA256SUMS` + server
+  config) ; the hub client script keeps-or-stages it like the geo.
+- Gate `ModelWireCheck` gains the texture battery (shipped
+  dims/texels/order goldens, upload-buffer size, the `E_MODEL_TEX`
+  refusal battery incl. a dims-mismatch temp png).
+- Siblings mechanical conformance only (1710 `f889b62`, 1165
+  `e327c03`, 1201 `e826c45` to `806411d` — backend texture methods in
+  era-native spelling plus stub rows plus the pin ; no
+  renderer/holder/png): their cells stay TODO with this addendum as
+  the dispatch-port rationale, never silent. The sibling texture
+  methods link for real at dispatch live (stub-shaped until then —
+  declared here).
+- `PORT_QUEUE` new row `Beast texture V2, per-face uv + sampling`
+  (`BRIDGE_PARITY.md`): `TODO | e0 | TODO | TODO`.
+- Parity gap (dim 4, declared here): `E_MODEL_TEX` (holder refusals)
+  exists on 1122 only until the dispatch ports land it on the
+  siblings ; no new `E_FORGE_*`, no new `forge/src` file, no new SPI
+  error-code family beyond the cited `E_MODEL_FACE`.
+- Named follow-ups blocking live (not silent): 150 s server re-proof
+  (the renderer is client-only — regression only) + headless
+  direct-client `SPAWN=1 COMBAT=1` legs proving the textured draw
+  (`texture=64x64` in the `ready` line, `drew instances=` with
+  buckets, census 2→8, exact-2.0 + exact-3.0 intact, saves pure
+  union, zero `E_*`).

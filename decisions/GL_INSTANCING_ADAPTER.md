@@ -153,3 +153,35 @@ live | live` (0 `e0` remaining).
   plus `PORT_QUEUE` column (`BRIDGE_PARITY.md` fifth-bridge
   re-opener) ; any third backend basename still fails the file-set
   gate.
+
+## Addendum — texture sampling surface V2 (2026-09-12)
+
+The GL half of the V2 E0 (`MATOU_MODEL.md` carries the bake half):
+the backend learns textures, the lead shader learns sampling.
+
+- `GlBackend` gains the texture surface (spi `806411d`): constants
+  `GL_TEXTURE_2D` / `GL_RGBA` / `GL_UNSIGNED_BYTE` /
+  `GL_TEXTURE_MIN_FILTER` / `GL_TEXTURE_MAG_FILTER` /
+  `GL_TEXTURE_WRAP_S` / `GL_TEXTURE_WRAP_T` / `GL_NEAREST` /
+  `GL_CLAMP_TO_EDGE` plus `genTextures` / `bindTexture` / `texImage2D`
+  (with the border arg — both LWJGL eras carry it) / `texParameteri` /
+  `deleteTextures`. The `GlBackendCheck` mock records the upload
+  workflow (gen → bind → image → params → delete).
+- V2 shader (lead bridge-1122 `00f9ce4`): `v_uv` varying (`a_uv` was
+  bound since V1, never read — now it feeds the sampler), `uniform
+  sampler2D u_tex` on unit 0, frag `col = texture(u_tex, v_uv) *
+  v_color` then diffuse. No enable switch: a linked V2 program always
+  samples ; a missing texture refuses at `initGl` before the first
+  frame, never a silent tint.
+- Sampling discipline: NEAREST + CLAMP_TO_EDGE (MC pixels, no bleed ;
+  no mipmaps — NPOT-safe), RGBA8 top-row-first upload with NO flip
+  (GL v = 0 is the first uploaded row, PNG decodes top-first, Bedrock
+  bakes v = 0 at the texture top — flipping anywhere would mirror the
+  beast, documented in `BeastTexture`). `u_tex` is set per frame
+  beside the matrices.
+- Proof standard unchanged (`ready` + `drew` + wire checks, pixel
+  proof stays refused): the `ready` line now carries `texture=WxH`
+  so the live leg asserts the upload happened, not just the draw.
+- Era note: the GLSL is identical on all four runtimes (the dispatch
+  ports carry the shaders over ; only the backend spelling differs,
+  `GL11` vs `GL11C`).

@@ -116,6 +116,16 @@ elif [ -f "$BRIDGE/tools/live/my_beast.geo.json" ]; then
 else
   echo "note run-client : no beast geometry shipped by $BRIDGE (shell renderer, nothing to stage)"
 fi
+# Beast texture (hub decisions/MATOU_MODEL.md, V2): same keep-or-stage
+# rule — the V2 renderer samples it, so a dev hand-painting the skin
+# must never lose it to a re-stage.
+if [ -f "$IDIR/minecraft/config/matoubridge/my_beast.png" ]; then
+  echo "note run-client : keeping existing my_beast.png (delete it to reset to the shipped beast):"
+elif [ -f "$BRIDGE/tools/live/my_beast.png" ]; then
+  cp "$BRIDGE/tools/live/my_beast.png" "$IDIR/minecraft/config/matoubridge/my_beast.png"
+else
+  echo "note run-client : no beast texture shipped by $BRIDGE (tint renderer, nothing to stage)"
+fi
 WORLD="${AUTOPLAY_WORLD:-matou}"
 export AUTOPLAY_WORLD="$WORLD"
 OFFLINE_NAME="${OFFLINE_NAME:-MatouDev}"
