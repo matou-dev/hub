@@ -191,3 +191,38 @@ Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
 - `PORT_QUEUE` row `Render plan adapter` flips to
   `TODO | live | TODO | TODO` (lead live, three dispatch ports TODO —
   the `E_RENDER_JOB` / `E_RENDER_SEAL` dim-4 gap names them).
+
+## Addendum — render plan adapter dispatch E0, siblings 1710/1165/1201 (2026-09-12)
+
+Stages 1-2 green on all three siblings, live proof TODO — same bar
+as the lead E0. The pure plan is untouched (byte-identical
+`RenderJob` + `RenderSeal` + `RenderWireCheck`, `cp`-copied from the
+lead — the `RepopJob` identical-bytes precedent) ; only the forge
+hook is version-native:
+
+- 1710 `4e25e2a` (LWJGL2/cup): `event.partialTicks` field,
+  `mc.theWorld`, `(Entity) mc.renderViewEntity` cast,
+  `loadedEntityList`, `isDead`, `posX` family, `GL11 glGetFloat`
+  matrices through the same `colMajor` + `vpRowMajor` conversion.
+- 1165 `6c248e7` (LWJGL3/blaze3d): event `MatrixStack` + projection,
+  `getInstance`, `ClientWorld.getAllEntities`, `getRenderViewEntity`,
+  `prevPos`/`getPos` interpolation, `removed`, Mojang
+  `Matrix4f.write` buffers fed as the column-major inputs (already
+  GL-ready as uploaded today with `transpose=false`).
+- 1201 `ac31b4c` (LWJGL3/JOML): `AFTER_ENTITIES`-gated
+  `RenderLevelStageEvent`, `getPartialTick`, `getCameraEntity`,
+  `EntityGetter` 64-box, `isAlive`, `xo`/`getX` interpolation,
+  `getYRot`/`getXRot`, JOML `clear()` + `get()` (no flip) buffers fed
+  as the column-major inputs.
+
+Zero new MC surface on all three (no stub or narrow-map delta —
+every member read was already pinned ; the added refs are
+bridge/SPI/JDK only). `drawLogged` keeps the `drew instances=`
+prefix with a `buckets=` suffix, same as the lead.
+- `PORT_QUEUE` row `Render plan adapter` (`BRIDGE_PARITY.md`):
+  `e0 | live | e0 | e0`.
+- The `E_RENDER_JOB` / `E_RENDER_SEAL` dim-4 gap now names only the
+  live proofs, not the code. Named follow-up (not silent): one 150 s
+  server + `SPAWN=1 COMBAT=1` wired-draw leg per sibling (same bar as
+  the lead live — `drew instances=` with buckets, census, exact-2.0
+  + exact-3.0, pure-union saves, zero `E_*`).
