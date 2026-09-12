@@ -1,5 +1,25 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation dispatch E0, bridge-1710 (`f953070`,
+  stages 1-2 green, live proof TODO, hub dispatch-port addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `e0 | live | live | live`) : holder verbatim + walk clip
+  byte-identical (`diff`/`cmp` clean against lead, zero SPI change,
+  pin `170bb28` shared) ; skinned stride-9 shader over the
+  1710-native LWJGL2 path (instance slots 3-6 → 4-7, bones 8-15,
+  Pre-captured matrices untouched) ; posed `hitBoxes` on the
+  `ticksExisted` clock with the `posX/Y/Z` origin ;
+  `sealClip` beside the combat tables ; full-map era pin
+  (`pin_field Entity/ticksExisted`, no `want.tsv` on 1710) ;
+  `E_ANIM` in the server refusal grep ; animation in `dist/` +
+  server deploy. Gate green incl. the ported
+  `testShippedAnimation` (battery text-identical, proven to refuse
+  `E_ANIM_GEO` asset-absent). eSLOC renderer 388 (62 under
+  plafond). Parity codes closed (`E_ANIM_*` on 4/4, 1122
+  local-codes 3→0 gate-measured). Named follow-ups: 1710 live
+  proof (closes the row), then walk-phase driver, generic palette,
+  multi-clip.
+
 - 2026-09-12 : Beast animation live proof, bridge-1201 (E0
   `c28e1d5`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
