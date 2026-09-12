@@ -1018,6 +1018,79 @@ Xvfb, exit 0, host OpenJDK 1.8.0_502) — zero live code fixes.
   distance clock live on 4/4 runtimes). Named follow-ups
   (unchanged order): generic bone palette, multi-clip layering.
 
+## Addendum — generic bone palette E0, lead bridge-1122 (2026-09-12)
+
+Lands the palette as E0 on the lead (`bridge-1122` `462ca53` over
+SPI `605d393`, stages 1-2 green, live proof TODO): 1..8 bones ride
+a 4xN RGBA32F bone texture on unit 1, fetched by file-order index —
+the 2-bone attribute path (`8 + 4N <= 16`, full at N = 2) retires.
+Route decided with operator (bone texture, `Recommended` ; uniform
+array stays the named debt: simpler, but a second per-bucket upload
+ beside the instance VBO with its own size ceiling — the texture
+scales past 8 without a new channel).
+
+- SPI `605d393` (additive, all pre-existing goldens unmodified) :
+  `GlBackend.activeTexture` + `GL_TEXTURE0/1` + `GL_RGBA32F`
+  surface, mock workflow golden (`GlBackendCheck`) ; 3-bone
+  `TRIPLE` fixture + `testPaletteBones` golden (`ModelCheck`:
+  parse order + hierarchy, skinned bone-2 index, three identity
+  deltas, third-bone clip eval, delta-vs-oracle cross-check,
+  three posed boxes). Trouvaille (render-path correctness, fixed
+  here, never silent): `poseDeltaMatrices` carried the translation
+  in Bedrock px while the skinned bake is blocks — any
+  pivot-moving rotation displaced the skinned mesh 16x (the old
+  goldens only posed identity + axis-invariant pivots, whose
+  translation is exactly zero, so no gate could see it ; the CPU
+  oracle and the hitboxes were always blocks-correct, which is why
+  every live verdict stayed green). The translation normalizes to
+  blocks at the contract boundary now (class contract comment
+  updated — pixels in, blocks out), the 3-bone golden is the
+  regression, bridge yaw goldens unchanged (zero translation
+  there).
+- Holder `BeastAnimation` (zero MC, thin forge): pure
+  `packPaletteInto` (one SPI row-major delta as 4 GL columns —
+  texel (column, bone) holds column `c`) + `paletteBonesOrThrow` /
+  `MAX_BONES = 8` admission (the ceiling lives here, frozen by
+  this tranche, never redefined per bridge).
+- Renderer `InstancedMeshRenderer` (1122-native anchors untouched):
+  bone texture `4 x N` RGBA32F on unit 1 (NEAREST +
+  CLAMP_TO_EDGE, NPOT-safe ; `texelFetch` by
+  `int(a_bone + 0.5)`, same column layout as the retired pack),
+  sampler units bound once (`u_tex` 0, `u_bones` 1), per-bucket
+  STREAM upload beside the instance repack ; the 8 bone attribute
+  slots retire (static 0-3 + instance 4-7 only — the 16-attribute
+  guarantee holds for any admitted beast) ; the `initGl` guard
+  becomes the 1..8 range (`E_ANIM_SKIN:bones <n>`, same code, new
+  dims) ; the staging keeps its 512-beast shape over a byte-backed
+  buffer (the old `SKINNED_BONES`-based remaining check went N —
+  it would have overrun past 2 bones). eSLOC renderer 381 → 375
+  (6 further under the 450 plafond).
+- Backends: `Lwjgl2Backend.activeTexture` on the lead (GL13) ;
+  shape-only `GL13` stub beside the other GL stubs (compile
+  classpath only, never runs — same discipline).
+- Gate `ModelWireCheck.testBonePalette`: admission 1/2/8 + refusals
+  0/9 (`E_ANIM_SKIN:bones`), column-order golden (texels hold
+  columns), inline 3-bone model (index 2 + three deltas, shipped
+  2-bone beast stays admitted). No new `E_*` code, no new
+  `forge/src` file, pin `605d393` shared (siblings mechanical
+  re-pin only — 1710 `16670ca`, 1165 `0a76f8e`, 1201 `a2068ec` :
+  pin + additive `activeTexture` + era stub, E0 green each, zero
+  behaviour change — their exact-2 guards stay until dispatch).
+- `PORT_QUEUE` new row `Beast animation, generic palette`
+  (`BRIDGE_PARITY.md`): `TODO | e0 | TODO | TODO` (lead E0, live
+  proof TODO — same bar as every lead E0: 150 s server +
+  `SPAWN=1 COMBAT=1` legs over the shipped beast, which now draws
+  through the palette path).
+- Parity gap (dim 4, declared here): `E_ANIM_SKIN` range semantics
+  on 1122 only until the dispatch ports land them on the siblings ;
+  `activeTexture` implemented on 4/4 backends already ; no new
+  `E_FORGE_*`, no new `forge/src` file.
+- Named follow-ups (unchanged order): lead live proof (palette-path
+  regression on the shipped beast + a 3-bone live asset proving
+  the index-2 fetch through the seal), sibling dispatch E0+live
+  (same bar per sibling, era-native anchors — 1165 watches its
+  444/450 renderer ceiling), multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

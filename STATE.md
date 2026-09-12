@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-12 : Generic bone palette E0, lead bridge-1122 (`462ca53`
+  over SPI `605d393`, stages 1-2 green, live proof TODO, hub E0
+  addendum in `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` new row
+  `TODO | e0 | TODO | TODO`) : 1..8 bones ride a 4xN RGBA32F bone
+  texture on unit 1 (`texelFetch` by file-order index — the 2-bone
+  attribute path retires, 16-attribute guarantee holds for any
+  admitted beast) ; holder-pure pack + admission (`MAX_BONES = 8`
+  frozen, `E_ANIM_SKIN:bones` range dims), per-bucket STREAM
+  upload, renderer eSLOC 381 → 375 ; SPI additive (3-bone goldens,
+  `activeTexture` surface) plus a fixed render-path units bug
+  (`poseDeltaMatrices` translation was px over block positions —
+  invisible to the old axis-invariant goldens, CPU oracle always
+  correct, 3-bone golden is the regression) ; gate green incl. the
+  new `testBonePalette` (no new `E_*`, no new `forge/src` file,
+  pin `605d393` shared — siblings mechanical re-pin E0 green
+  each). Named follow-ups: lead live proof (palette-path
+  regression + 3-bone live asset), sibling dispatch, multi-clip.
+
 - 2026-09-12 : Walk-phase driver live proof, bridge-1710 (E0
   `e46c538`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
