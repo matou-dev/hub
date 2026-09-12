@@ -1,5 +1,20 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver dispatch E0, bridge-1165 (`6ad3e52`,
+  stages 1-2 green, live proof TODO, hub dispatch addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE`
+  `TODO | live | e0 | TODO`) : port of the 1122 lead driver to
+  era-native 1165 anchors (holder verbatim + battery text-identical,
+  `MatouEntity.hitBoxes` feeds `distanceWalkedModified` cur via
+  declaring `Entity`, renderer interpolates prev `field_70141_P` →
+  cur `field_70140_Q` over partialTicks via pure
+  `BeastAnimation.animCtx/interpDistMoved`) ; wiring-only (shipped
+  clip untouched) ; narrow map 60→62 (derive proven pre-commit, 62
+  lines, both `FD` rows resolve, hub era-1.16 assert 60→62) ; gate
+  green incl. the ported `testWalkPhaseDriver` (no new `E_*`, pin
+  `170bb28` shared). Named follow-ups: 1165 live proof, then 1201,
+  1710, generic palette, multi-clip.
+
 - 2026-09-12 : Walk-phase driver live proof, lead bridge-1122 (E0
   `4473ee2`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row

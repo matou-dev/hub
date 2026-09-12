@@ -793,6 +793,39 @@ fixes.
   order): sibling dispatch, then generic bone palette, multi-clip
   layering.
 
+## Addendum — walk-phase driver dispatch E0, bridge-1165 (2026-09-12)
+
+`bridge-1165` `6ad3e52` ports the 1122 lead driver (`4473ee2`) as
+E0 (stages 1-2 green, live proof TODO): `query.modified_distance_moved`
+reads the per-mob vanilla distance clock instead of the `0.0`
+fallback — wiring-only, the shipped walk clip is untouched.
+
+- Holder `BeastAnimation` verbatim (zero MC) + `testWalkPhaseDriver`
+  text-identical (pure battery without MC): `animCtx` golden, interp
+  goldens incl. standing-hold, inline dist-driven strut rests at 0
+  and reaches +30 at pi/6.
+- Forge call-sites era-native 1165 (owner discipline, reads through
+  declaring `Entity`): `MatouEntity.hitBoxes` feeds the current-tick
+  `distanceWalkedModified` (server tick) ; `InstancedMeshRenderer`
+  feeds the partialTicks interpolation of
+  `prevDistanceWalkedModified` → `distanceWalkedModified` (client
+  frame smoothing, same shape as the `prevPos` interpolation beside
+  it).
+- Harness: narrow map 60→62 (`Entity/distanceWalkedModified F`
+  anchor `field_70140_Q` + `Entity/prevDistanceWalkedModified F`
+  anchor `field_70141_P`, shape-only stub fields, `pin_field` pair) ;
+  hub `tools/live-derive.sh` era-1.16 assert 60→62 (harness-only —
+  the 1201 assert stays 60, untouched). The derive was proven
+  pre-commit against the pinned bytes (62 lines, both `FD` rows
+  resolve).
+- Gate `bridge-1165/tools/check.sh` green, no new `E_*` code, no new
+  `forge/src` file, no SPI change (pin `170bb28` shared).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `TODO | live | e0 | TODO` (first dispatch
+  port E0, live proof TODO — same bar as the lead live, each with
+  its era-native distance anchors). Named follow-ups: 1165 live
+  proof, then 1201, 1710, generic bone palette, multi-clip layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

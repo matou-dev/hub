@@ -290,7 +290,7 @@ for row in WANT:
         assert flags.get((tm[0][0], "F:" + ftype_obf)) == want_static, \
             "E_SRG_DERIVE:javap mismatch field <%s %s>" % (owner, srg)
         lines.append("FD: %s/%s %s/%s" % (owner, tm[0][1], owner, mcp))
-assert len(lines) == 60, "E_SRG_DERIVE:want 60 lines, got %d" % len(lines)
+assert len(lines) == 62, "E_SRG_DERIVE:want 62 lines, got %d" % len(lines)
 open(outpath, "w").write("\n".join(lines) + "\n")
 print("ok %s : narrow SRG derived (%d lines)" % (tag, len(lines)))
 EOF
