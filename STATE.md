@@ -1,5 +1,22 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast texture V2 live, lead bridge-1122 (`00f9ce4`
+  E0, zero live fixes, hub `decisions/MATOU_MODEL.md` +
+  `decisions/GL_INSTANCING_ADAPTER.md` live addenda, `PORT_QUEUE`
+  `TODO | live | TODO | TODO`) : 150 s server green (world == pure
+  union 1922 ids 1,253, zero `E_*`) ; headless direct-client
+  `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` (exit 0) —
+  `ready mesh=72 verts stride=8 texture=64x64` + `drew instances=1
+  mesh=72 verts buckets=1` through the seal (GL accepted,
+  `E_GL_DRAW` silent), census 2→8 balanced, hp 20.0 + 30.0,
+  exact-2.0 at 500→501 then exact-3.0 at 600→601 (elapsed 1 each,
+  full-health baselines — ambient falls paid per-mob with
+  replacements), kill 1000 → gem 1001 (elapsed 1), save pure union
+  1274, zero `E_*` / linkage (benign gem-model `Caused by` only,
+  same as every 1122 proof). Trouvaille: V1 mapped v = 0 at the
+  face bottom (harmless while UVs were unread) — V2 per-face is
+  Bedrock v = 0 at the top end to end, never mixed. Three dispatch
+  ports TODO — last open item on the row.
 - 2026-09-12 : Beast texture V2 E0, lead bridge-1122 (spi `806411d`
   per-face unwrap + `GlBackend` texture surface, bridge-1122 `00f9ce4`
   textured renderer + `BeastTexture` + 64x64 asset, hub addenda in

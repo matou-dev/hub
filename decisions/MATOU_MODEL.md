@@ -427,3 +427,43 @@ the lead, live proof TODO — same bar as every lead E0.
   (`texture=64x64` in the `ready` line, `drew instances=` with
   buckets, census 2→8, exact-2.0 + exact-3.0 intact, saves pure
   union, zero `E_*`).
+
+## Addendum — beast texture V2 live, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `00f9ce4` (E0) proves the textured draw live on Forge
+2860 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  zero `E_*`).
+- Client: `ready mesh=72 verts stride=8 texture=64x64 program=12`
+  (the V2 upload, `BeastTexture` 64x64 RGBA top-row-first) then
+  `drew instances=1 mesh=72 verts buckets=1` — the first sampled
+  draw through the seal (one mob-addressed bucket over the shared
+  mesh, GL accepted, `E_GL_DRAW` silent; a single visible beast on
+  the first drawn frame, same wander-plus-fixed-camera sampling as
+  the render-plan live proof — later fuller frames stay quiet by
+  design, pixel proof stays refused); census 2→8 balanced
+  (`beast=brute`, cap 8) at worldTicks 2..5, `spawn hp <my_beast
+  20.0>` + `spawn hp <my_brute 30.0>`, exact-2.0 at 500→501 then
+  exact-3.0 at 600→601 (elapsed 1 each, full-health baselines 20.0
+  → 18.0 and 30.0 → 27.0 this run — ambient dim-0 falls at ticks
+  49/296/308/324 paid per-mob through loot with replacements, the
+  struck pair untouched), spawn kill at 1000 → gem polled at 1001
+  (elapsed 1) ; `verify-client-save.sh` world == pure union (1274
+  cells, `1,253` via `NUMERIC_IDS`) ; zero `E_*` / linkage (the
+  only `Caused by` lines are the known benign gem-model bakes —
+  missing `models/item/my_gem.json` + `my_brute_gem.json` +
+  `blockstates/my_ore.json`, same signature as every 1122 proof
+  since item registration).
+- Trouvaille (convention lock, no code impact): V1 bound `a_uv`
+  but never read it, mapping v = 0 at the face bottom with no
+  consequence while UVs were ignored — V2 per-face follows Bedrock
+  v = 0 at the texture top end to end (bake, top-row-first upload,
+  no-flip sampler). The two conventions must never be mixed when
+  reading old goldens against the new battery.
+- `PORT_QUEUE` row `Beast texture V2` flips to
+  `TODO | live | TODO | TODO` (lead live, three dispatch ports TODO —
+  the `E_MODEL_TEX` dim-4 gap names them).

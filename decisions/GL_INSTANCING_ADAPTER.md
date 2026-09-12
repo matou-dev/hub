@@ -185,3 +185,14 @@ the backend learns textures, the lead shader learns sampling.
 - Era note: the GLSL is identical on all four runtimes (the dispatch
   ports carry the shaders over ; only the backend spelling differs,
   `GL11` vs `GL11C`).
+
+## Addendum — texture sampling live, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `00f9ce4` samples live on Forge 2860, zero live fixes:
+`ready mesh=72 verts stride=8 texture=64x64 program=12` then `drew
+instances=1 mesh=72 verts buckets=1` (`u_tex` bound per bucket,
+`E_GL_DRAW` silent), inside the `NUMERIC_IDS=example1:my_ore=253
+SPAWN=1 COMBAT=1` headless direct-client run (exit 0, save pure union
+1274 cells, zero `E_*`). Full proof in `decisions/MATOU_MODEL.md`
+(beast texture V2 live addendum) ; `PORT_QUEUE` row `Beast texture
+V2` flips to `TODO | live | TODO | TODO`.
