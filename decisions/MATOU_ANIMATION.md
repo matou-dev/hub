@@ -757,6 +757,42 @@ blocks).
   `walkDist`/`walkDistO` pair); generic bone palette, multi-clip
   layering stay later tranches.
 
+## Addendum — walk-phase driver live proof, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `4473ee2` (E0) proves the distance clock live on
+Forge 2860 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live code
+fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  `E_ANIM` in the refusal grep silent) ; `[MatouBridge] animation
+  wired <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log.
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=12`
+  then `drew instances=3 mesh=72 verts buckets=1` through the seal
+  (the interpolated distance feeds the same skinned draw, GL
+  accepted, `E_GL_DRAW` silent) ; census 2→8 balanced at
+  worldTicks 2..5, `spawn hp <my_beast 20.0>` + `spawn hp
+  <my_brute 30.0>`, exact-2.0 at 501 (20.0 → 18.0 full-health)
+  then exact-3.0 at 601 (30.0 → 27.0 full-health, no ambient churn
+  this run — the drop stays exact either way ; the head resolves
+  off the posed head, zero autoplay change ; the walked distance
+  stays ~0 for the standing mobs, so the wiring-only clip poses
+  exactly as the E0 legs), spawn kill at 1000 → gem polled at 1001
+  (elapsed 1) ; `verify-client-save.sh` world == pure union (1274
+  cells, `1,253` via `NUMERIC_IDS`) ; zero `E_*` (only the known
+  benign gem-model `Caused by` lines, same signature as every 1122
+  proof) ; the deployed animation is byte-identical to the proof
+  asset (`cmp` at proof time).
+- `PORT_QUEUE` row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live,
+  three dispatch ports TODO — same bar as the lead live, each with
+  its era-native distance anchors). Named follow-ups (unchanged
+  order): sibling dispatch, then generic bone palette, multi-clip
+  layering.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

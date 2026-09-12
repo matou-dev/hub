@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver live proof, lead bridge-1122 (E0
+  `4473ee2`, zero live code fixes, hub live-proof addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `TODO | live | TODO | TODO`) : 150 s server green (world == pure
+  union 1922 ids 1,253, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, zero `E_*`) ;
+  headless direct-client
+  `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` (exit 0) —
+  `ready mesh=72 verts stride=9 texture=64x64 program=12` + `drew
+  instances=3 mesh=72 verts buckets=1` through the seal (the
+  interpolated distance feeds the same skinned draw), census 2→8,
+  hp 20.0 + 30.0, exact-2.0 at 501 (20.0 → 18.0 full-health) then
+  exact-3.0 at 601 (30.0 → 27.0 full-health, no churn this run),
+  kill 1000 → gem 1001 (elapsed 1), save pure union 1274, zero
+  `E_*` (benign gem-model `Caused by` only), deployed animation
+  byte-identical. Sibling dispatch E0+live stays the named
+  follow-up (with generic palette, multi-clip layering).
+
 - 2026-09-12 : Walk-phase driver E0, lead bridge-1122 (`4473ee2`,
   stages 1-2 green, live proof TODO, hub driver addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` new row
