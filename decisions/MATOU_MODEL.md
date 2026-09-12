@@ -364,12 +364,15 @@ game alive rendering; the full 600 s run exited 0 by itself):
    `c6e15b7`, 1201 `8d7b0d8` ; `PORT_QUEUE` `live | live | live |
    live`, closed by the standard promotion).
 2. Per-face `uv` + texture sampling in the instancing shader (V2).
-   E0 LANDED 2026-09-12 (stages 1-2 green on the lead, live proof
-   TODO — same bar as every lead E0 ; siblings hold backend
-   conformance only, see the addendum below).
-3. Bind-pose rotation/pivot bake — DONE 2026-09-12 (SPI-only E0,
+   DONE live x4 2026-09-12 (lead E0 + lead live, dispatch E0 + dispatch
+   live addenda below, `PORT_QUEUE` `live | live | live | live` — row
+   closed).
+3. Bind-pose rotation/pivot bake — DONE E0 2026-09-12 (SPI-only,
    rotation addendum below: bone + cube Euler, hierarchy, conservative
-   boxes, unrotated byte-identity, zero bridge change).
+   boxes, unrotated byte-identity, zero bridge change), lead live
+   2026-09-12 (rotation live-proof addendum below: rotated asset draws
+   + hits through the seal on 1122, `PORT_QUEUE`
+   `TODO | live | TODO | TODO` — three dispatch ports TODO).
 4. Animation tables (`animations` keyframes, controllers, MOLANG) —
    later tranche, own spec (needs a content expression subset + a
    tick-time pose evaluation — never smuggled into the bind-pose bake).
@@ -670,4 +673,66 @@ bare cubes. Stages green in SPI, zero bridge change, no live re-proof
   controllers, MOLANG pose evaluation) — own spec tranche with a
   content expression subset, named in `What remains` item 4.
   Named follow-up (not silent): a rotated-content live proof (rotated
-  asset drawing + hitting through the seal on the lead, then ports).
+  asset drawing + hitting through the seal on the lead, then ports) —
+  lead landed 2026-09-12, see the live-proof addendum below.
+
+## Addendum — rotated-content live proof, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `a4a1651` (E0) proves the rotated draw + hit live on
+Forge 2860 (150 s server + launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live fixes.
+
+- E0 shape (lead only, `a4a1651`): proof asset
+  `tools/live/my_beast_rotated.geo.json` (the shipped beast plus a
+  head-bone yaw of 45 degrees — one-field delta, UVs and the 64x64
+  grid untouched) ; `ModelWireCheck.testRotatedAsset` (body mesh +
+  box bit-identical, head mesh moved, head box widened 9px to
+  `4.5*sqrt(2)` golden `±0.397747564417433`, conservative-cover over
+  the unrotated box, pure ray resolves the rotated head, texture
+  loads against the rotated grid) ; `run-live.sh` `ROTATED_GEO`
+  overlay (deploys the proof asset as `my_beast.geo.json` —
+  proof-only, never shipped in `dist/`) ; mechanical SPI re-pin to
+  `1743770` on all four bridges (additive, E0 green each — the
+  compat comparateur holds, zero behaviour change).
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  zero `E_*`) ; the deployed geo is byte-identical to the proof
+  asset (`cmp` at proof time — the overlay path is proven, never
+  assumed).
+- Client: `ready mesh=72 verts stride=8 texture=64x64 program=12`
+  (the rotated bake draws — same counts, UV/texture path intact)
+  then `drew instances=4 mesh=72 verts buckets=1` — the first
+  rotated sampled draw through the seal (GL accepted, `E_GL_DRAW`
+  silent ; four visible beasts this run — the documented visibility
+  lottery) ; census 2→8 balanced (`beast=brute`, cap 8) at
+  worldTicks 2..5, `spawn hp <my_beast 20.0>` + `spawn hp <my_brute
+  30.0>`, exact-2.0 at 500→501 then exact-3.0 at 600→601 (elapsed 1
+  each, full-health baselines 20.0 → 18.0 and 30.0 → 27.0 this run ;
+  the head `mult=2.0` resolves off the YAWED head — the autoplay
+  aims at the `boneBoxes` head center, and the rotation is about
+  that same center, so the aim rides the box with zero autoplay
+  change) ; ambient dim-0 falls at ticks 49/296/308/324 paid
+  per-mob through loot with replacements (the same deterministic
+  churn as every 1122 proof — the struck pair untouched) ; spawn
+  kill at 1000 → gem polled at 1001 (elapsed 1) ;
+  `verify-client-save.sh` world == pure union (1274 cells, `1,253`
+  via `NUMERIC_IDS`) ; zero `E_*` / linkage (the only `Caused by`
+  lines are the known benign gem-model bakes, same signature as
+  every 1122 proof since item registration).
+- Trouvaille (live ops, no code impact): the client overlay is a
+  DEV-only proof step (stage via `AUTOPLAY=1 run-client.sh`, then
+  `cp` the proof asset over the staged `my_beast.geo.json` in an
+  isolated `PRISM_DIR` — keep-or-stage would otherwise keep the
+  shipped geo) ; the isolated instance dir is disposable and the
+  server config is overwritten on every `run-live.sh` run, so the
+  next normal run re-deploys the shipped beast with no reset step —
+  nothing proof-shaped pollutes the repos (one stray
+  `forge-installer.jar.log` landed in the bridge tree from the run,
+  deleted same session).
+- `PORT_QUEUE` new row `Beast rotation bake+proof`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live,
+  three dispatch ports TODO — this addendum is the dispatch-port
+  rationale, never silent). Named follow-up: one 150 s server +
+  `SPAWN=1 COMBAT=1` rotated-draw leg per sibling (same bar as the
+  lead live, each with its era-native anchors).

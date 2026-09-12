@@ -108,6 +108,7 @@ never with the code copy.
 | Qualified PolicyPack mob view, `E_SPAWN_MOB` (`SPAWN.md`) | live | live | live | live |
 | Render plan adapter, per-bucket draw (`GPU_INSTANCING.md`) | live | live | live | live |
 | Beast texture V2, per-face uv + sampling (`MATOU_MODEL.md`) | live | live | live | live |
+| Beast rotation bake+proof (`MATOU_MODEL.md`) | TODO | live | TODO | TODO |
 
 ## Gates
 

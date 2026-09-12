@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast rotated-content live proof, lead bridge-1122
+  (`a4a1651` E0, zero live fixes, hub
+  `decisions/MATOU_MODEL.md` rotation live-proof addendum,
+  `PORT_QUEUE` new row `TODO | live | TODO | TODO`) : 150 s server
+  green (world == pure union 1922, zero `E_*`, deployed geo
+  byte-identical to the proof asset) ; headless direct-client
+  `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` (exit 0) —
+  `ready mesh=72 verts stride=8 texture=64x64` + `drew instances=4
+  mesh=72 verts buckets=1` through the seal (the yaw-45 head draws,
+  `E_GL_DRAW` silent), census 2→8, hp 20.0 + 30.0, exact-2.0 at
+  500→501 then exact-3.0 at 600→601 (elapsed 1 each, the 2.0
+  resolves off the yawed head — autoplay aims the `boneBoxes` head
+  center, zero autoplay change), kill 1000 → gem 1001 (elapsed 1),
+  save pure union 1274, zero `E_*` (benign gem-model `Caused by`
+  only). Mechanical SPI re-pin to `1743770` on all four bridges
+  (additive, E0 green each). Sibling rotated legs TODO — last open
+  item on the row.
+
 - 2026-09-12 : Beast bind-pose rotation bake E0, SPI-only (hub
   `decisions/MATOU_MODEL.md` rotation addendum, `What remains` item 3
   split 3a DONE / 3b animation-tables open) : `spi/tools/check.sh`
