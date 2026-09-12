@@ -1,5 +1,16 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast bind-pose rotation bake E0, SPI-only (hub
+  `decisions/MATOU_MODEL.md` rotation addendum, `What remains` item 3
+  split 3a DONE / 3b animation-tables open) : `spi/tools/check.sh`
+  green incl. `ok model-check` (rotation battery: explicit-zero
+  float-identity comparateur, yaw/hierarchy/pitch/inflate goldens,
+  winding over rotated meshes, 5 new-code refusals) ; unrotated
+  models bake byte-identical (zero bridge change — no re-pin, no live
+  re-proof, no `PORT_QUEUE` move, no new `E_FORGE_*`). Named
+  follow-ups (not silent): rotated-content live proof, then animation
+  tables as their own spec.
+
 - 2026-09-12 : Beast texture V2 dispatch live, siblings 1710/1165/1201
   (1710 `79fdf1d` + `609b8ca` Pre matrix capture + camera follow,
   1165 `d8543d5` + `571b987` camera-view rebuild + present pads,

@@ -32,8 +32,10 @@ zero GL, zero dependency). Bridges consume the bake, never the file.
   enter SPI; the geometry subset needs nothing more.
 - `ModelCube.java`: origin (min corner, px), size (px, > 0 after
   inflate), box UV anchor (px, >= 0), inflate (px, expands every side).
-- `ModelBone.java`: name, optional parent, bind-pose pivot (px,
-  informational in V1), cubes in file order.
+- `ModelBone.java`: name, optional parent, bind-pose pivot (px),
+  bind-pose Euler rotation (degrees, x-then-y-then-z — baked around the
+  pivot since the rotation tranche), default inflate (px) for cubes
+  that carry none, cubes in file order.
 - `MatouModel.java`: identifier, texture grid, bones. Single derivation
   point: `bakeMesh()` feeds the renderer VBO, `boneBoxes()` feeds
   `HitTester`.
@@ -43,24 +45,37 @@ zero GL, zero dependency). Bridges consume the bake, never the file.
   `rotation` and `mirror` beyond acceptance are NOT baked (see below).
 - Frozen Bedrock subset: `format_version` string (value recorded,
   ignored), `description.identifier` (required), `texture_width/height`
-  (integral, 1..4096), bones (`name` unique non-blank, `parent`
-  optional, `pivot` optional [x,y,z]), cubes (`origin`/`size`
-  required [x,y,z], `uv` optional [u,v] default [0,0], `inflate`
-  optional default 0, `mirror` accepted and ignored).
+  (integral, 1..4096), bones (`name` unique non-blank, acyclic
+  `parent` optional, `pivot` optional [x,y,z] default origin,
+  `rotation` optional [x,y,z] degrees default unrotated, `inflate`
+  optional default 0 funding bare cubes, `poly_mesh`/`texture_meshes`
+  refused — deprecated/experimental, never a silent drop, other
+  non-geometric keys ignored), cubes (`origin`/`size` required [x,y,z],
+  `uv` optional [u,v] default [0,0] or per-face, `inflate` optional
+  defaulting to the bone value, `rotation` optional default unrotated,
+  `pivot` optional defaulting to the box center, `mirror` accepted and
+  ignored).
 - Bake rules: pixels in, block units out (`PX_PER_BLOCK = 16`); one
-  `BoneBox` per non-empty bone (union of its inflated cubes,
+  `BoneBox` per non-empty bone (axis-aligned union of the bone's
+  rotated cube corners — conservative over the rotated shape,
   entity-local, bind pose); `bakeMesh` emits 36 interleaved vertices
   per cube (`VERTEX_STRIDE = 8`: pos3, uv2, normal3 — the exact layout
-  `InstancedMeshRenderer` uploads); faces bake in bind pose,
-  axis-aligned, CCW with outward normals, corner order mirroring the
-  live-proven box; UVs are box-anchored planar projections of the cube
-  rect (V1 shader tints and ignores them — per-face unwrap lands in V2
-  with texture sampling).
+  `InstancedMeshRenderer` uploads); each cube rotates around its own
+  pivot first, then around its bone pivot, then around every ancestor
+  pivot to the root (Euler degrees x-then-y-then-z extrinsic,
+  `R = Rz * Ry * Rx`, right-handed); normals rotate translation-free
+  and renormalize; faces keep the live-proven corner order (outward
+  CCW — the winding comparateur proves it over rotated meshes too);
+  UVs never move under rotation (box-anchored V1 path and per-face V2
+  rects alike); a zero rotation skips bit-for-bit (unrotated models
+  bake byte-identical to the pre-rotation code — the compat
+  comparateur pins it).
 - Thrown set (SPI-owned, cited here so no bridge redefines them):
   `E_MODEL_JSON:empty/syntax/type`, `E_MODEL_VERSION:missing`,
   `E_MODEL_GEOMETRY:missing/shape`, `E_MODEL_IDENTIFIER:missing`,
-  `E_MODEL_TEXTURE:shape`, `E_MODEL_BONE:empty/shape/duplicate/parent/pivot`,
-  `E_MODEL_CUBE:null/shape/origin/size/uv/nan`,
+  `E_MODEL_TEXTURE:shape`, `E_MODEL_BONE:empty/shape/duplicate/parent/pivot/rotation/inflate`,
+  `E_MODEL_CUBE:null/shape/origin/size/uv/nan/rotation/pivot`,
+  `E_MODEL_FACE:shape/uv/size/rotation`, `E_MODEL_TEX:dims`,
   `E_MODEL_PLACE:nan`, `E_MODEL_GEO:null/unreadable/no-head`.
 - Gate `ModelCheck`
   (`spi/java/test/fr/iamacat/spi/model/ModelCheck.java`, wired in
@@ -70,7 +85,10 @@ zero GL, zero dependency). Bridges consume the bake, never the file.
   normal of all 24 triangles dots the declared normal — proves
   outward CCW, i.e. no culled beast), `boneBoxes` union + inflate
   goldens with `HitTester` bone resolution (front ray -> body, high
-  ray -> head), refusals battery over the whole `E_MODEL_*` catalog.
+  ray -> head), rotation battery (explicit-zero byte-identity
+  comparateur, bone-yaw box/normal goldens, parent-orbit hierarchy,
+  cube-pitch beam, bone-inflate default, winding over rotated meshes),
+  refusals battery over the whole `E_MODEL_*` catalog.
 
 ## Gates
 
@@ -349,7 +367,12 @@ game alive rendering; the full 600 s run exited 0 by itself):
    E0 LANDED 2026-09-12 (stages 1-2 green on the lead, live proof
    TODO — same bar as every lead E0 ; siblings hold backend
    conformance only, see the addendum below).
-3. Bind-pose rotation/pivot bake and animation tables (later tranche).
+3. Bind-pose rotation/pivot bake — DONE 2026-09-12 (SPI-only E0,
+   rotation addendum below: bone + cube Euler, hierarchy, conservative
+   boxes, unrotated byte-identity, zero bridge change).
+4. Animation tables (`animations` keyframes, controllers, MOLANG) —
+   later tranche, own spec (needs a content expression subset + a
+   tick-time pose evaluation — never smuggled into the bind-pose bake).
 
 ## Addendum — beast texture V2 E0, lead bridge-1122 (2026-09-12)
 
@@ -595,3 +618,56 @@ buckets, census, exact-2.0 + exact-3.0, pure-union saves, zero `E_*`):
   wait + retry, no conflict class) ; 1201 native server
   impossible under the race, hence docker (documented
   `Dockerfile` voie, never committed bytes).
+
+## Addendum — bind-pose rotation bake E0, SPI-only (2026-09-12)
+
+Lands the frozen subset's rotation half: the parser used to drop bone
+and cube `rotation` silently (a turned head baked axis-aligned with no
+refusal — the silent-default class), and bone `inflate` never funded
+bare cubes. Stages green in SPI, zero bridge change, no live re-proof
+(pure SPI tranche, declarative precedent).
+
+- Frozen-subset extension: bone `rotation` optional [x,y,z] finite
+  degrees defaulting to unrotated (`E_MODEL_BONE:rotation` otherwise);
+  bone `inflate` optional finite default 0, funding cubes that carry
+  none (`E_MODEL_BONE:inflate` otherwise); cube `rotation` optional
+  default unrotated (`E_MODEL_CUBE:rotation`); cube `pivot` optional
+  defaulting to the box center (`E_MODEL_CUBE:pivot`); bone
+  `poly_mesh`/`texture_meshes` refuse (`E_MODEL_BONE:shape` —
+  deprecated/experimental geometry never drops silently); parent
+  cycles refuse (`E_MODEL_BONE:parent` — the bake now walks the tree,
+  a cycle would orbit forever). `mirror` stays accepted-and-ignored
+  (UV-only effect, same as V2 — flipping it is its own tranche, never
+  smuggled here).
+- Bake rules (`MatouModel`, pure, zero dep): inflate the unrotated
+  box, rotate its 8 corners around the cube pivot, then around the
+  bone pivot, then around every ancestor pivot to the root (a parented
+  bone rides its parent — the Bedrock skeleton). Euler degrees
+  x-then-y-then-z extrinsic (`R = Rz * Ry * Rx`, right-handed, per the
+  Microsoft schema note). Normals rotate translation-free and
+  renormalize; UVs never move. A zero rotation skips bit-for-bit, so
+  an unrotated model bakes byte-identical to the pre-rotation code.
+- `boneBoxes` unions the rotated corners per bone (axis-aligned,
+  conservative — it covers the rotated shape, never less; HitTester
+  stays AABB, an exact oriented test is a named follow-up if a
+  rotated limb ever proves too generous).
+- Gate `ModelCheck` gains the rotation battery: explicit-zero
+  float-identity comparateur over mesh + boxes (this is what lets the
+  bridges skip re-proof), bone-yaw goldens (2x1x1 slab yawed 90
+  about its center stands 1x1x2 — first-vertex pos, +X south normal,
+  box bounds, ray hit), hierarchy golden (child cube orbits the
+  parent 90-degree yaw — empty parent bakes no box), cube-pitch
+  golden (1x2x1 column pitched 90 about its center stands a 1x1x2
+  beam), bone-inflate golden, winding comparateur over every rotated
+  mesh, refusal battery for the five new codes.
+- Bridge impact: none. Bridges consume `bakeMesh` / `boneBoxes` /
+  `placedBoxes` opaquely (signatures unchanged) and the shipped
+  2-bone beast carries no rotation (bakes byte-identical — the
+  compat comparateur above): no re-pin required, no live re-proof,
+  no `PORT_QUEUE` cell moves, no new `E_FORGE_*`, no stub or
+  narrow-map delta.
+- Explicit non-goal: animation tables (`animations`, keyframes,
+  controllers, MOLANG pose evaluation) — own spec tranche with a
+  content expression subset, named in `What remains` item 4.
+  Named follow-up (not silent): a rotated-content live proof (rotated
+  asset drawing + hitting through the seal on the lead, then ports).
