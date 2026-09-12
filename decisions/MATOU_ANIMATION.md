@@ -428,6 +428,58 @@ fixes.
   (`distanceWalkedModified` mapping + per-mob distance clock),
   generic bone palette (3+ bones).
 
+## Addendum — beast animation dispatch E0, bridge-1165 (2026-09-12)
+
+First dispatch port of the lead consumer (`bridge-1122` `1640914`):
+`bridge-1165` `bf37900` lands E0 (stages 1-2 green, live proof TODO),
+era-native 1.16.5 anchors throughout, zero SPI change (pin `170bb28`
+already shared — no re-pin).
+
+- Holder `java/src/fr/iamacat/bridge/model/BeastAnimation.java`
+  verbatim (zero MC, `diff` clean) ; proof asset
+  `tools/live/my_beast.animation.json` byte-identical (`cmp` clean —
+  hub `tools/client-prism.sh` stages it with no script change, the
+  bridge file simply exists now).
+- Renderer `InstancedMeshRenderer` (1165-native shapes untouched):
+  skinned stride-9 static bake + `a_bone` at location 3, instance
+  slots shifted 3-6 to 4-7, bone deltas at 8-15 over `Lwjgl3Backend`
+  (its `vertexAttribDivisor` carries the second instanced VBO —
+  measured, never assumed); event projection upload plus the rebuilt
+  camera view stay exactly as the rotation tranche left them (the
+  event MatrixStack top still feeds nothing); per-bucket bone pack
+  with transpose-once columns beside the eye-relative instance repack;
+  `ready` moves to `stride=9`. `E_ANIM_SKIN:bones` guards the 2-bone
+  ceiling at `initGl` like the lead.
+- Posed hitboxes ride `placedPosedBoxes` on the entity-age clock
+  (`ticksExisted / 20.0`, read through declaring `Entity`, never the
+  beast); the origin stays `getPosX/Y/Z` (1.16.5 keeps no `posX`
+  fields — the 1.12 field shape does not port). `wireCombat` seals
+  the clip table beside the combat tables with the same
+  `animation wired <...>` log line.
+- Harness: narrow map 59→60 (`Entity/field_70173_aa/ticksExisted`
+  row + shape-only stub field + `pin_field`, same SRG name as the
+  lead) ; hub `tools/live-derive.sh` era-snapshot assert 59→60
+  (harness-only, fixed in this tranche — the lead's missing-counter
+  trouvaille is not repeated: the 1201-era assert beside it stays
+  59, untouched); `E_ANIM` joins the server refusal grep ; the
+  animation ships in `dist/` (`SHA256SUMS`) and deploys beside
+  geo+png.
+- Gate `bridge-1165/tools/check.sh` green incl. the ported
+  `ModelWireCheck.testShippedAnimation` (battery text-identical to
+  the lead — proven live, not just green: asset removed refuses
+  `E_ANIM_GEO:unreadable` out of the new battery, never silent).
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `TODO | live | e0 | TODO` (first dispatch
+  cell, live proof TODO — same bar as the lead live: 150 s server +
+  `SPAWN=1 COMBAT=1` skinned-draw legs with the 1165 era anchors).
+- eSLOC note (advisory, never a gate): 1165
+  `InstancedMeshRenderer` 441 (9 under the 450 plafond ; lead 378 —
+  the delta is the pre-existing camera rebuild + NaN guard, not the
+  animation).
+- Named follow-ups (unchanged order): 1165 live proof, then 1201,
+  then 1710 (smallest era delta first); walk-phase driver,
+  generic bone palette, multi-clip layering stay later tranches.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

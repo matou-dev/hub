@@ -1,5 +1,23 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation dispatch E0, bridge-1165 (`bf37900`,
+  stages 1-2 green, live proof TODO, hub dispatch-port addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `TODO | live | e0 | TODO`) : holder verbatim + walk clip
+  byte-identical (`diff`/`cmp` clean, zero SPI change, pin `170bb28`
+  shared) ; skinned stride-9 shader over the 1165-native path
+  (instance slots 3-6 → 4-7, bones 8-15, `Lwjgl3Backend` divisor,
+  event projection + rebuilt camera untouched) ; posed `hitBoxes`
+  on the `ticksExisted` clock with the `getPosX/Y/Z` origin ;
+  `sealClip` beside the combat tables ; narrow map 59→60 (row +
+  stub + pin, hub era-snapshot derive assert 59→60 harness-only —
+  the 1201 assert stays 59) ; `E_ANIM` in the server refusal grep ;
+  animation in `dist/` + server deploy. Gate green incl. the
+  ported `testShippedAnimation` (battery text-identical, proven to
+  refuse `E_ANIM_GEO` asset-absent). eSLOC renderer 441 (9 under
+  plafond). Named follow-ups: 1165 live proof, then 1201, then
+  1710, then walk-phase driver, generic palette, multi-clip.
+
 - 2026-09-12 : Beast animation live proof, lead bridge-1122
   (`1640914` E0 + `70dd14b` harness, zero live code fixes, hub
   live-proof addendum in `decisions/MATOU_ANIMATION.md`,
