@@ -480,6 +480,43 @@ already shared — no re-pin).
   then 1710 (smallest era delta first); walk-phase driver,
   generic bone palette, multi-clip layering stay later tranches.
 
+## Addendum — beast animation live proof, bridge-1165 (2026-09-12)
+
+`bridge-1165` `bf37900` (E0) proves the skinned draw + posed hit
+live on Forge 36.2.42 (150 s server + launcher-free headless
+direct-client `SPAWN=1 COMBAT=1` run, no `NUMERIC_IDS`
+flattening era, Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) —
+zero live code fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, `example1:my_ore`+stone — renderer client-only,
+  regression leg only, zero `E_*`) ; `[MatouBridge] animation
+  wired <{my_beast=animation.beast.walk,
+  my_brute=animation.beast.walk}>` in the boot log ; the deployed
+  animation is byte-identical to the proof asset (`cmp` at proof
+  time — the deploy path is proven, never assumed).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=12`
+  (the skinned bake draws — same counts, UV/texture path intact)
+  then `drew instances=1 mesh=72 verts buckets=1` — the first
+  skinned sampled draw through the seal on 1165 (GL accepted,
+  `E_GL_DRAW` silent ; first leg drew 0, second drew 1 — the
+  documented visibility lottery, never a code fix) ; census 2→8
+  balanced (`beast=brute`, cap 8) at worldTicks 2..5, `spawn hp
+  <my_beast 20.0>` + `spawn hp <my_brute 30.0>`, exact-2.0 at 501
+  (20.0 → 18.0 full-health) then exact-3.0 at 601 (11.0 → 8.0
+  ambient-damaged baseline, drop exact — the known 1165 churn at
+  ticks 308/324, same class as every 1165 proof ; the head
+  `mult=2.0/3.0` resolves off the POSED head, zero autoplay
+  change) ; spawn kill at 1000 → gem polled at 1001 (elapsed 1) ;
+  `verify-client-save.sh` world == pure union (1274 cells, native
+  names, no `NUMERIC_IDS`) ; zero `E_*` / linkage / `Caused by`.
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `TODO | live | live | TODO` (first
+  dispatch cell live, two ports TODO — same bar as the lead live,
+  each with its era-native anchors). Named follow-ups (unchanged
+  order): 1201, then 1710; walk-phase driver, generic bone
+  palette, multi-clip layering stay later tranches.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU
