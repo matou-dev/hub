@@ -377,6 +377,57 @@ as every lead E0.
   mapping + per-mob distance clock); generic bone palette (3+ bones);
   sibling dispatch E0+live (same bar per sibling, era-native anchors).
 
+## Addendum — beast animation live proof, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `1640914` (E0) + `70dd14b` (harness) proves the
+skinned draw + posed hit live on Forge 2860 (150 s server +
+launcher-free headless direct-client
+`NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` run,
+Xvfb/llvmpipe, exit 0, host OpenJDK 1.8.0_502) — zero live code
+fixes.
+
+- Server green (bind clean, ticks clean, world == pure union 1922
+  cells, ids 1,253 — renderer client-only, regression leg only,
+  zero `E_*`) ; `[MatouBridge] animation wired
+  <{my_beast=animation.beast.walk, my_brute=animation.beast.walk}>`
+  in the boot log ; the deployed animation is byte-identical to the
+  proof asset (`cmp` at proof time — the deploy path is proven,
+  never assumed).
+- Client: `ready mesh=72 verts stride=9 texture=64x64 program=12`
+  (the skinned bake draws — same counts, UV/texture path intact)
+  then `drew instances=3 mesh=72 verts buckets=1` — the first
+  skinned sampled draw through the seal (GL accepted, `E_GL_DRAW`
+  silent ; three visible beasts this run — the documented
+  visibility lottery) ; census 2→8 balanced (`beast=brute`, cap 8)
+  at worldTicks 2..5, `spawn hp <my_beast 20.0>` + `spawn hp
+  <my_brute 30.0>`, exact-2.0 at 501 then exact-3.0 at 601
+  (elapsed 1 each, full-health baselines 20.0 → 18.0 and 30.0 →
+  27.0 this run ; the head `mult=2.0/3.0` resolves off the POSED
+  head — the autoplay aims at the `boneBoxes` head center and the
+  hitboxes ride `placedPosedBoxes`, so the `life_time` sway needs
+  zero autoplay change) ; spawn kill at 1000 → gem polled at 1001
+  (elapsed 1) ; `verify-client-save.sh` world == pure union (1274
+  cells, `1,253` via `NUMERIC_IDS`) ; zero `E_*` / linkage (the
+  only `Caused by` lines are the known benign gem-model bakes,
+  same signature as every 1122 proof since item registration).
+- Trouvaille (live ops, no logic impact): the E0 shipped the
+  `Entity.ticksExisted` row in `tools/live/want.tsv` plus the
+  shape-only stub field, but neither 53 counter moved — the derive
+  failed loud (`E_SRG_DERIVE:want 53 lines, got 54`, never a
+  silent default). Fixed harness-only before the proof:
+  `bridge-1122` `70dd14b` (comment + `pin_field
+  .../Entity/ticksExisted` + drift check 53→54, no logic change)
+  and hub `dcd4f22` (era-1.12 derive 53→54 — only 1122 rides
+  `live_derive_mcp_anchor`, siblings untouched).
+- `PORT_QUEUE` row `Beast animation, skinned pose`
+  (`BRIDGE_PARITY.md`): `TODO | live | TODO | TODO` (lead live,
+  three dispatch ports TODO — this addendum is the dispatch-port
+  rationale, never silent). Named follow-ups: one 150 s server +
+  `SPAWN=1 COMBAT=1` skinned-draw leg per sibling (same bar as the
+  lead live, each with its era-native anchors), walk-phase driver
+  (`distanceWalkedModified` mapping + per-mob distance clock),
+  generic bone palette (3+ bones).
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

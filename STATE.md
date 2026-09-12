@@ -1,5 +1,25 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation live proof, lead bridge-1122
+  (`1640914` E0 + `70dd14b` harness, zero live code fixes, hub
+  live-proof addendum in `decisions/MATOU_ANIMATION.md`,
+  `PORT_QUEUE` row `TODO | live | TODO | TODO`) : 150 s server
+  green (world == pure union 1922, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed animation
+  byte-identical, zero `E_*`) ; headless direct-client
+  `NUMERIC_IDS=example1:my_ore=253 SPAWN=1 COMBAT=1` (exit 0) —
+  `ready mesh=72 verts stride=9 texture=64x64 program=12` + `drew
+  instances=3 mesh=72 verts buckets=1` through the seal (the skinned
+  bake draws, `E_GL_DRAW` silent), census 2→8, hp 20.0 + 30.0,
+  exact-2.0 at 501 then exact-3.0 at 601 (elapsed 1 each,
+  full-health baselines, off the posed head), kill 1000 → gem 1001
+  (elapsed 1), save pure union 1274, zero `E_*` (benign gem-model
+  `Caused by` only). Trouvaille: E0 shipped the `ticksExisted`
+  `want.tsv` row + stub but not the two 53 counters — harness fix
+  (`70dd14b` pin + `dcd4f22` derive 53→54, no logic change).
+  Sibling dispatch E0+live stays the named follow-up (with the
+  walk-phase driver, generic palette, multi-clip layering).
+
 - 2026-09-12 : Beast animation consumer E0, lead bridge-1122
   (`1640914` holder + skinned shader + posed hitboxes, stages 1-2
   green, live proof TODO ; hub consumer addendum in
