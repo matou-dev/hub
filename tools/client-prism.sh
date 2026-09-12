@@ -126,6 +126,17 @@ elif [ -f "$BRIDGE/tools/live/my_beast.png" ]; then
 else
   echo "note run-client : no beast texture shipped by $BRIDGE (tint renderer, nothing to stage)"
 fi
+# Beast animation (hub decisions/MATOU_ANIMATION.md, consumer E0): same
+# keep-or-stage rule — the skinned renderer poses it and the hitboxes
+# ride it, so a dev hand-tuning the walk must never lose it to a
+# re-stage.
+if [ -f "$IDIR/minecraft/config/matoubridge/my_beast.animation.json" ]; then
+  echo "note run-client : keeping existing my_beast.animation.json (delete it to reset to the shipped walk):"
+elif [ -f "$BRIDGE/tools/live/my_beast.animation.json" ]; then
+  cp "$BRIDGE/tools/live/my_beast.animation.json" "$IDIR/minecraft/config/matoubridge/my_beast.animation.json"
+else
+  echo "note run-client : no beast animation shipped by $BRIDGE (bind renderer, nothing to stage)"
+fi
 WORLD="${AUTOPLAY_WORLD:-matou}"
 export AUTOPLAY_WORLD="$WORLD"
 OFFLINE_NAME="${OFFLINE_NAME:-MatouDev}"

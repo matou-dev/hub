@@ -1,5 +1,30 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation consumer E0, lead bridge-1122
+  (`1640914` holder + skinned shader + posed hitboxes, stages 1-2
+  green, live proof TODO ; hub consumer addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` new row `Beast
+  animation, skinned pose` `TODO | e0 | TODO | TODO`) : shipped walk
+  clip (`animation.beast.walk`, head off `life_time`, body bob keys
+  `0.0`/`0.5`) loads/parses/evaluates pure (`ModelWireCheck`
+  goldens + `E_ANIM_GEO`/`E_ANIM_WIRE`/`E_ANIM_BONE` refusals +
+  skinned stride-9 + identity-delta compat + posed-cover) ; static
+  VBO is the skinned bake (stride 9, `ready` moves — live legs grep
+  the new bar), per-instance bone deltas over it (2-bone ceiling
+  `E_ANIM_SKIN:bones`, transpose-once at pack), posed `hitBoxes` on
+  the entity-age clock (`ticksExisted`, `distMoved = 0` fallback —
+  walk-phase driver named), clip sealed at wire time beside combat,
+  animation ships/deploys beside geo+png with `E_ANIM` in the server
+  refusal grep ; siblings mechanical re-pin to `170bb28` (1710
+  `951e2d6`, 1165 `9fc6475`, 1201 `7523380`, additive, E0 green
+  each — no holder/shader there yet). Route holds (GPU per-instance,
+  CPU oracle gate-only). eSLOC advisory only: lead renderer 378 (72
+  under plafond) ; `Molang` 586 + `MatouModel` 649 slim-down stays
+  the pending table-driven decision, untouched here. Named
+  follow-ups: lead live proof (same bar, skinned program + posed
+  exact-2.0/3.0), walk-phase driver, generic bone palette, sibling
+  dispatch, then multi-clip layering.
+
 - 2026-09-12 : Beast animation spec + SPI E0 (hub
   `decisions/MATOU_ANIMATION.md` new spec, prototype/spi ;
   `MATOU_MODEL.md` What remains item 4 DONE pointing at it ; spi

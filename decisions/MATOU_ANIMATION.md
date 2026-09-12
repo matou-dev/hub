@@ -262,13 +262,14 @@ pose); apply-time refusals (`E_ANIM_BONE:unknown`,
 
 ## What remains (re-opens as tranches, not silently)
 
-1. Lead-bridge consumer E0 (`bridge-1122`): holder loads
-   `my_beast.animation.json` beside the geo (same keep-or-copy deploy
-   rule), skinned shader + `GlBackend` matrix upload at the era
-   anchors, one clip selected per tick (wire-time selection table,
-   content-driven later), posed hitboxes on the combat path. Opens
-   `PORT_QUEUE` row `Beast animation` (`TODO | e0 | TODO | TODO`).
-   Stages 1-2 green, live proof TODO.
+1. Lead-bridge consumer E0 (`bridge-1122`) — DONE E0 2026-09-12
+    (`1640914`, stages 1-2 green, live proof TODO — see the consumer
+    addendum below): holder loads `my_beast.animation.json` beside the
+    geo (same keep-or-copy deploy rule), skinned shader + `GlBackend`
+    matrix upload at the era anchors, one clip selected per tick
+    (wire-time selection table, content-driven later), posed hitboxes
+    on the combat path. `PORT_QUEUE` row `Beast animation`
+    (`TODO | e0 | TODO | TODO`).
 2. Lead live proof: same bar as every lead E0 (150 s server +
    `SPAWN=1 COMBAT=1` animated-draw legs — `drew instances=` with the
    skinned program, census, exact-2.0 + exact-3.0 off the posed head,
@@ -284,6 +285,97 @@ pose); apply-time refusals (`E_ANIM_BONE:unknown`,
    `relative_to`, non-uniform scale, `pre`/`post` lerp modes,
    further `query.*` / `math.*` coverage — each refused loudly until
    its tranche, never smuggled.
+
+## Addendum — beast animation consumer E0, lead bridge-1122 (2026-09-12)
+
+Lands `What remains` item 1 as E0: the GPU per-instance route over the
+static VBO, stages 1-2 green on the lead, live proof TODO — same bar
+as every lead E0.
+
+- Proof asset `bridge-1122/tools/live/my_beast.animation.json` (the
+  shipped walk clip: `animation.beast.walk`, `loop: true`, head
+  rotation off `query.life_time` (`math.sin(t * 3.0) * 30.0` — the E0
+  clock is the entity age, see below), body position bob over keys
+  `0.0`/`0.5` (length defaults to `0.5`); bones are the shipped
+  `body`+`head`, never the SPI `leg` fixture).
+- Holder `bridge-1122/java/src/fr/iamacat/bridge/model/BeastAnimation.java`
+  (zero MC, lazy singleton over `ANIM_PATH`
+  `config/matoubridge/my_beast.animation.json`): `load` refuses
+  `E_ANIM_GEO:null/unreadable` and propagates the SPI `E_ANIM_*` +
+  `E_MODEL_JSON` catalog (never redefined); `sealClip` is the
+  wire-time mob-to-clip table (pure like `BeastModel.sealCombat` —
+  existence rides `clipFor`, so a swapped file missing the sealed clip
+  refuses at first use, never silently); `clipFor`/`poseFor` serve the
+  sealed clip per mob (plus pure overloads taking the file instance —
+  the gate battery never touches the production path). Thrown set
+  addition (bridge-local, cited here so no sibling redefines it):
+  `E_ANIM_GEO:null/unreadable`, `E_ANIM_WIRE:null/empty/unknown/unwired`.
+- Renderer `InstancedMeshRenderer` (1122-native anchors untouched):
+  static VBO switches to the SPI skinned bake (stride 9: pos3, uv2,
+  normal3, bone1 — `bakeMesh` stride 8 stays the gate oracle layout,
+  never the upload); per-instance bone deltas ride a second instanced
+  VBO (2 mat4 as 8 vec4 columns — the SPI row-major deltas transpose
+  once at pack into GL columns, verbatim values, era-native order);
+  skinned vertex shader branches the file-order bone index over the
+  two instanced matrices (`worldPos = D_bone * bindPos`, then the
+  unchanged yaw/scale/offset instance chain; normals ride
+  `mat3(D)` and renormalize). `E_ANIM_SKIN:bones` refuses a non-2-bone
+  beast at `initGl` (the 2-bone proof fills the guaranteed 16
+  attributes exactly — the generic palette is the named follow-up).
+  The `ready` line moves to `stride=9` (the live legs grep the new
+  bar — an unskinned draw cannot pass silently).
+- Posed hitboxes `MatouEntity.hitBoxes()` ride the sealed clip pose
+  (`placedPosedBoxes` at the entity origin — head shots meet the
+  turned head, never bind). Clock is the entity age
+  (`ticksExisted / 20.0` for `anim_time` + `life_time`,
+  `distMoved = 0.0`, `delta = 0.05`); the walk-phase driver
+  (`distanceWalkedModified`) is the named live follow-up — the shipped
+  walk clip already moves off `life_time` + keyframes, so E0 poses
+  without it. New narrow-map row `Entity.ticksExisted I field_70173_aa`
+  plus the shape-only stub field (owner discipline: read through
+  declaring `Entity`, never the beast).
+- Wire time `MatouBridgeMod.wireCombat` seals the clip table beside
+  the combat tables (every sealed mob plays `animation.beast.walk` —
+  content-driven later, multi-clip layering stays its own tranche)
+  and logs `[MatouBridge] animation wired <{mob=clip}>`.
+- Deploy `run-live.sh`: `dist/` ships the animation beside geo+png
+  (`SHA256SUMS`), the server config receives it beside packs.cfg
+  (operator-replaceable like the geo); step 6 refusal grep trips on
+  `E_ANIM` too (posed hitboxes evaluate server-side — an animation
+  refusal on the server is a no-regression breach, never a silent bind
+  fallback). Hub `client-prism.sh` keeps-or-stages it like geo+png.
+- Gate `ModelWireCheck.testShippedAnimation`: shipped clip loads
+  (name, loop, length `0.5`, bones `body`+`head`), eval goldens (head
+  `0` at life `0`, `+30` at life `pi/6`, body midpoint `0.5`, loop wrap
+  `0.2`), seal + `poseFor` serving, skinned layout golden (stride 9,
+  bind positions equal the bake, bone indices `0`/`1`), identity deltas
+  are identity + identity pose bakes byte-identical (compat), posed
+  head delta moves + posed head covers bind, full refusal battery
+  (`E_ANIM_GEO`, `E_MODEL_JSON:syntax` via `owned.matou`,
+  `E_ANIM_WIRE`, `E_ANIM_BONE:unknown` via the `leg` clip against the
+  shipped model).
+- Siblings mechanical re-pin only (1710 `951e2d6`, 1165 `9fc6475`,
+  1201 `7523380` to `170bb28` — additive, E0 green each, zero behaviour
+  change on the compat comparateur; no holder/shader/png on their side
+  yet — this addendum is the dispatch-port rationale, never silent).
+- `PORT_QUEUE` new row `Beast animation, skinned pose` (`BRIDGE_PARITY.md`):
+  `TODO | e0 | TODO | TODO`.
+- Parity gap (dim 4, declared here): `E_ANIM_GEO` + `E_ANIM_WIRE` +
+  `E_ANIM_SKIN` exist on 1122 only until the dispatch ports land them
+  on the siblings ; no new `E_FORGE_*`, no new `forge/src` file, no SPI
+  change (pin `170bb28` moves, bytes additive).
+- eSLOC note (advisory, never a gate): lead `InstancedMeshRenderer`
+  378 (72 under the 450 plafond); the `Molang` 586 + `MatouModel` 649
+  slim-down stays the pending decision (table-driven, never satellite
+  split — untouched by this tranche, norme et logique never mixed).
+- Named follow-ups blocking live (not silent): 150 s server re-proof
+  (animation refusal grep green, world == pure union) + headless
+  direct-client `SPAWN=1 COMBAT=1` legs proving the skinned draw
+  (`stride=9` in the `ready` line, `drew instances=` with buckets,
+  census 2→8, exact-2.0 + exact-3.0 off the posed head, saves pure
+  union, zero `E_*`); walk-phase driver (`distanceWalkedModified`
+  mapping + per-mob distance clock); generic bone palette (3+ bones);
+  sibling dispatch E0+live (same bar per sibling, era-native anchors).
 
 ## Non-goals (explicit)
 
