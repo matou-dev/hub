@@ -1,5 +1,27 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver live proof, bridge-1201 (E0
+  `ef87cd2`, zero live code fixes, hub live-proof addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
+  `TODO | live | live | live`) : 150 s server green (world == pure
+  union 1922, `animation wired
+  <{my_beast,my_brute=animation.beast.walk}>`, deployed animation
+  byte-identical, zero `E_*` / `Caused by`) ; headless
+  direct-client `SPAWN=1 COMBAT=1` (exit 0, no `NUMERIC_IDS`
+  flattening era, Temurin 17.0.20) — `ready mesh=72 verts stride=9
+  texture=64x64 program=15` + `drew instances=2 mesh=72 verts
+  buckets=1` through the seal (the interpolated distance feeds the
+  same skinned draw, `E_GL_DRAW` silent ; two visible beasts this
+  run — the documented visibility lottery, never a code fix),
+  census 2→8, hp 20.0 + 30.0, exact-2.0 at 501 (20.0 → 18.0
+  full-health) then exact-3.0 at 601 (23.0 → 20.0
+  ambient-damaged baseline, drop exact — ambient falls at ticks
+  73/308/324, same churn class as the 1165 proofs with the 1201
+  tick-73 falls), kill 1000 → gem 1001 (elapsed 1), save pure
+  union 1274, zero `E_*` / linkage (single benign flite
+  `Caused by`, same as every 1201 proof). Named follow-ups: then
+  1710 (last port), generic palette, multi-clip.
+
 - 2026-09-12 : Walk-phase driver dispatch E0, bridge-1201 (`ef87cd2`,
   stages 1-2 green, live proof TODO, hub dispatch addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE`
