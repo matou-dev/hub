@@ -711,6 +711,52 @@ code fixes.
   follow-ups: walk-phase driver, generic bone palette,
   multi-clip layering.
 
+## Addendum — walk-phase driver E0, lead bridge-1122 (2026-09-12)
+
+`bridge-1122` `4473ee2` lands the walk-phase driver as E0 (stages
+1-2 green, live proof TODO): `query.modified_distance_moved` reads
+the per-mob vanilla distance clock instead of the `0.0` fallback —
+wiring-only, the shipped walk clip is untouched (head still sways off
+`life_time`, body still bobs off keyframes, so a standing mob poses
+exactly as before while any dist-driven channel phases with walked
+blocks).
+
+- Holder `BeastAnimation` gains two pure helpers (zero MC, gate
+  battery without MC): `animCtx(time, distMoved)` builds the eval
+  context (age rides both `anim_time` and `life_time`, `delta` stays
+  the fixed tick step) and `interpDistMoved(prev, cur,
+  partialTicks)` eases the previous-tick counter toward the current
+  one (same shape as the position interpolation beside it).
+- Forge call-sites (owner discipline, reads through declaring
+  `Entity`, never the beast): `MatouEntity.hitBoxes` feeds the
+  current-tick `distanceWalkedModified` (server tick, no partial);
+  `InstancedMeshRenderer` feeds the partialTicks interpolation of
+  `prevDistanceWalkedModified` → `distanceWalkedModified` (client
+  frame smoothing).
+- Harness: narrow map 54→56 (`Entity/distanceWalkedModified F`
+  anchor `field_70140_Q` + `Entity/prevDistanceWalkedModified F`
+  anchor `field_70141_P`, shape-only stub fields, `pin_field` pair);
+  hub `tools/live-derive.sh` era-1.12 assert 54→56 (harness-only —
+  the 1165/1201 asserts stay 60, untouched). The derive was
+  proven pre-commit against the pinned bytes (56 lines, both `FD`
+  rows resolve).
+- Gate `bridge-1122/tools/check.sh` green incl. the new
+  `ModelWireCheck.testWalkPhaseDriver` (`animCtx` golden, interp
+  goldens incl. standing-hold, inline dist-driven strut clip rests
+  at dist 0 and reaches +30 at dist pi/6 — the query flows; zero
+  ctx still rests, proving the shipped clip untouched). No new
+  `E_*` code, no new `forge/src` file, no SPI change (pin
+  `170bb28` shared).
+- `PORT_QUEUE` new row `Beast animation, walk-phase driver`
+  (`BRIDGE_PARITY.md`): `TODO | e0 | TODO | TODO` (lead E0, live
+  proof TODO — same bar as the lead animation live: 150 s server +
+  `SPAWN=1 COMBAT=1` legs with posed exact-2.0/3.0, plus a walking
+  mob phasing any dist-driven channel).
+- Named follow-ups (unchanged order): lead live proof, sibling
+  dispatch (1710 full-map pin pair, 1165 narrow 60→62, 1201 Mojmap
+  `walkDist`/`walkDistO` pair); generic bone palette, multi-clip
+  layering stay later tranches.
+
 ## Non-goals (explicit)
 
 CPU per-tick mesh re-bake as a runtime path (rejected by the GPU

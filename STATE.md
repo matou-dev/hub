@@ -1,5 +1,20 @@
 # STATE.md — présent
 
+- 2026-09-12 : Walk-phase driver E0, lead bridge-1122 (`4473ee2`,
+  stages 1-2 green, live proof TODO, hub driver addendum in
+  `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` new row
+  `TODO | e0 | TODO | TODO`) : `query.modified_distance_moved`
+  reads the per-mob distance clock (`distanceWalkedModified`
+  `field_70140_Q`, renderer interpolates prev `field_70141_P` over
+  partialTicks via pure `BeastAnimation.animCtx/interpDistMoved`,
+  hitboxes read the tick value) ; wiring-only (shipped clip
+  untouched — standing mobs pose as before) ; narrow map 54→56
+  (derive proven pre-commit, hub era-1.12 assert 54→56) ; gate
+  green incl. the new `testWalkPhaseDriver` (dist-driven strut
+  rests at 0 / +30 at pi/6, no new `E_*`, pin `170bb28` shared).
+  Named follow-ups: lead live proof, sibling dispatch, generic
+  palette, multi-clip.
+
 - 2026-09-12 : Beast animation live proof, bridge-1710 (E0
   `f953070`, zero live code fixes, hub live-proof addendum in
   `decisions/MATOU_ANIMATION.md`, `PORT_QUEUE` row
