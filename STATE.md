@@ -1,5 +1,27 @@
 # STATE.md — présent
 
+- 2026-09-12 : Beast animation spec + SPI E0 (hub
+  `decisions/MATOU_ANIMATION.md` new spec, prototype/spi ;
+  `MATOU_MODEL.md` What remains item 4 DONE pointing at it ; spi
+  `170bb28` : `Molang` frozen-subset evaluator, `MatouAnimation` +
+  parser (single-clip eval, loop/hold/clamp, `anim_time_update`),
+  `MatouModel` posed oracle + `poseDeltaMatrices` GPU contract +
+  stride-9 skinned layout + posed hitboxes) : `spi/tools/check.sh`
+  green incl. `ok model-check` (MOLANG goldens + refusal battery,
+  walk-clip parse/eval goldens, identity-pose float-identity
+  comparateur, 45-degree posed-head box golden, delta cross-check
+  1e-5, skinned layout + winding, full `E_ANIM_*` refusal battery) ;
+  unposed models bake byte-identical (zero bridge change — no re-pin,
+  no live re-proof, no `PORT_QUEUE` move, no new `E_FORGE_*`). Route
+  decided with operator (GPU per-instance bone matrices over the
+  static VBO, `Recommended` ; CPU rebake stays the gate oracle,
+  never the runtime path). Named alert (not silent): `Molang.java`
+  586 eSLOC and `MatouModel.java` 649 eSLOC trip the 450 design
+  plafond — table-driven slim-down proposed, no satellite split,
+  decision pending. Named follow-ups: lead-bridge consumer E0
+  (holder + skinned shader + matrix upload, opens the `PORT_QUEUE`
+  row), lead live proof, dispatch, then multi-clip layering.
+
 - 2026-09-12 : Beast rotated-content dispatch live, siblings
   1710/1165/1201 (1710 `8ac24b4`, 1165 `0b03179`, 1201 `d61144a`,
   zero live fixes each, hub `decisions/MATOU_MODEL.md` dispatch-live

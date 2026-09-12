@@ -374,8 +374,12 @@ game alive rendering; the full 600 s run exited 0 by itself):
    draws + hits through the seal on all four runtimes, `PORT_QUEUE`
    `live | live | live | live` — row closed).
 4. Animation tables (`animations` keyframes, controllers, MOLANG) —
-   later tranche, own spec (needs a content expression subset + a
-   tick-time pose evaluation — never smuggled into the bind-pose bake).
+   DONE spec + SPI E0 2026-09-12 (own spec
+   `decisions/MATOU_ANIMATION.md`: frozen document + MOLANG subsets,
+   single-clip eval, GPU per-instance delta contract, posed hitboxes,
+   gate oracle — GPU route decided, CPU rebake test-only). Bridge
+   consumer (holder + skinned shader + matrix upload), lead live proof
+   and dispatch ride `MATOU_ANIMATION.md` What remains, never here.
 
 ## Addendum — beast texture V2 E0, lead bridge-1122 (2026-09-12)
 
