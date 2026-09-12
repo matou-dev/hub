@@ -225,4 +225,74 @@ prefix with a `buckets=` suffix, same as the lead.
   live proofs, not the code. Named follow-up (not silent): one 150 s
   server + `SPAWN=1 COMBAT=1` wired-draw leg per sibling (same bar as
   the lead live — `drew instances=` with buckets, census, exact-2.0
-  + exact-3.0, pure-union saves, zero `E_*`).
+  + exact-3.0, pure-union saves, zero `E_*`). CLOSED 2026-09-12 below
+  (1710 zero live fixes, 1165 two, 1201 one — all in the forge hook,
+  the pure plan untouched).
+
+## Addendum — render plan adapter dispatch live, siblings 1710/1165/1201 (2026-09-12)
+
+`PORT_QUEUE` row `Render plan adapter` flips to
+`live | live | live | live` (0 `TODO`, 0 `e0` remaining on the row).
+Same bar as the lead live per sibling (150 s server + launcher-free
+headless direct-client `SPAWN=1 COMBAT=1` run, exit 0):
+
+- 1710 `4e25e2a`, zero live fixes (green first try, host OpenJDK
+  1.8.0_502) : server bind clean, world == pure union 1922 (ids
+  1,165), zero `E_*` ; direct-client
+  `NUMERIC_IDS=example1:my_ore=165 SPAWN=1 COMBAT=1` — `ready
+  mesh=72 verts stride=8 program=3` then `drew instances=1 mesh=72
+  verts buckets=1` through the seal (GL accepted, `E_GL_DRAW`
+  silent), census 2→8, hp 20.0 + 30.0, exact-2.0 at 500→501 then
+  exact-3.0 at 600→601 (elapsed 1 each, ambient-damaged brute
+  baseline — drop stays exact), kill 1000 → carrier 999 → gem 1001
+  (elapsed 1) with same-tick replacement, save pure union 1274,
+  zero `E_*` (benign Forge-version-check-offline `Caused by` +
+  missing gem-icon texture errors, same as every 1710 proof).
+- 1165 `6c248e7` + `01470b6`, two live fixes (both in
+  `forge/.../InstancedMeshRenderer.java` only, from-log diagnosis) :
+  server bind clean, world == pure union 1922 (native names), zero
+  `E_*` ; direct-client `SPAWN=1 COMBAT=1` — `ready mesh=72 verts
+  stride=8 program=12` then `drew instances=1 mesh=72 verts
+  buckets=1`, census 2→8, hp 20.0 + 30.0, exact-2.0 then exact-3.0
+  (elapsed 1 each), kill 1000 → carrier 1000 → gem 1001 (elapsed 1)
+  with same-tick replacement, save pure union 1274, zero `E_*` /
+  `Caused by`. Fix 1: `flip()` → `rewind()` after Mojang
+  `Matrix4f.write` — the SRG `func_195879_b` is absolute-put
+  (javap-proven on the pinned bytes), so `flip()` collapsed the
+  limit to the unmoved position (first draw died
+  `IndexOutOfBoundsException`). Fix 2: join-transient guard — during
+  the client-world join `RenderWorldLast` fires with a NaN event
+  projection (vanilla draws garbage those frames too), so a
+  non-finite product skips the frame BEFORE the seal (never
+  planned, never uploaded), loudly on first sight and every 600th,
+  refusing `E_RENDER_FRUSTUM:degenerate` past 3600 consecutive bad
+  frames (a full minute — persistence is a wiring bug, never a
+  transient).
+- 1201 `ac31b4c` + `565be27`, one live fix (same guard shape,
+  `forge/.../InstancedMeshRenderer.java` only, docker D3_OFFLINE
+  warm cache) : server bind clean, world == pure union 1922, zero
+  `E_*` ; direct-client `SPAWN=1 COMBAT=1` — `ready mesh=72 verts
+  stride=8 program=15` then `drew instances=1 mesh=72 verts
+  buckets=1`, census 2→8, hp 20.0 + 30.0, exact-2.0 then exact-3.0
+  (elapsed 1 each), kill 1000 → carrier 1000 → gem 1001 (elapsed 1)
+  with same-tick replacement, save pure union 1274, zero `E_*`
+  (single benign vanilla-flite `Caused by`, same as every 1201
+  proof). No buffer fix here (JOML `get()` needs no flip — probed) ;
+  the first planned frame refused `E_RENDER_FRUSTUM:degenerate
+  <left>` on the identical join transient, hence the guard.
+- Parity note (dim 4, declared here, gate green) : the guard's
+  `E_RENDER_FRUSTUM:degenerate` refusal lives in the 1165/1201 forge
+  hooks only (1 local code each) — it reuses the spike's cited
+  thrown set above, no new code family, no new `E_FORGE_*`, no stub
+  or narrow-map delta on any sibling. The LWJGL2 fixed-function
+  reads (lead + 1710) show no join transient (both green first try),
+  so the lead keeps no guard — version-native difference, never
+  silent.
+- Trouvailles (live ops, no code impact) : `drew` is a per-run
+  visibility lottery by design (fixed camera + wandering beasts +
+  spawn-band geometry — surface tickets draw, void tickets correctly
+  cull, zero-draw runs are correct culling proven offline, not a
+  matrix bug) ; 1201 player spawn flails across runs (y=4 hole /
+  y=66 surface / y=-60 void — join/chunk-load timing vs flat spawn) ;
+  host still has no Java 17 (`/tmp/jdk17` re-extract, never
+  committed). No open item remaining on the row.

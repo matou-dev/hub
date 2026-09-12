@@ -1,5 +1,21 @@
 # STATE.md — présent
 
+- 2026-09-12 : Render plan adapter dispatch live, siblings
+  1710/1165/1201 (1710 `4e25e2a` zero live fixes, 1165 `6c248e7` +
+  `01470b6` rewind + join-transient guard, 1201 `ac31b4c` +
+  `565be27` join-transient guard, hub `decisions/GPU_INSTANCING.md`
+  live addendum, `PORT_QUEUE` `live | live | live | live` — row
+  closed) : 150 s servers green each (worlds == pure union 1922,
+  zero `E_*`) ; headless direct-clients `SPAWN=1 COMBAT=1` (exit 0
+  each, `NUMERIC_IDS=example1:my_ore=165` on 1710) — `ready mesh=72`
+  + `drew instances=1 buckets=1` through the seal each, census 2→8,
+  hp 20.0 + 30.0, exact-2.0 at 500→501 then exact-3.0 at 600→601
+  (elapsed 1 each), kill 1000 → gem 1001 (elapsed 1) with same-tick
+  replacement, saves pure union 1274, zero `E_*` (benign per-runtime
+  `Caused by` only). Guard reuses cited `E_RENDER_FRUSTUM`
+  (1165/1201 1 local code each, gate green) ; LWJGL2 reads show no
+  transient so the lead keeps none. No open item remaining on the
+  row.
 - 2026-09-11 : Render plan adapter live, lead bridge-1122
   (`4119639` E0, zero live fixes, hub `decisions/GPU_INSTANCING.md`
   live addendum, `PORT_QUEUE` `TODO | live | TODO | TODO`) : 150 s
